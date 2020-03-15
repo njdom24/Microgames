@@ -73,3 +73,32 @@
 /home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/AnyCPU/Debug/MonoGame.Framework.dll
 /home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/AnyCPU/Debug/Content/Map/Transition.xnb
 /home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/AnyCPU/Debug/Content/Map/TempBG.xnb
+/home/damino/Documents/Microgames/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/home/damino/Documents/Microgames/obj/Debug/MonoRPG-GL.Icon.ico
+/home/damino/Documents/Microgames/obj/Debug/MonoRPG-GL.Icon.bmp
+/home/damino/Documents/Microgames/obj/Debug/MonoRPG-GL.Properties.Tazmily.tmx
+/home/damino/Documents/Microgames/obj/Debug/MonoRPG-GL.Properties.Resource.resources
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/x86/SDL2.dll
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/x64/SDL2.dll
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/x86/soft_oal.dll
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/x64/soft_oal.dll
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/x86/libSDL2-2.0.so.0
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/x64/libSDL2-2.0.so.0
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/x86/libopenal.so.1
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/x64/libopenal.so.1
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/libSDL2-2.0.0.dylib
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/libopenal.1.dylib
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/MonoGame.Framework.dll.config
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/MonoRPG-GL.pdb
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/MonoRPG-GL.exe
+/home/damino/Documents/Microgames/obj/Debug/MonoRPG-GL.exe
+/home/damino/Documents/Microgames/obj/Debug/MonoRPG-GL.pdb
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/MonoGame.Extended.dll
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/MonoGame.Extended.Graphics.dll
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/MonoGame.Extended.Tiled.dll
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/FarseerPhysics MonoGame.dll
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/MonoGame.Framework.Content.Pipeline.dll
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/Newtonsoft.Json.dll
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/TiledLib.dll
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/TiledLib.Pipeline.dll
+/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/MonoGame.Framework.dll

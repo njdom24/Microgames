@@ -372,6 +372,9 @@ namespace RPG
 
 			prevState = Keyboard.GetState();
 
+			if (prevStateKb.IsKeyDown(Keys.Q) && Keyboard.GetState().IsKeyUp(Keys.Q))
+				return 255;
+
 			return 1;
 		}
 

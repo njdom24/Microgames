@@ -8,7 +8,7 @@
       <File FileName="Battle.cs" Line="274" Column="17" />
       <File FileName="Menu.cs" Line="104" Column="4" />
       <File FileName="TitleScreen.cs" Line="16" Column="22" />
-      <File FileName="MainScreen.cs" Line="49" Column="60" />
+      <File FileName="MainScreen.cs" Line="43" Column="18" />
       <File FileName="Button.cs" Line="30" Column="3" />
       <File FileName="Text.cs" Line="58" Column="22" />
       <File FileName="Selector.cs" Line="75" Column="4" />

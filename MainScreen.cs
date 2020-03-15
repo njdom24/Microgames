@@ -14,10 +14,9 @@ namespace RPG
 		private PresentationParameters pp;
 		private MiniScreen microgame;
 
-		private World world;
-		private RenderTarget2D mainTarget, internalTarget;
+		private RenderTarget2D mainTarget, internalTarget, lastFrame;
 		private GraphicsDevice graphicsDevice;
-		private Texture2D pkmn, lio;
+		private Texture2D screenshot, lio;
 		private Effect transition;
 		private double timer;
 		private Song song;
@@ -25,7 +24,6 @@ namespace RPG
 		private MouseState prevStateM;
 
 		int currentFlashes, maxFlashes;
-		bool darken;
 
 		private enum Phase { MainMenu, InGame, Transition };
 		private Phase curPhase;
@@ -40,13 +38,14 @@ namespace RPG
 			currentFlashes = 1;
 			maxFlashes = 7;
 			timer = 0.2;
-			darken = true;
+
 			this.graphicsDevice = graphicsDevice;
 			internalTarget = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
+			lastFrame = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
 			mainTarget = final;
 			//microgame = new Microgame(contentManager);
 			//microgame = new Battle(contentManager, internalTarget, graphicsDevice, pp);
-			pkmn = contentManager.Load<Texture2D>("Map/Transition");
+			screenshot = contentManager.Load<Texture2D>("Map/Transition");
 			microgame = new TitleScreen(contentManager);
 			lio = contentManager.Load<Texture2D>("Map/Hand");
 			transition = contentManager.Load<Effect>("Map/transitions");
@@ -55,6 +54,7 @@ namespace RPG
 			//MediaPlayer.Play(song);
 			prevStateKb = Keyboard.GetState();
 			prevStateM = Mouse.GetState();
+
 		}
 
 		void Screen.Update(GameTime dt)
@@ -80,7 +80,13 @@ namespace RPG
 					transition.Parameters["time"].SetValue((float)timer * 3);
 					break;
 				case Phase.InGame:
-					microgame.Update(dt, prevStateKb, prevStateM);
+					byte result = microgame.Update(dt, prevStateKb, prevStateM);
+
+					if (result == 255)
+					{
+						curPhase = Phase.Transition;
+					}
+
 					break;
 					
 			}
@@ -99,6 +105,22 @@ namespace RPG
 		{
 			//Render microgame internally
 			//graphicsDevice.SetRenderTarget(internalTarget);
+
+			//Render black background, then render the last frame in the middle, leaving 2 1-pixel borders on the sides
+			if (curPhase != Phase.Transition)
+			{
+				graphicsDevice.SetRenderTarget(lastFrame);
+				microgame.Draw(sb);
+				sb.Begin(blendState: BlendState.Opaque);
+				//Sidebars
+				sb.Draw(lio, new Rectangle(0, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Transparent);
+				sb.Draw(lio, new Rectangle(Game1.width - 1, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Transparent);
+
+				sb.End();
+				graphicsDevice.SetRenderTarget(mainTarget);
+			}
+
+
 			microgame.Draw(sb);
 
 			switch (curPhase)
@@ -118,11 +140,22 @@ namespace RPG
 						sb.Begin();
 						int blackBar = (int)(Math.Pow(2, (timer - 1.4) * 9));
 
+						//Move from transition into the next game
 						if (blackBar > Game1.height / 2)
-							curPhase = Phase.InGame;
+						{ 
+							//Reset timer variables for next time
+							currentFlashes = 1;
+							maxFlashes = 7;
+							timer = 0.2;
 
-						sb.Draw(lio, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
+							curPhase = Phase.InGame;
+						}
+							
+
+						//sb.Draw(lio, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
 						sb.Draw(internalTarget, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
+
+						//Top and bottom bars
 						sb.Draw(lio, new Rectangle(0, blackBar + Game1.height / 2, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Black);
 						sb.Draw(lio, new Rectangle(0, -blackBar - Game1.height / 2, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Black);
 
@@ -132,7 +165,8 @@ namespace RPG
 						graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 						transition.CurrentTechnique.Passes[0].Apply();
 						//sb.Draw(internalTarget, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
-						sb.Draw(pkmn, new Rectangle(-1, 0, Game1.width + 2, Game1.height), Color.White);
+
+						sb.Draw(lastFrame, new Rectangle(-1, 0, Game1.width + 2, Game1.height), Color.White);
 						sb.End();
 
 
@@ -142,7 +176,13 @@ namespace RPG
 						sb.Begin(SpriteSortMode.Immediate);
 						int flashCol = (int)(timer * 1700);
 
-						sb.Draw(pkmn, new Rectangle(-1, 0, Game1.width + 2, Game1.height), new Color(flashCol, flashCol, flashCol));
+						sb.Draw(lastFrame, new Rectangle(0, 0, Game1.width, Game1.height), new Color(flashCol, flashCol, flashCol));
+
+						//Draw black bars to the sides of lastFrame
+						//TODO: Bake these into lastFrame
+						//sb.Draw(lio, new Rectangle(0, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Black);
+						//sb.Draw(lio, new Rectangle(Game1.width-1, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Black);
+
 						sb.End();
 
 						if (currentFlashes == maxFlashes)

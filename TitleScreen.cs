@@ -74,7 +74,8 @@ namespace RPG
 		{
 			Console.WriteLine("Mouse X: " + state.X);
 			sb.Begin();
-			sb.Draw(background, new Rectangle(-1, 0, Game1.width + 2, Game1.height), Color.White);
+			//Adjust for output buffer
+			sb.Draw(background, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
 			options.Draw(sb);
 			//startButton.Draw(sb);
 			sb.End();
