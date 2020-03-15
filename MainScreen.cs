@@ -110,8 +110,12 @@ namespace RPG
 			if (curPhase != Phase.Transition)
 			{
 				graphicsDevice.SetRenderTarget(lastFrame);
-				microgame.Draw(sb);
+				//microgame.Draw(sb);
+				sb.Begin();
+				sb.Draw(mainTarget, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
+				sb.End();
 				sb.Begin(blendState: BlendState.Opaque);
+
 				//Sidebars
 				sb.Draw(lio, new Rectangle(0, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Transparent);
 				sb.Draw(lio, new Rectangle(Game1.width - 1, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Transparent);

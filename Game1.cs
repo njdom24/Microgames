@@ -75,7 +75,7 @@ namespace RPG
 			//GraphicsDevice.GraphicsProfile = GraphicsProfile.HiDef;
 			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 			PresentationParameters pp = GraphicsDevice.PresentationParameters;
-			original = new RenderTarget2D(GraphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
+			original = new RenderTarget2D(GraphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.PreserveContents);
 			nearest = new RenderTarget2D(GraphicsDevice, largestScale.X, largestScale.Y, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
 			bilinear = new RenderTarget2D(GraphicsDevice, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
 			//nearest = bilinear = original;
@@ -161,25 +161,8 @@ namespace RPG
 			GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
 
 			currentScreen.Draw(sb);
-			sb.Begin();
-
-			//sb.Draw(tx, new Rectangle(0, 0, tx.Width, tx.Height), Color.White);
-			//DrawLayer(0, sb);
-			sb.End();
-			//GraphicsDevice.SetRenderTarget(null);
-
-			//sb.Begin();
-			//sb.Begin();
-			//sb.Draw(scene, Vector2.Zero);
-
-			//sb.End();
 
 			myScale();
-			//scaleToDisplay();
-
-			// TODO: Add your drawing code here
-
-			//base.Draw(gameTime);
 		}
 
 		//Scales to nearest as high as accuracy allows, then scales the rest with bilinear and as-necessary black bars
