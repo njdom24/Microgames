@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>Z:/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/Content/Map/Tazmily/Tazmily.tmx</SourceFile>
+  <SourceTime>2020-01-27T17:42:45.807272-05:00</SourceTime>
+  <DestFile>Z:/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/Any CPU/Debug/Content/Map/Tazmily/Tazmily.xnb</DestFile>
+  <DestTime>2020-01-28T00:37:51.553715-05:00</DestTime>
+  <Importer>TiledMapImporter</Importer>
+  <ImporterTime>2020-01-27T17:42:46.460606-05:00</ImporterTime>
+  <Processor>TiledMapProcessor</Processor>
+  <ProcessorTime>2020-01-27T17:42:46.460606-05:00</ProcessorTime>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

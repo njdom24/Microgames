@@ -1,0 +1,432 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>905b6b3b-33b1-49fb-b691-ae30f88cb4f5</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MonoRPG-GL</RootNamespace>
+    <AssemblyName>MonoRPG-GL</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;LINUX</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;LINUX</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Animation.cs" />
+    <None Include="app.manifest" />
+    <Compile Include="Battle.cs" />
+    <Compile Include="Battler.cs" />
+    <Compile Include="Combatant.cs" />
+    <Compile Include="DebugViewXNA.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="Hud.cs" />
+    <Compile Include="Icon.cs" />
+    <Compile Include="Icons.cs" />
+    <Compile Include="MapEntity.cs" />
+    <Compile Include="Map.cs" />
+    <Compile Include="NPC.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="PrimitiveBatch.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Screen.cs" />
+    <Compile Include="ScrollingVal.cs" />
+    <Compile Include="Selector.cs" />
+    <Compile Include="Text.cs" />
+    <Compile Include="MainScreen.cs" />
+    <Compile Include="Microgame.cs" />
+    <Compile Include="TitleScreen.cs" />
+    <Compile Include="Button.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="MonoGame.Extended">
+      <HintPath>packages\MonoGame.Extended.1.1.0\lib\portable-net45+win8+wpa81\MonoGame.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Graphics">
+      <HintPath>packages\MonoGame.Extended.Graphics.1.1.0\lib\portable-net45+win8+wpa81\MonoGame.Extended.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Extended.Tiled">
+      <HintPath>packages\MonoGame.Extended.Tiled.1.1.0\lib\portable-net45+win8+wpa81\MonoGame.Extended.Tiled.dll</HintPath>
+    </Reference>
+    <Reference Include="FarseerPhysics MonoGame">
+      <HintPath>packages\FarseerPhysics.MonoGame.Unofficial.3.5.0\lib\FarseerPhysics MonoGame.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework.Content.Pipeline">
+      <HintPath>packages\MonoGame.Framework.Content.Pipeline.Portable.3.7.1.189\lib\portable-net45+win8+wpa81\MonoGame.Framework.Content.Pipeline.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="TiledLib">
+      <HintPath>packages\TiledLib.3.0.0\lib\net45\TiledLib.dll</HintPath>
+    </Reference>
+    <Reference Include="TiledLib.Pipeline">
+      <HintPath>packages\TiledLib.Pipeline.3.0.0\lib\net45\TiledLib.Pipeline.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>packages\MonoGame.Framework.DesktopGL.3.7.1.189\lib\net45\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icon.ico" />
+    <EmbeddedResource Include="Icon.bmp" />
+    <EmbeddedResource Include="Properties\Resource.resx" />
+    <EmbeddedResource Include="Content\Map\Tazmily\Tazmily.tmx">
+      <Link>Properties\Tazmily.tmx</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\SDL2.dll">
+      <Link>x86\SDL2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x64\SDL2.dll">
+      <Link>x64\SDL2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\soft_oal.dll">
+      <Link>x86\soft_oal.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x64\soft_oal.dll">
+      <Link>x64\soft_oal.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\libSDL2-2.0.so.0">
+      <Link>x86\libSDL2-2.0.so.0</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x64\libSDL2-2.0.so.0">
+      <Link>x64\libSDL2-2.0.so.0</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\libopenal.so.1">
+      <Link>x86\libopenal.so.1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x64\libopenal.so.1">
+      <Link>x64\libopenal.so.1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libSDL2-2.0.0.dylib">
+      <Link>libSDL2-2.0.0.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libopenal.1.dylib">
+      <Link>libopenal.1.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll.config">
+      <Link>MonoGame.Framework.dll.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Content\Battle\003.png" />
+    <None Include="Content\Battle\003Atlas.png" />
+    <None Include="Content\Battle\003Byte.png" />
+    <None Include="Content\Battle\003Palette.png" />
+    <None Include="Content\Battle\003PaletteB.png" />
+    <None Include="Content\Battle\005.png" />
+    <None Include="Content\Battle\BG.PNG" />
+    <None Include="Content\Battle\Background.png" />
+    <None Include="Content\Battle\BackgroundL.png" />
+    <None Include="Content\Battle\BattleBG.fx" />
+    <None Include="Content\Battle\ByteTexture.png" />
+    <None Include="Content\Battle\ByteTexturePalette.png" />
+    <None Include="Content\Battle\Leo.png" />
+    <None Include="Content\Battle\ManiMani.gif" />
+    <None Include="Content\Battle\Player.png" />
+    <None Include="Content\Battle\SpriteFlash.fx" />
+    <None Include="Content\Battle\Yellow.PNG" />
+    <None Include="Content\Battle\image.jpg" />
+    <None Include="Content\Battle\layer.png" />
+    <None Include="Content\Battle\Effects\274x154.txt" />
+    <None Include="Content\Battle\Effects\OG.png" />
+    <None Include="Content\Battle\Effects\PkFireA.png" />
+    <None Include="Content\Battle\Enemies\Knight.png" />
+    <None Include="Content\Battle\Icons\Attack.png" />
+    <None Include="Content\Battle\Icons\Bag.png" />
+    <None Include="Content\Battle\Icons\BattleHud.png" />
+    <None Include="Content\Battle\Icons\BorderLarge.png" />
+    <None Include="Content\Battle\Icons\BorderSmall.png" />
+    <None Include="Content\Battle\Icons\HitEffects.png" />
+    <None Include="Content\Battle\Icons\HitMarker.png" />
+    <None Include="Content\Battle\Icons\IconChange.fx" />
+    <None Include="Content\Battle\Icons\MusicNote.png" />
+    <None Include="Content\Battle\Icons\Run.png" />
+    <None Include="Content\Battle\Icons\Spells.png" />
+    <None Include="Content\Battle\Icons\YouWon.png" />
+    <None Include="Content\Battle\Numbers\ScrollingNums.png" />
+    <None Include="Content\Battle\Numbers\Stats.png" />
+    <None Include="Content\Battle\Player\BG.png" />
+    <None Include="Content\Battle\Player\Charged.png" />
+    <None Include="Content\Battle\Player\Plate.png" />
+    <None Include="Content\Map\Lucas\Child.png" />
+    <None Include="Content\Map\Lucas\Instructions.txt" />
+    <None Include="Content\Map\Lucas\Teen.png" />
+    <None Include="Content\Map\Lucas\Teen.psd" />
+    <None Include="Content\Map\Lucas\Teen2.psd" />
+    <None Include="Content\Map\Tazmily\TazmilyDay.tsx" />
+    <None Include="Content\Map\Tazmily\fulltileset.PNG" />
+    <None Include="Content\Map\Tazmily\original.png" />
+    <None Include="Content\Map\Tazmily\tileset.png" />
+    <None Include="Content\Map\Tazmily\tileset2.png" />
+    <None Include="Content\Map\Tazmily\Hinawa\Hinawa.png" />
+    <None Include="Content\Map\Tazmily\Hinawa\Hinawa.psd" />
+    <None Include="Content\Textbox\0.png" />
+    <None Include="Content\Textbox\0.psd" />
+    <None Include="Content\Textbox\Chars.png" />
+    <None Include="Content\Textbox\Text.png" />
+    <None Include="Content\Textbox\TextOld.png" />
+    <None Include="Content\Textbox\Textbox.png" />
+    <None Include="Content\obj\DesktopGL\.mgcontent" />
+    <None Include="Content\obj\DesktopGL\.mgstats" />
+    <None Include="Content\obj\DesktopGL\Corneria_gutter.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Debug.mgcontent" />
+    <None Include="Content\obj\DesktopGL\HighlightColor.mgcontent" />
+    <None Include="Content\obj\DesktopGL\OpenedDoor.mgcontent" />
+    <None Include="Content\obj\DesktopGL\corneria.mgcontent" />
+    <None Include="Content\obj\DesktopGL\lightmask.mgcontent" />
+    <None Include="Content\obj\DesktopGL\overworld_gutter.mgcontent" />
+    <None Include="Content\obj\DesktopGL\overworld_jobs.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\003.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\003Atlas.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\003Byte.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\003Palette.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\005.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\BG.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Background.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\BackgroundL.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\ByteTexture.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\ByteTexturePalette.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\ManiMani.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Player.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Yellow.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\image.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\layer.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Effects\PkFireA.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Enemies\Knight.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Icons\Attack.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Icons\Bag.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Icons\BattleHud.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Icons\BorderLarge.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Icons\BorderSmall.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Icons\HitEffects.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Icons\HitMarker.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Icons\MusicNote.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Icons\Run.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Icons\Spells.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Icons\YouWon.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Battle\Numbers\ScrollingNums.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\.mgstats" />
+    <None Include="Content\obj\DesktopGL\Content\Corneria_gutter.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Debug.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\HighlightColor.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\OpenedDoor.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\corneria.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\lightmask.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\overworld_gutter.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\overworld_jobs.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\003.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\003Atlas.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\003Byte.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\003Palette.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\005.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\BG.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Background.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\BackgroundL.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\ByteTexture.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\ByteTexturePalette.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\ManiMani.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Player.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Yellow.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\image.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\layer.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Effects\PkFireA.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Enemies\Knight.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Icons\Attack.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Icons\Bag.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Icons\BattleHud.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Icons\BorderLarge.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Icons\BorderSmall.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Icons\HitEffects.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Icons\HitMarker.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Icons\MusicNote.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Icons\Run.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Icons\Spells.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Icons\YouWon.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Battle\Numbers\ScrollingNums.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Map\Lucas\Teen.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Map\Tazmily\Tazmily.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Map\Tazmily\fulltileset.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Map\Tazmily\Hinawa\Hinawa.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Textbox\Chars.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Textbox\Text.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Textbox\Textbox.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Map\Lucas\Teen.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Map\Tazmily\Tazmily.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Map\Tazmily\fulltileset.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Map\Tazmily\Hinawa\Hinawa.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Textbox\Chars.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Textbox\Text.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Textbox\Textbox.mgcontent" />
+    <None Include="Content\obj\Windows\.mgcontent" />
+    <None Include="Content\obj\Windows\.mgstats" />
+    <None Include="Content\obj\Windows\Corneria_gutter.mgcontent" />
+    <None Include="Content\obj\Windows\Debug.mgcontent" />
+    <None Include="Content\obj\Windows\File.mgcontent" />
+    <None Include="Content\obj\Windows\HighlightColor.mgcontent" />
+    <None Include="Content\obj\Windows\OpenedDoor.mgcontent" />
+    <None Include="Content\obj\Windows\corneria.mgcontent" />
+    <None Include="Content\obj\Windows\lightmask.mgcontent" />
+    <None Include="Content\obj\Windows\overworld_gutter.mgcontent" />
+    <None Include="Content\obj\Windows\overworld_jobs.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\003.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\003Atlas.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\003Byte.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\003Palette.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\005.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\BG.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Background.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\BackgroundL.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\BattleBG.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\ByteTexture.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\ByteTexturePalette.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\ManiMani.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Player.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\SpriteFlash.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Yellow.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\image.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\layer.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Effects\PkFireA.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Enemies\Knight.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\Attack.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\Bag.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\BattleHud.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\BorderBig.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\BorderLarge.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\BorderSmall.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\HitEffects.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\HitMarker.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\IconChange.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\MusicNote.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\Run.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\Spells.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Icons\YouWon.mgcontent" />
+    <None Include="Content\obj\Windows\Battle\Numbers\ScrollingNums.mgcontent" />
+    <None Include="Content\obj\Windows\Content\.mgcontent" />
+    <None Include="Content\obj\Windows\Content\.mgstats" />
+    <None Include="Content\obj\Windows\Content\Corneria_gutter.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Debug.mgcontent" />
+    <None Include="Content\obj\Windows\Content\File.mgcontent" />
+    <None Include="Content\obj\Windows\Content\HighlightColor.mgcontent" />
+    <None Include="Content\obj\Windows\Content\OpenedDoor.mgcontent" />
+    <None Include="Content\obj\Windows\Content\corneria.mgcontent" />
+    <None Include="Content\obj\Windows\Content\lightmask.mgcontent" />
+    <None Include="Content\obj\Windows\Content\overworld_gutter.mgcontent" />
+    <None Include="Content\obj\Windows\Content\overworld_jobs.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\003.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\003Atlas.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\003Byte.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\003Palette.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\005.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\BG.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Background.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\BackgroundL.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\BattleBG.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\ByteTexture.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\ByteTexturePalette.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\ManiMani.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Player.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\SpriteFlash.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Yellow.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\image.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\layer.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Effects\PkFireA.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Enemies\Knight.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Icons\Attack.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Icons\Bag.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Icons\BattleHud.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Icons\BorderLarge.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Icons\BorderSmall.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Icons\HitEffects.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Icons\HitMarker.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Icons\IconChange.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Icons\MusicNote.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Icons\Run.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Icons\Spells.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Icons\YouWon.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Battle\Numbers\ScrollingNums.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Map\Lucas\Teen.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Map\Tazmily\Tazmily.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Map\Tazmily\fulltileset.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Map\Tazmily\Hinawa\Hinawa.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Textbox\Chars.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Textbox\Text.mgcontent" />
+    <None Include="Content\obj\Windows\Content\Textbox\Textbox.mgcontent" />
+    <None Include="Content\obj\Windows\Map\Lucas\Teen.mgcontent" />
+    <None Include="Content\obj\Windows\Map\Tazmily\Tazmily.mgcontent" />
+    <None Include="Content\obj\Windows\Map\Tazmily\fulltileset.mgcontent" />
+    <None Include="Content\obj\Windows\Map\Tazmily\Hinawa\Hinawa.mgcontent" />
+    <None Include="Content\obj\Windows\Textbox\Chars.mgcontent" />
+    <None Include="Content\obj\Windows\Textbox\Text.mgcontent" />
+    <None Include="Content\obj\Windows\Textbox\Textbox.mgcontent" />
+    <None Include="Content\corneria.tmx" />
+    <None Include="Content\Corneria_gutter.png" />
+    <None Include="Content\Debug.png" />
+    <None Include="Content\File.fx" />
+    <None Include="Content\HighlightColor.png" />
+    <None Include="Content\lightmask.png" />
+    <None Include="Content\OpenedDoor.png" />
+    <None Include="Content\overworld_gutter.png" />
+    <None Include="Content\overworld_jobs.png" />
+    <None Include="Content\Map\transitions.fx" />
+    <None Include="Content\Map\ignoreblack.fx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <Import Project="packages\MonoGame.Framework.DesktopGL.3.7.1.189\build\MonoGame.Framework.DesktopGL.targets" Condition="Exists('packages\MonoGame.Framework.DesktopGL.3.7.1.189\build\MonoGame.Framework.DesktopGL.targets')" />
+  <Import Project="packages\MonoGame.Content.Builder.3.7.0.9\build\MonoGame.Content.Builder.targets" Condition="Exists('packages\MonoGame.Content.Builder.3.7.0.9\build\MonoGame.Content.Builder.targets')" />
+</Project>

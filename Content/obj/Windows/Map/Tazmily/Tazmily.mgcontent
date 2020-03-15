@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/Dom32/source/repos/RPG/RPG/Content/Map/Tazmily/Tazmily.tmx</SourceFile>
+  <SourceTime>2018-12-17T05:41:07.5665688-05:00</SourceTime>
+  <DestFile>C:/Users/Dom32/source/repos/RPG/RPG/Content/bin/Windows/Map/Tazmily/Tazmily.xnb</DestFile>
+  <DestTime>2019-02-11T11:22:30.9279289-05:00</DestTime>
+  <Importer>TiledMapImporter</Importer>
+  <ImporterTime>2018-05-23T11:26:24-04:00</ImporterTime>
+  <Processor>TiledMapProcessor</Processor>
+  <ProcessorTime>2018-05-23T11:26:24-04:00</ProcessorTime>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

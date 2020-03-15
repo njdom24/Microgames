@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/003.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/003Atlas.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/003Byte.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/003Palette.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/005.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Background.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/BackgroundL.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/BG.PNG</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/ByteTexture.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/ByteTexturePalette.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Effects/PkFireA.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Enemies/Knight.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Icons/Attack.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Icons/Bag.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Icons/BattleHud.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Icons/BorderLarge.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Icons/BorderSmall.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Icons/HitEffects.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Icons/HitMarker.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Icons/MusicNote.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Icons/Run.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Icons/Spells.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Icons/YouWon.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/image.jpg</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/layer.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/ManiMani.gif</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Numbers/ScrollingNums.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Player.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Battle/Yellow.PNG</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/corneria.tmx</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Corneria_gutter.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Debug.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/HighlightColor.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/lightmask.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Map/Lucas/Teen.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Map/Tazmily/fulltileset.PNG</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Map/Tazmily/Hinawa/Hinawa.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Map/Tazmily/Tazmily.tmx</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/OpenedDoor.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/overworld_gutter.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/overworld_jobs.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Textbox/Chars.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Textbox/Text.png</File>
+    <File>/home/damino/Documents/Test/MonoRPG/RPG/Content/Textbox/Textbox.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>

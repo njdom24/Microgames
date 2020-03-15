@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/Content/corneria.tmx</SourceFile>
+  <SourceTime>2020-01-27T17:42:46.063939-05:00</SourceTime>
+  <DestFile>/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/AnyCPU/Debug/Content/corneria.xnb</DestFile>
+  <DestTime>2020-01-28T16:57:19.28774-05:00</DestTime>
+  <Importer>TiledMapImporter</Importer>
+  <ImporterTime>2020-01-27T17:42:46.460606-05:00</ImporterTime>
+  <Processor>TiledMapProcessor</Processor>
+  <ProcessorTime>2020-01-27T17:42:46.460606-05:00</ProcessorTime>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

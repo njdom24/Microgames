@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>Z:/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/Content/Battle/BattleBG.fx</SourceFile>
+  <SourceTime>2020-01-30T19:15:01.1615689-05:00</SourceTime>
+  <DestFile>Z:/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/AnyCPU/Debug/Content/Battle/BattleBG.xnb</DestFile>
+  <DestTime>2020-01-30T19:15:19.6450579-05:00</DestTime>
+  <Importer>EffectImporter</Importer>
+  <ImporterTime>2020-01-27T20:24:38-05:00</ImporterTime>
+  <Processor>EffectProcessor</Processor>
+  <ProcessorTime>2020-01-27T20:24:38-05:00</ProcessorTime>
+  <Parameters>
+    <Key>DebugMode</Key>
+    <Value>Auto</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

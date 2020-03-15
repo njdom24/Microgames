@@ -1,0 +1,2 @@
+offsetX = horizontalX;//0 or 1
+offsetY = verticalY

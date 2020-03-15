@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/003.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/003Atlas.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/003Byte.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/003Palette.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/005.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Background.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/BackgroundL.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/BattleBG.fx</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/BG.PNG</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/ByteTexture.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/ByteTexturePalette.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Effects/PkFireA.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Enemies/Knight.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Icons/Attack.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Icons/Bag.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Icons/BattleHud.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Icons/BorderLarge.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Icons/BorderSmall.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Icons/HitEffects.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Icons/HitMarker.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Icons/IconChange.fx</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Icons/MusicNote.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Icons/Run.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Icons/Spells.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Icons/YouWon.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/image.jpg</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/layer.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/ManiMani.gif</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Numbers/ScrollingNums.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Player.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/SpriteFlash.fx</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Battle/Yellow.PNG</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/corneria.tmx</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Corneria_gutter.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Debug.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/File.fx</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/HighlightColor.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/lightmask.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Map/Lucas/Teen.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Map/Tazmily/fulltileset.PNG</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Map/Tazmily/Hinawa/Hinawa.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Map/Tazmily/Tazmily.tmx</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/OpenedDoor.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/overworld_gutter.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/overworld_jobs.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Textbox/Chars.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Textbox/Text.png</File>
+    <File>C:/Users/Dom32/source/repos/RPG/RPG/Content/Textbox/Textbox.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>
