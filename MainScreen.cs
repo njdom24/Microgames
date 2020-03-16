@@ -41,7 +41,7 @@ namespace RPG
 
 			this.graphicsDevice = graphicsDevice;
 			internalTarget = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
-			lastFrame = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
+			lastFrame = new RenderTarget2D(graphicsDevice, Game1.width + 2, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
 			mainTarget = final;
 			//microgame = new Microgame(contentManager);
 			//microgame = new Battle(contentManager, internalTarget, graphicsDevice, pp);
@@ -112,18 +112,17 @@ namespace RPG
 				graphicsDevice.SetRenderTarget(lastFrame);
 				//microgame.Draw(sb);
 				sb.Begin();
-				sb.Draw(mainTarget, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
+				sb.Draw(mainTarget, new Rectangle(1, 0, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
 				sb.End();
 				sb.Begin(blendState: BlendState.Opaque);
 
 				//Sidebars
 				sb.Draw(lio, new Rectangle(0, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Transparent);
-				sb.Draw(lio, new Rectangle(Game1.width - 1, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Transparent);
+				sb.Draw(lio, new Rectangle(Game1.width + 1, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Transparent);
 
 				sb.End();
 				graphicsDevice.SetRenderTarget(mainTarget);
 			}
-
 
 			microgame.Draw(sb);
 
@@ -170,7 +169,7 @@ namespace RPG
 						transition.CurrentTechnique.Passes[0].Apply();
 						//sb.Draw(internalTarget, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
 
-						sb.Draw(lastFrame, new Rectangle(-1, 0, Game1.width + 2, Game1.height), Color.White);
+						sb.Draw(lastFrame, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(1, 0, Game1.width, Game1.height), Color.White);
 						sb.End();
 
 
@@ -180,7 +179,7 @@ namespace RPG
 						sb.Begin(SpriteSortMode.Immediate);
 						int flashCol = (int)(timer * 1700);
 
-						sb.Draw(lastFrame, new Rectangle(0, 0, Game1.width, Game1.height), new Color(flashCol, flashCol, flashCol));
+						sb.Draw(lastFrame, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(1, 0, Game1.width, Game1.height), new Color(flashCol, flashCol, flashCol));
 
 						//Draw black bars to the sides of lastFrame
 						//TODO: Bake these into lastFrame
