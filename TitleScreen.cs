@@ -31,7 +31,7 @@ namespace RPG
 
 		public void Unload()
 		{
-			
+			background.Dispose();
 		}
 
 		public byte Update(GameTime dt, KeyboardState prevStateKb, MouseState prevStateM)

@@ -10,11 +10,11 @@ namespace RPG
 {
 	class MainScreen : Screen
 	{
-		private ContentManager contentManager;
+		private ContentManager contentManager, cm;
 		private PresentationParameters pp;
 		private MiniScreen microgame;
 
-		private RenderTarget2D mainTarget, internalTarget, lastFrame;
+		private RenderTarget2D mainTarget, lastFrame;
 		private GraphicsDevice graphicsDevice;
 		private Texture2D screenshot, lio;
 		private Effect transition;
@@ -32,21 +32,23 @@ namespace RPG
 		public MainScreen(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp)
 		{
 			this.contentManager = contentManager;
+			cm = new ContentManager(contentManager.ServiceProvider);
+			cm.RootDirectory = contentManager.RootDirectory;
 			this.pp = pp;
 
 			curPhase = Phase.MainMenu;
-			currentFlashes = 1;
+			currentFlashes = 7;
 			maxFlashes = 7;
 			timer = 0.2;
 
 			this.graphicsDevice = graphicsDevice;
-			internalTarget = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
+			//internalTarget = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
 			lastFrame = new RenderTarget2D(graphicsDevice, Game1.width + 2, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
 			mainTarget = final;
 			//microgame = new Microgame(contentManager);
 			//microgame = new Battle(contentManager, internalTarget, graphicsDevice, pp);
 			screenshot = contentManager.Load<Texture2D>("Map/Transition");
-			microgame = new TitleScreen(contentManager);
+			microgame = new TitleScreen(cm);
 			lio = contentManager.Load<Texture2D>("Map/Hand");
 			transition = contentManager.Load<Effect>("Map/transitions");
 			transition.Parameters["time"].SetValue((float)timer);
@@ -66,7 +68,11 @@ namespace RPG
 					{
 						case 1:
 							microgame.Unload();
-							microgame = new Battle(contentManager, internalTarget, graphicsDevice, pp);
+							cm.Dispose();
+							cm = new ContentManager(contentManager.ServiceProvider);
+							cm.RootDirectory = contentManager.RootDirectory;
+							microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
+							//microgame = new TitleScreen(cm);
 							curPhase = Phase.Transition;
 							break;
 					}
@@ -84,6 +90,14 @@ namespace RPG
 
 					if (result == 255)
 					{
+						microgame.Unload();
+						cm.Dispose();
+						cm = new ContentManager(contentManager.ServiceProvider);
+						cm.RootDirectory = contentManager.RootDirectory;
+
+						microgame = new TitleScreen(cm);
+						//microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
+
 						curPhase = Phase.Transition;
 					}
 
@@ -109,11 +123,13 @@ namespace RPG
 			//Render black background, then render the last frame in the middle, leaving 2 1-pixel borders on the sides
 			if (curPhase != Phase.Transition)
 			{
+				if (microgame is Battle)
+				{
+					((Battle)microgame).ChangeTarget(lastFrame);
+				}
 				graphicsDevice.SetRenderTarget(lastFrame);
 				//microgame.Draw(sb);
-				sb.Begin();
-				sb.Draw(mainTarget, new Rectangle(1, 0, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
-				sb.End();
+				microgame.Draw(sb);
 				sb.Begin(blendState: BlendState.Opaque);
 
 				//Sidebars
@@ -122,17 +138,24 @@ namespace RPG
 
 				sb.End();
 				graphicsDevice.SetRenderTarget(mainTarget);
+				if (microgame is Battle)
+				{
+					((Battle)microgame).ChangeTarget(mainTarget);
+				}
 			}
 
 			microgame.Draw(sb);
 
 			switch (curPhase)
 			{
+				case Phase.MainMenu:
+					graphicsDevice.SetRenderTarget(mainTarget);
+
+					break;
+				//Only needed for Battle
 				case Phase.InGame:
 					graphicsDevice.SetRenderTarget(mainTarget);
-					sb.Begin();
-					sb.Draw(internalTarget, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
-					sb.End();
+					//microgame.Draw(sb);
 					break;
 				case Phase.Transition:
 					//Battle uses nested render targets
@@ -147,16 +170,29 @@ namespace RPG
 						if (blackBar > Game1.height / 2)
 						{ 
 							//Reset timer variables for next time
-							currentFlashes = 1;
+							currentFlashes = 7;
 							maxFlashes = 7;
 							timer = 0.2;
 
-							curPhase = Phase.InGame;
+
+							if (microgame is TitleScreen)
+								curPhase = Phase.MainMenu;
+							else
+								curPhase = Phase.InGame;
+							sb.End();
+							//microgame.Draw(sb);
+							sb.Begin();
 						}
-							
+
 
 						//sb.Draw(lio, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
-						sb.Draw(internalTarget, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
+						//sb.Draw(internalTarget, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
+
+
+						sb.End();
+						microgame.Draw(sb);
+						sb.Begin();
+
 
 						//Top and bottom bars
 						sb.Draw(lio, new Rectangle(0, blackBar + Game1.height / 2, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Black);
@@ -169,7 +205,7 @@ namespace RPG
 						transition.CurrentTechnique.Passes[0].Apply();
 						//sb.Draw(internalTarget, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
 
-						sb.Draw(lastFrame, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(1, 0, Game1.width, Game1.height), Color.White);
+						sb.Draw(lastFrame, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(1, 0, Game1.width, Game1.height), Color.Red);
 						sb.End();
 
 
@@ -208,15 +244,6 @@ namespace RPG
 
 					}
 					break;
-			}
-
-			if (curPhase == Phase.MainMenu)
-			{
-
-			}
-			else
-			{
-				
 			}
 
 			//new Color(Color.Gray, 255);

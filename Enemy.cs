@@ -44,7 +44,7 @@ namespace RPG
 		private bool increaseRadius = false;
 		private double radiusTimer = 0;
 
-		private bool visible;
+		private bool killed;
 
 		private int[] visOrder;
 
@@ -72,7 +72,7 @@ namespace RPG
 			//visOrder = new int[] { 10, 2, 5, 13, 7, 15, 9, 1, 11, 3, 14, 6, 12, 4, 0, 8 };//, 8 };
 			visOrder = new int[] { 10, 2, 5, 13, 7, 14, 9, 1, 8, 3, 11, 6, 12, 4, 0 };//, 8 };
 			visibility = new bool[noteBodies.Length];
-			visible = true;
+			killed = false;
 			noteTimer = 0;
 			notePos = Vector2.Zero;
 			defaultPos = new Vector2((Game1.width - sprite.Width) / 2, (Game1.height - offsetBottom + offsetTop - sprite.Height) / 2);
@@ -89,7 +89,7 @@ namespace RPG
 			body.BodyType = BodyType.Dynamic;
 			body.IgnoreGravity = true;
 			body.Mass = 0.1f;
-			health = 13;
+			health = 2;
 			moveTimer = 0.05;
 			deathMessage = "@The knight dissipates into hollow armor.";
 
@@ -249,7 +249,13 @@ namespace RPG
 
 		public void Kill()
 		{
+			killed = true;
 			color = Color.Transparent;
+		}
+
+		public bool IsKilled()
+		{
+			return killed;
 		}
 
 		private void MakeVisible()

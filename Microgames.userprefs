@@ -1,17 +1,19 @@
 ﻿<Properties StartupConfiguration="{905B6B3B-33B1-49FB-B691-AE30F88CB4F5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MainScreen.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hud.cs">
     <Files>
-      <File FileName="Game1.cs" Line="78" Column="178" />
+      <File FileName="Game1.cs" Line="27" Column="30" />
       <File FileName="Map.cs" Line="222" Column="3" />
       <File FileName="Microgame.cs" Line="45" Column="4" />
       <File FileName="Screen.cs" Line="22" Column="17" />
-      <File FileName="Battle.cs" Line="274" Column="17" />
+      <File FileName="Battle.cs" Line="306" Column="37" />
+      <File FileName="MainScreen.cs" Line="36" Column="52" />
       <File FileName="Menu.cs" Line="132" Column="57" />
       <File FileName="TitleScreen.cs" Line="41" Column="49" />
-      <File FileName="MainScreen.cs" Line="130" Column="5" />
       <File FileName="Button.cs" Line="30" Column="3" />
       <File FileName="Text.cs" Line="58" Column="22" />
       <File FileName="Selector.cs" Line="75" Column="4" />
+      <File FileName="Enemy.cs" Line="246" Column="4" />
+      <File FileName="Hud.cs" Line="22" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

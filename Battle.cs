@@ -27,6 +27,7 @@ namespace RPG
 		private Texture2D background2;
 		private Texture2D youWon;
 		private bool victory;
+		private bool exitReady;
 		private double victoryTimer;
 		private Color victoryColor;
 		
@@ -78,6 +79,7 @@ namespace RPG
 
 		public Battle(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp)
 		{
+			exitReady = false;
 			curPhase = Phase.IntroPhase;
 			effect = contentManager.Load<Effect>("Battle/BattleBG");
 			effect.CurrentTechnique = effect.Techniques[0];
@@ -140,6 +142,11 @@ namespace RPG
 			background.Dispose();
 			background2.Dispose();
 			magic.Dispose();
+		}
+
+		public void ChangeTarget(RenderTarget2D target)
+		{
+			final = target;
 		}
 
 		public void DrawBackground(SpriteBatch sb)
@@ -206,6 +213,8 @@ namespace RPG
 
 		void MiniScreen.Draw(SpriteBatch sb)
 		{
+			if (effect.IsDisposed)
+				return;
 			//graphicsDevice.Clear(Color.White);
 			DrawBackground(sb);
 			DrawHud(sb);
@@ -244,7 +253,7 @@ namespace RPG
 		{
 			if (flasher != null)
 			{
-				if (flashCounter % 2 == 0)
+				if ((flashCounter & 1) == 0)
 					flashTimer -= gameTime.ElapsedGameTime.TotalSeconds * timerMult;
 				else
 					flashTimer += gameTime.ElapsedGameTime.TotalSeconds * timerMult;
@@ -288,12 +297,19 @@ namespace RPG
 			{
 				if (flasher == null)//Executed after flashing finishes
 				{
-					knight.Kill();
-					if (text.messageComplete() && !deathMessageDisplayed)
+					//Renders an extra frame at the end so the sprite is invisible during transition
+					if (exitReady)
+						return 255;
+					if (knight.IsKilled() && !deathMessageDisplayed)
 					{
+						exitReady = true;
+						//return 255;
 						text = new Hud(new string[] { knight.deathMessage }, content, 30, 2, posY: 3, canClose: true);
+						text.finishMessage();
+						text.visible = false;
 						deathMessageDisplayed = true;
 					}
+					knight.Kill();
 				}
 				Console.WriteLine("flash: " + flashCounter);
 
@@ -301,6 +317,9 @@ namespace RPG
 					if(flashCounter == 1)
 					{
 						text = new Hud(new string[] { "" }, content, 30, 2, posY: 3, canClose: false);
+						text.finishMessage();
+						//text.finishText();
+						//text.visible = false;
 						victory = true;
 						turnWaiter = 0;
 					}
@@ -345,11 +364,11 @@ namespace RPG
 						advanceBattle(gameTime);
 				}
 				//else
-					//text.Update(gameTime, prevState);
+				//text.Update(gameTime, prevState);
 
-
-				if (victory && turnWaiter > 0.4)
+				if (victory && turnWaiter > 0.5)
 				{
+					return 255;
 					victoryTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
 					if (victoryTimer < 0.2)

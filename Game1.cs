@@ -63,6 +63,7 @@ namespace RPG
 			Console.WriteLine("Scale: " + scale);
 
 			Content.RootDirectory = "Content";
+
 		}
 		/// <summary>
 		/// Allows the game to perform any initialization it needs to before starting to run.
