@@ -73,6 +73,7 @@
     <Compile Include="Microgame.cs" />
     <Compile Include="TitleScreen.cs" />
     <Compile Include="Button.cs" />
+    <Compile Include="BetweenGames.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

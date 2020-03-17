@@ -168,7 +168,7 @@ namespace RPG
 			sb.End();
 			*/
 			graphicsDevice.SetRenderTarget(final);
-			sb.Begin(samplerState: SamplerState.PointClamp, sortMode: SpriteSortMode.Immediate);
+			sb.Begin(samplerState: SamplerState.PointClamp, sortMode: SpriteSortMode.Immediate, blendState: BlendState.Opaque);
 			//Console.WriteLine("Count: " + flash.Techniques.Count);
 
 			sb.Draw(firstEffect, new Rectangle(0, 0, Game1.width, Game1.height), Color.White * (float)darkenTimer);
@@ -184,16 +184,8 @@ namespace RPG
 			sb.Draw(blackRect, new Rectangle(0, 0, Game1.width, 32), Color.Black);
 			if (curPhase == Phase.PlayerPhase)
 			{
-				
-			
 				if (waiter == null)
-				{
-					
 					commandName.Draw(sb);
-				}
-
-				
-				//sb.End();
 
 				if (waiter == null)
 					options.Draw(sb, selector.GetIndex());
@@ -201,7 +193,6 @@ namespace RPG
 
 			if (combatTimer > secondsPerBeat - threshHold)// && combatTimer < 0.6)
 			{
-				//sb.Draw(combatIndicator, new Rectangle(200 - 12, 4, combatIndicator.Width * 2, combatIndicator.Height * 2), Color.White);
 				if (combatTimer > secondsPerBeat + threshHold)
 					combatTimer = threshHold;
 			}
@@ -215,9 +206,10 @@ namespace RPG
 		{
 			if (effect.IsDisposed)
 				return;
-			//graphicsDevice.Clear(Color.White);
+
 			DrawBackground(sb);
 			DrawHud(sb);
+
 			if(flasher == null)
 				sb.Begin(samplerState: SamplerState.PointClamp);
 			else
@@ -228,11 +220,12 @@ namespace RPG
 
 			if(enemyDraw)
 				knight.Draw(sb, bgTimer, offsetHeightTop, offsetHeightBottom);
+			
 			sb.End();
 			sb.Begin(samplerState: SamplerState.PointWrap);
 
 			travis.Draw(sb);
-			//if(waiter == null)// || messageBuffered)
+
 			if(!victory || turnWaiter > 0.4)
 				text.Draw(sb);
 
@@ -461,9 +454,10 @@ namespace RPG
 							darkenTimer = 1;
 							curPhase = Phase.AnimPhase;
 							//if (magicAnim.getFrame() == 25)
-								//playerMove = -1;
+							//playerMove = -1;
 							//playerMove = -1;
 							//TODO: Something
+							knight.DecreaseHealth(5);
 						}
 						playerMove = -1;
 					}

@@ -54,8 +54,10 @@
     <File>/home/damino/Documents/Microgames/Content/Textbox/Chars.png</File>
     <File>/home/damino/Documents/Microgames/Content/Textbox/Text.png</File>
     <File>/home/damino/Documents/Microgames/Content/Textbox/Textbox.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Map/TransitionAnim.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

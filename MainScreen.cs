@@ -16,17 +16,21 @@ namespace RPG
 
 		private RenderTarget2D mainTarget, lastFrame;
 		private GraphicsDevice graphicsDevice;
-		private Texture2D screenshot, lio;
+		private Texture2D lio, stairClimber;
 		private Effect transition;
 		private double timer;
 		private Song song;
 		private KeyboardState prevStateKb;
 		private MouseState prevStateM;
 
+		private readonly int stairWidth = 500;
+		private readonly int stairHeight = 325;
+
 		int currentFlashes, maxFlashes;
 
-		private enum Phase { MainMenu, InGame, Transition };
+		private enum Phase { MainMenu, InGame, Transition, BetweenGames };
 		private Phase curPhase;
+		private bool fromGame;
 
 
 		public MainScreen(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp)
@@ -37,19 +41,21 @@ namespace RPG
 			this.pp = pp;
 
 			curPhase = Phase.MainMenu;
+			fromGame = false;
+			//curPhase = Phase.BetweenGames;
 			currentFlashes = 7;
 			maxFlashes = 7;
 			timer = 0.2;
 
 			this.graphicsDevice = graphicsDevice;
-			//internalTarget = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
+
 			lastFrame = new RenderTarget2D(graphicsDevice, Game1.width + 2, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
 			mainTarget = final;
-			//microgame = new Microgame(contentManager);
-			//microgame = new Battle(contentManager, internalTarget, graphicsDevice, pp);
-			screenshot = contentManager.Load<Texture2D>("Map/Transition");
+
 			microgame = new TitleScreen(cm);
 			lio = contentManager.Load<Texture2D>("Map/Hand");
+			stairClimber = contentManager.Load<Texture2D>("Map/TransitionAnim");
+
 			transition = contentManager.Load<Effect>("Map/transitions");
 			transition.Parameters["time"].SetValue((float)timer);
 			song = contentManager.Load<Song>("Map/pkmnbtl2");
@@ -83,7 +89,12 @@ namespace RPG
 					else
 						timer -= dt.ElapsedGameTime.TotalSeconds;
 
-					transition.Parameters["time"].SetValue((float)timer * 3);
+					transition.Parameters["time"].SetValue((float)timer * 4);
+
+					//Lets the transition animation start while borders are still animating
+					if (microgame is BetweenGames && currentFlashes > maxFlashes)
+						microgame.Update(dt, prevStateKb, prevStateM);
+					
 					break;
 				case Phase.InGame:
 					byte result = microgame.Update(dt, prevStateKb, prevStateM);
@@ -95,10 +106,26 @@ namespace RPG
 						cm = new ContentManager(contentManager.ServiceProvider);
 						cm.RootDirectory = contentManager.RootDirectory;
 
-						microgame = new TitleScreen(cm);
+						microgame = new BetweenGames(cm);
 						//microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
 
 						curPhase = Phase.Transition;
+						fromGame = true;
+					}
+
+					break;
+				case Phase.BetweenGames:
+					if (microgame.Update(dt, prevStateKb, prevStateM) == 255)
+					{
+						microgame.Unload();
+						cm.Dispose();
+						cm = new ContentManager(contentManager.ServiceProvider);
+						cm.RootDirectory = contentManager.RootDirectory;
+
+						microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
+
+						curPhase = Phase.Transition;
+						fromGame = false;
 					}
 
 					break;
@@ -144,27 +171,30 @@ namespace RPG
 				}
 			}
 
-			microgame.Draw(sb);
+
 
 			switch (curPhase)
 			{
 				case Phase.MainMenu:
 					graphicsDevice.SetRenderTarget(mainTarget);
+					microgame.Draw(sb);
 
 					break;
 				//Only needed for Battle
 				case Phase.InGame:
 					graphicsDevice.SetRenderTarget(mainTarget);
+					microgame.Draw(sb);
 					//microgame.Draw(sb);
 					break;
 				case Phase.Transition:
 					//Battle uses nested render targets
 					graphicsDevice.SetRenderTarget(mainTarget);
+					microgame.Draw(sb);
 
 					if (currentFlashes > maxFlashes)
 					{
 						sb.Begin();
-						int blackBar = (int)(Math.Pow(2, (timer - 1.4) * 9));
+						int blackBar = (int)(Math.Pow(2, (timer - 1.4) * 14));
 
 						//Move from transition into the next game
 						if (blackBar > Game1.height / 2)
@@ -177,6 +207,11 @@ namespace RPG
 
 							if (microgame is TitleScreen)
 								curPhase = Phase.MainMenu;
+							else if (fromGame)
+							{
+								fromGame = false;
+								curPhase = Phase.BetweenGames;
+							}
 							else
 								curPhase = Phase.InGame;
 							sb.End();
@@ -217,11 +252,6 @@ namespace RPG
 
 						sb.Draw(lastFrame, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(1, 0, Game1.width, Game1.height), new Color(flashCol, flashCol, flashCol));
 
-						//Draw black bars to the sides of lastFrame
-						//TODO: Bake these into lastFrame
-						//sb.Draw(lio, new Rectangle(0, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Black);
-						//sb.Draw(lio, new Rectangle(Game1.width-1, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Black);
-
 						sb.End();
 
 						if (currentFlashes == maxFlashes)
@@ -243,6 +273,11 @@ namespace RPG
 
 
 					}
+					break;
+				case Phase.BetweenGames:
+					graphicsDevice.SetRenderTarget(mainTarget);
+					microgame.Draw(sb);
+
 					break;
 			}
 
