@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>Z:/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/Content/Map/transitions.fx</SourceFile>
-  <SourceTime>2020-01-28T18:13:37.4248258-05:00</SourceTime>
-  <DestFile>Z:/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/AnyCPU/Debug/Content/Map/transitions.xnb</DestFile>
-  <DestTime>2020-01-28T18:13:43.0681982-05:00</DestTime>
+  <SourceFile>Z:/home/damino/Documents/Microgames/Content/Map/transitions.fx</SourceFile>
+  <SourceTime>2020-03-14T23:33:48.0223117-04:00</SourceTime>
+  <DestFile>Z:/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/Content/Map/transitions.xnb</DestFile>
+  <DestTime>2020-03-17T19:16:08.6180336-04:00</DestTime>
   <Importer>EffectImporter</Importer>
-  <ImporterTime>2020-01-27T20:24:38-05:00</ImporterTime>
+  <ImporterTime>2018-12-08T11:35:54-05:00</ImporterTime>
   <Processor>EffectProcessor</Processor>
-  <ProcessorTime>2020-01-27T20:24:38-05:00</ProcessorTime>
+  <ProcessorTime>2018-12-08T11:35:54-05:00</ProcessorTime>
   <Parameters>
     <Key>DebugMode</Key>
     <Value>Auto</Value>

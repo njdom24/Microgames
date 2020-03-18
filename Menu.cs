@@ -78,10 +78,13 @@ namespace RPG
 				items[i / rows][i % rows] = itemList[i];
 			}
 
-			for(int i = 0; i < columns; i++)
-			for(int j = 0; j < rows; j++)
-				if(items[i][j] != null)
-					lines[i][j] = new Text(textbox, items[i][j], 51);//the 51 is deprecated
+			for (int i = 0; i < columns; i++)
+				for (int j = 0; j < rows; j++)
+					if (items[i][j] != null)
+					{
+						lines[i][j] = new Text(textbox, items[i][j], 51);//the 51 is deprecated
+						lines[i][j].SetColor(Color.Black);
+					}
 
 			Console.WriteLine("~~~~~~~~~~~~~~Items~~~~~~~~~~~");
 
@@ -97,7 +100,7 @@ namespace RPG
 			{
 				for (int j = 0; j < items[i].Length; j++)
 					if(lines[i][j] != null)
-					Console.Write(items[i][j] + ',');
+						Console.Write(items[i][j] + ',');
 				Console.WriteLine();
 			}
 
@@ -129,14 +132,14 @@ namespace RPG
 			&& (mouseX > offsetX + 10 && mouseX < offsetX + highlightWidth + 15))
 			{
 				//Select based off mouse input
-				lines[prevIndexX][prevIndexY].SetColor(Color.White);
+				lines[prevIndexX][prevIndexY].SetColor(Color.Black);
 				selectorY.SetIndex((mouseY - offsetY) / height - 1);
-				lines[prevIndexX][selectorY.GetIndex()].SetColor(Color.Black);
+				lines[prevIndexX][selectorY.GetIndex()].SetColor(Color.White);
 			}
 			//Prioritize keyboard input
 			else if(x || y)
 			{
-				lines[prevIndexX][prevIndexY].SetColor(Color.White);
+				lines[prevIndexX][prevIndexY].SetColor(Color.Black);
 				int posX = selectorX.GetIndex();//0 - 1
 				int posY = selectorY.GetIndex();//0 - 6
 
@@ -144,7 +147,7 @@ namespace RPG
 				{
 					Console.WriteLine("PrevX: " + prevIndexX + "PrevY: " + prevIndexY);
 					//lines[prevIndexX][prevIndexY].SetColor(Color.White);
-					//lines[posX][posY].SetColor(Color.Black);
+					//lines[posX][posY].SetColor(Color.White);
 				}
 				else //Try to skip over horizontal blanks, reset to beginning of row if too low
 				{
@@ -245,7 +248,7 @@ namespace RPG
 				}
 
 
-				lines[posX][posY].SetColor(Color.Black);
+				lines[posX][posY].SetColor(Color.White);
 			}
 
 			if (cursorTimer > 0.15)
@@ -296,8 +299,8 @@ namespace RPG
 				pos.X += spacingX;
 				pos.Y -= spacingY * lines[0].Length;
 			}
-			lines[prevIndexX][prevIndexY].SetColor(Color.White);
-			lines[selectorX.GetIndex()][selectorY.GetIndex()].SetColor(Color.Black);
+			//lines[prevIndexX][prevIndexY].SetColor(Color.White);
+			lines[selectorX.GetIndex()][selectorY.GetIndex()].SetColor(Color.White);
 
 		}
 		//48, 96

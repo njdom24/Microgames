@@ -64,7 +64,8 @@ namespace RPG
 			hitX = 0;
 			hitY = 0;
 			hitTimer = 0;
-			sprite = contentManager.Load<Texture2D>("Battle/Enemies/Knight");
+
+			sprite = contentManager.Load<Texture2D>("Battle/Enemies/Tree");
 			hitEffects = contentManager.Load<Texture2D>("Battle/Icons/HitEffects");
 			piTimer = 0;
 			noteBodies = new Body[15];
@@ -104,9 +105,24 @@ namespace RPG
 			}
 		}
 
-		public void Draw(SpriteBatch sb, double piTimer, int offsetTop = 0, int offsetBottom = 0)
+		//Turns every colored pixel of the sprite white
+		//Intended for use prior to flashing to avoid tinting
+		public void ChangeToWhite()
+		{ 
+			Color[] tcolor = new Color[sprite.Width * sprite.Height];
+			sprite.GetData<Color>(tcolor);
+
+			for (int i = 0; i < tcolor.Length; i++)
+			{
+				if (tcolor[i].A != 0)
+					tcolor[i] = Color.White;
+			}
+			sprite.SetData<Color>(tcolor);
+		}
+
+		public void Draw(SpriteBatch sb, double piTimer, Color flashColor, int offsetTop = 0, int offsetBottom = 0)
 		{
-			sb.Draw(sprite, new Rectangle((int)body.Position.X, (int)body.Position.Y, sprite.Width, sprite.Height), color);
+			sb.Draw(sprite, new Rectangle((int)body.Position.X, (int)body.Position.Y, sprite.Width, sprite.Height), flashColor);
 			if(hitTimer > 0)//Draw hit marker
 			{
 				sb.Draw(hitEffects, new Rectangle(centerX + hitX, centerY + 27/2 + hitY, 27, 27), new Rectangle(10, 0, 27, 27), Color.White);
@@ -200,7 +216,7 @@ namespace RPG
 			return true;
 		}
 
-		public override bool IsDone(GameTime gameTime, double combatTimer, KeyboardState prevState)//TODO: Check for multiple hits per beat
+		public override bool IsDone(GameTime gameTime, double combatTimer)
 		{
 			UpdateNotes();
 			if (noteCount == noteBodies.Length)
@@ -216,7 +232,10 @@ namespace RPG
 					return FinishCombo();
 			}
 
-			if (Keyboard.GetState().IsKeyDown(Keys.Space) && prevState.IsKeyUp(Keys.Space))
+			//Uncomment to allow rhythm-based gameplay (Out of scope at the moment)
+			/*
+			if ((Keyboard.GetState().IsKeyDown(Keys.Space) && prevStateKb.IsKeyUp(Keys.Space)) ||
+				(prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
 			{
 				if (combatTimer > secondsPerBeat - threshHold)//during time window
 				{
@@ -228,6 +247,7 @@ namespace RPG
 				else//exit when a beat is missed
 					return FinishCombo();
 			}
+			*/
 
 			//if (timer < 0)
 			//return true;

@@ -55,8 +55,16 @@
     <File>/home/damino/Documents/Microgames/Content/Textbox/Text.png</File>
     <File>/home/damino/Documents/Microgames/Content/Textbox/Textbox.png</File>
     <File>/home/damino/Documents/Microgames/Content/Map/TransitionAnim.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Tree.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/005_GRN.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Map/TransitionAnim_GRN.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Effects/PkFireA_GRN.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

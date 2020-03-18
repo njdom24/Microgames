@@ -19,7 +19,7 @@ namespace RPG
 		private float timerMult;
 		private byte flashCounter;
 
-		private Enemy knight;
+		private Enemy enemy;
 		private Battler travis;
 
 		private Texture2D blackRect;
@@ -29,25 +29,21 @@ namespace RPG
 		private bool victory;
 		private bool exitReady;
 		private double victoryTimer;
-		private Color victoryColor;
+		private Color victoryColor, flashColor;
 		
 		private Effect effect;
 		private Effect flash;
 		private double bgTimer;
 		private double waiterTimer;
 		
-		private RenderTarget2D firstEffect;
-		private RenderTarget2D secondEffect;
-		private RenderTarget2D comboEffect;
-		private RenderTarget2D final;
+		private RenderTarget2D firstEffect, final;
 		private GraphicsDevice graphicsDevice;
 		private Hud text;
 		private Hud commandName;
-		private KeyboardState prevState;
 		private ContentManager content;
 		private int MultiSampleCount;
 		private Icons options;
-		private Selector selector;
+		//private Selector selector;
 
 		private World world;
 		private Combatant waiter;
@@ -89,6 +85,7 @@ namespace RPG
 			combatIndicator = contentManager.Load<Texture2D>("Battle/Icons/Attack");
 			youWon = contentManager.Load<Texture2D>("Battle/Icons/YouWon");
 			victoryColor = Color.White;
+			flashColor = Color.White;
 			secondsPerBeat = 0.5f;
 			world = new World(ConvertUnits.ToSimUnits(0,Game1.width));
 			waiter = null;
@@ -97,7 +94,7 @@ namespace RPG
 			blackRect.SetData(new Color[] { Color.Black });
 
 			travis = new Battler(contentManager, world);
-			knight = new Enemy(contentManager, world, secondsPerBeat, threshHold);
+			enemy = new Enemy(contentManager, world, secondsPerBeat, threshHold);
 			enemyDraw = true;
 
 			MultiSampleCount = pp.MultiSampleCount;
@@ -107,12 +104,10 @@ namespace RPG
 			effect.Parameters["time"].SetValue((float)bgTimer);
 			flash.Parameters["time"].SetValue((float)flashTimer);
 			firstEffect = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, MultiSampleCount, RenderTargetUsage.DiscardContents);
-			secondEffect = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, MultiSampleCount, RenderTargetUsage.DiscardContents);
-			comboEffect = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, MultiSampleCount, RenderTargetUsage.DiscardContents);
 			content = contentManager;
-			prevState = Keyboard.GetState();
-			selector = new Selector(4, names: new string[] {"Attack", "Bag", "PSI", "Run"});
-			background = contentManager.Load<Texture2D>("Battle/005");
+			//prevState = Keyboard.GetState();
+			//selector = new Selector(4, names: new string[] {"Attack", "Bag", "PSI", "Run"});
+			background = contentManager.Load<Texture2D>("Battle/005_GRN");
 			background2 = content.Load<Texture2D>("Battle/Yellow");
 			magic = contentManager.Load<Texture2D>("Battle/Effects/PkFireA");
 			magicAnim = new Animation(0, 24);
@@ -121,9 +116,9 @@ namespace RPG
 			//graphicsDevice.Textures[2] = palette;
 			this.final = final;//required for scaling
 			this.graphicsDevice = graphicsDevice;
-			text = new Hud(new string[] { "@Knight draws near!" }, content, 30, 2, posY: 3, canClose: true);
+			text = new Hud(new string[] { "@Tree draws near!" }, content, 30, 2, posY: 3, canClose: true);
 			//text.finishText();
-			commandName = new Hud(new string[] { selector.GetName() }, content, 6, 1, Game1.width - (8 * 9), 4, canClose: false);
+			commandName = new Hud(new string[] { options.GetSelectedName() }, content, 6, 0, Game1.width / 2 - 30, 2, canClose: false, centered: true);
 			offsetHeightBottom = text.getHeight();
 			offsetHeightTop = 32;
 			flashCounter = 1;
@@ -171,7 +166,7 @@ namespace RPG
 			sb.Begin(samplerState: SamplerState.PointClamp, sortMode: SpriteSortMode.Immediate, blendState: BlendState.Opaque);
 			//Console.WriteLine("Count: " + flash.Techniques.Count);
 
-			sb.Draw(firstEffect, new Rectangle(0, 0, Game1.width, Game1.height), Color.White * (float)darkenTimer);
+			sb.Draw(firstEffect, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
 			//sb.Draw(secondEffect, new Rectangle(0, 0, 400, 240), Color.White * 0f);
 
 			sb.End();
@@ -182,13 +177,14 @@ namespace RPG
 			sb.Begin(samplerState: SamplerState.PointClamp);
 			sb.Draw(blackRect, new Rectangle(0, Game1.height - 35, Game1.width, 35), Color.Black);
 			sb.Draw(blackRect, new Rectangle(0, 0, Game1.width, 32), Color.Black);
+			travis.Draw(sb);
 			if (curPhase == Phase.PlayerPhase)
 			{
 				if (waiter == null)
+				{ 
 					commandName.Draw(sb);
-
-				if (waiter == null)
-					options.Draw(sb, selector.GetIndex());
+					options.Draw(sb, options.GetIndex());
+				}
 			}
 
 			if (combatTimer > secondsPerBeat - threshHold)// && combatTimer < 0.6)
@@ -198,8 +194,8 @@ namespace RPG
 			}
 			sb.End();
 
-			if (selector.IndexChanged())
-				commandName = new Hud(new string[] { selector.GetName() }, content, 6, 1, Game1.width-(8*9), 4, canClose: false);
+			if (options.IndexChanged())
+				commandName = new Hud(new string[] { options.GetSelectedName() }, content, 6, 0, Game1.width/2 - 30, 2, canClose: false, centered: true);
 		}
 
 		void MiniScreen.Draw(SpriteBatch sb)
@@ -210,21 +206,13 @@ namespace RPG
 			DrawBackground(sb);
 			DrawHud(sb);
 
-			if(flasher == null)
-				sb.Begin(samplerState: SamplerState.PointClamp);
-			else
-			{
-				sb.Begin(samplerState: SamplerState.PointClamp, sortMode: SpriteSortMode.Immediate);
-				flash.Techniques[0].Passes[0].Apply();
-			}
+			sb.Begin(samplerState: SamplerState.PointClamp);
 
 			if(enemyDraw)
-				knight.Draw(sb, bgTimer, offsetHeightTop, offsetHeightBottom);
+				enemy.Draw(sb, bgTimer, flashColor, offsetHeightTop, offsetHeightBottom);
 			
 			sb.End();
 			sb.Begin(samplerState: SamplerState.PointWrap);
-
-			travis.Draw(sb);
 
 			if(!victory || turnWaiter > 0.4)
 				text.Draw(sb);
@@ -247,9 +235,9 @@ namespace RPG
 			if (flasher != null)
 			{
 				if ((flashCounter & 1) == 0)
-					flashTimer -= gameTime.ElapsedGameTime.TotalSeconds * timerMult;
+					flashTimer -= gameTime.ElapsedGameTime.TotalSeconds * timerMult*4.2;
 				else
-					flashTimer += gameTime.ElapsedGameTime.TotalSeconds * timerMult;
+					flashTimer += gameTime.ElapsedGameTime.TotalSeconds * timerMult*4.2;
 				if(flasher.health > 0)//Attack Flash
 					flash.Parameters["time"].SetValue((float)(flashTimer + 0.1));
 				else//Dying flash
@@ -259,21 +247,65 @@ namespace RPG
 				{
 					flashTimer = 0.2;
 					flashCounter++;
+					//flashColor = Color.Red;
 				}
 				else if(flashTimer < 0)
 				{
 					flashTimer = 0;
 					flashCounter++;
+					//flashColor = Color.Blue;
 				}
-				if (flashCounter > 4)
+				if (flashCounter > 11)
 				{
 					flasher = null;
 					flashTimer = 0;
 					flashCounter = 1;
+					//flashColor = Color.Green;
+				}
+
+				switch (flashCounter)
+				{
+					case 0:
+						flashColor = Color.Red;
+						break;
+					case 1:
+						//Final color
+						flashColor = Color.Transparent;
+						break;
+					case 2:
+						flashColor = Color.Transparent;
+						break;
+					case 3:
+						flashColor = new Color(128, 128, 64);
+						break;
+					case 4:
+						flashColor = new Color(192, 192, 128);
+						break;
+					case 5:
+						flashColor = new Color(192, 192, 128);
+						break;
+					case 6:
+						flashColor = new Color(192, 192, 128);
+						break;
+					case 7:
+						flashColor = new Color(128, 128, 64);
+						break;
+					case 8:
+						flashColor = new Color(128, 128, 64);
+						break;
+					case 9:
+						flashColor = new Color(128, 128, 64);
+						break;
+					case 10:
+						flashColor = Color.Black;
+						break;
+					default:
+						flashColor = Color.Transparent;
+						break;
 				}
 			}
 
-			knight.Update(gameTime);
+			enemy.Update(gameTime);
 
 			travis.Update(gameTime, Keyboard.GetState());
 
@@ -283,7 +315,7 @@ namespace RPG
 			turnWaiter += gameTime.ElapsedGameTime.TotalSeconds;
 
 			commandName.finishMessage();
-			commandName.Update(gameTime, prevState);
+			commandName.Update(gameTime, prevStateKb, prevStateM);
 			UpdateBackground(gameTime);
 
 			if (curPhase == Phase.EnemyDeathPhase)
@@ -293,16 +325,16 @@ namespace RPG
 					//Renders an extra frame at the end so the sprite is invisible during transition
 					if (exitReady)
 						return 255;
-					if (knight.IsKilled() && !deathMessageDisplayed)
+					if (enemy.IsKilled() && !deathMessageDisplayed)
 					{
 						exitReady = true;
 						//return 255;
-						text = new Hud(new string[] { knight.deathMessage }, content, 30, 2, posY: 3, canClose: true);
+						text = new Hud(new string[] { enemy.deathMessage }, content, 30, 2, posY: 3, canClose: true);
 						text.finishMessage();
 						text.visible = false;
 						deathMessageDisplayed = true;
 					}
-					knight.Kill();
+					enemy.Kill();
 				}
 				Console.WriteLine("flash: " + flashCounter);
 
@@ -329,7 +361,7 @@ namespace RPG
 						{
 							if (waiter is Enemy)
 							{
-								if (waiter.IsDone(gameTime, combatTimer, prevState))
+								if (waiter.IsDone(gameTime, combatTimer))
 								{
 									waiter.ForceFinish();
 									waiter = null;
@@ -338,7 +370,7 @@ namespace RPG
 							}
 							else
 							{
-								if (waiter.IsDone(gameTime, waiterTimer, prevState))
+								if (waiter.IsDone(gameTime, waiterTimer))
 								{
 									waiterTimer = 0;
 									waiter.ForceFinish();
@@ -354,7 +386,7 @@ namespace RPG
 						}
 					}
 					else
-						advanceBattle(gameTime);
+						advanceBattle(gameTime, prevStateKb, prevStateM);
 				}
 				//else
 				//text.Update(gameTime, prevState);
@@ -380,9 +412,9 @@ namespace RPG
 						victoryColor = new Color(216, 254, 177);//yellow
 				}
 			}
-			text.Update(gameTime, prevState);
+			text.Update(gameTime, prevStateKb, prevStateM);
 
-			prevState = Keyboard.GetState();
+			//prevState = Keyboard.GetState();
 
 			if (prevStateKb.IsKeyDown(Keys.Q) && Keyboard.GetState().IsKeyUp(Keys.Q))
 				return 255;
@@ -390,7 +422,7 @@ namespace RPG
 			return 1;
 		}
 
-		private void advanceBattle(GameTime gameTime)
+		private void advanceBattle(GameTime gameTime, KeyboardState prevStateKb, MouseState prevStateM)
 		{
 			//Console.WriteLine("Calling advance!");
 			switch (curPhase)
@@ -401,20 +433,25 @@ namespace RPG
 					break;
 				case Phase.PlayerPhase:
 					if (waiter == null)
-						selector.Update(prevState);
-
-					if (Keyboard.GetState().IsKeyDown(Keys.Space) && prevState.IsKeyUp(Keys.Space))
 					{
-						if (selector.GetIndex() == 0)
+						options.Update(prevStateKb, prevStateM);
+						//selector.Update(prevState);
+					}
+						
+
+					if ((Keyboard.GetState().IsKeyDown(Keys.Space) && prevStateKb.IsKeyUp(Keys.Space)) ||
+					    (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
+					{
+						if (options.GetIndex() == 0)
 						{
 							playerMove = 0;
 							curPhase = Phase.EnemyPhase;
 						}
-						else if (selector.GetIndex() == 1)
+						else if (options.GetIndex() == 1)
 						{
 							//magic.Dispose();
 							playerMove = 1;
-							magic = content.Load<Texture2D>("Battle/Effects/PkFireA");
+							magic = content.Load<Texture2D>("Battle/Effects/PkFireA_GRN");
 
 							curPhase = Phase.EnemyPhase;
 						}
@@ -425,30 +462,32 @@ namespace RPG
 					curPhase = Phase.AttackPhase;
 					break;
 				case Phase.AttackPhase:
-					if(knight.health <= 0)
+					if(enemy.health <= 0)
 					{
 						deathMessageDisplayed = false;
 						curPhase = Phase.EnemyDeathPhase;
-						flasher = knight;
+						flasher = enemy;
+						enemy.ChangeToWhite();
 						flashTimer = -0.5;
-						flashCounter = 2;
+						flashCounter = 1;
 						timerMult = 0.5f;
-						//text = new Hud(new string[] { "@The knight dissipates into hollow armor." }, content, 30, 2, posY: 3, canClose: true);
+						//text = new Hud(new string[] { "@The enemy dissipates into hollow armor." }, content, 30, 2, posY: 3, canClose: true);
 					}
 					else
 					if(playerMove != -1)
 					{
 						if (playerMove == 0)
 						{
-							knight.attacked = false;
-							text = new Hud(new string[] { "@Travis's attack!" }, content, 30, 2, posY: 3, canClose: true);
-							//knight.TakeDamage(1, combatTimer);
-							waiter = knight;
+							enemy.attacked = false;
+							//text = new Hud(new string[] { "@Travis's attack!" }, content, 30, 2, posY: 3, canClose: true);
+							//enemy.TakeDamage(1, combatTimer);
+							waiter = enemy;
 							//playerMove = -1;
 						}
 						else if(playerMove == 1)
 						{
-							text = new Hud(new string[] { "@Travis tried PK Fire [!" }, content, 30, 2, posY: 3, canClose: true);
+							//text = new Hud(new string[] { "@Travis tried PK Fire [!" }, content, 30, 2, posY: 3, canClose: true);
+							//text.finishText();
 							Console.WriteLine("GetFrame: " + magicAnim.getFrame());
 							magicAnim.resetStart();
 							darkenTimer = 1;
@@ -457,17 +496,17 @@ namespace RPG
 							//playerMove = -1;
 							//playerMove = -1;
 							//TODO: Something
-							knight.DecreaseHealth(5);
+							enemy.DecreaseHealth(5);
 						}
 						playerMove = -1;
 					}
 					else if(enemyMove == 0)
 					{
-						flasher = knight;
+						flasher = enemy;
 						flashTimer = 0;
 
 						travis.attacked = false;
-						text = new Hud(new string[] { "@Knight's attack!" }, content, 30, 2, posY: 3, canClose: true);
+						text = new Hud(new string[] { "@enemy's attack!" }, content, 30, 2, posY: 3, canClose: true);
 						//travis.TakeDamage(1, combatTimer);
 						waiter = travis;
 						enemyMove = -1;

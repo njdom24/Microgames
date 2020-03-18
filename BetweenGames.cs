@@ -18,7 +18,7 @@ namespace RPG
 		
 		public BetweenGames(ContentManager contentManager)
 		{
-			stairClimber = contentManager.Load<Texture2D>("Map/TransitionAnim");
+			stairClimber = contentManager.Load<Texture2D>("Map/TransitionAnim_GRN");
 			timer = 0.0;
 			iterations = 0;
 		}
@@ -30,7 +30,7 @@ namespace RPG
 		byte MiniScreen.Update(GameTime dt, KeyboardState prevStateKb, MouseState prevStateM)
 		{
 			timer += dt.ElapsedGameTime.TotalSeconds * 22;
-			if (iterations > 6)
+			if (iterations > 4)
 				return 255;
 			return 1;
 		}

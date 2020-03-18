@@ -1,19 +1,26 @@
 ﻿<Properties StartupConfiguration="{905B6B3B-33B1-49FB-B691-AE30F88CB4F5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="BetweenGames.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Battler.cs">
     <Files>
       <File FileName="Game1.cs" Line="27" Column="30" />
-      <File FileName="Map.cs" Line="222" Column="3" />
+      <File FileName="Map.cs" Line="229" Column="4" />
       <File FileName="Microgame.cs" Line="45" Column="4" />
       <File FileName="Screen.cs" Line="22" Column="17" />
-      <File FileName="Battle.cs" Line="460" Column="33" />
-      <File FileName="MainScreen.cs" Line="110" Column="51" />
-      <File FileName="BetweenGames.cs" Line="4" Column="19" />
-      <File FileName="TitleScreen.cs" Line="41" Column="49" />
+      <File FileName="Battle.cs" Line="364" Column="63" />
+      <File FileName="Icons.cs" Line="94" Column="4" />
+      <File FileName="Menu.cs" Line="111" Column="108" />
+      <File FileName="Hud.cs" Line="159" Column="4" />
+      <File FileName="Enemy.cs" Line="221" Column="18" />
+      <File FileName="MainScreen.cs" Line="9" Column="10" />
+      <File FileName="BetweenGames.cs" Line="21" Column="73" />
+      <File FileName="TitleScreen.cs" Line="7" Column="10" />
       <File FileName="Button.cs" Line="30" Column="3" />
       <File FileName="Text.cs" Line="58" Column="22" />
       <File FileName="Selector.cs" Line="75" Column="4" />
-      <File FileName="Enemy.cs" Line="285" Column="34" />
-      <File FileName="Hud.cs" Line="23" Column="26" />
+      <File FileName="Content/Battle/BattleBG.fx" Line="42" Column="37" />
+      <File FileName="Battler.cs" Line="66" Column="92" />
+      <File FileName="Icon.cs" Line="1" Column="1" />
+      <File FileName="Combatant.cs" Line="22" Column="3" />
+      <File FileName="Player.cs" Line="34" Column="24" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

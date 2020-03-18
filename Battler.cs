@@ -17,7 +17,6 @@ namespace RPG
 		private Texture2D portrait;
 		private Texture2D text;
 		private Texture2D scrollingNums;
-		private ScrollingVal hp, pp;
 		private Vector2 nameOffset;
 
 		private int posX, posY;
@@ -26,6 +25,7 @@ namespace RPG
 		private double fullTimer;
 		private double moveTimer;
 		private Text name;
+		private Vector2 pos;
 		//private int nameOffset;
 
 		public Battler(ContentManager contentManager, World world)
@@ -38,20 +38,20 @@ namespace RPG
 			portrait = contentManager.Load<Texture2D>("Battle/Player");
 			text = contentManager.Load<Texture2D>("Textbox/Text");
 			scrollingNums = contentManager.Load<Texture2D>("Battle/Numbers/ScrollingNums");//5x8
-			posX = Game1.width/2 -61/2;
-			posY = Game1.height - 55;
+			posX = (Game1.width - portrait.Width) / 2;
+			posY = Game1.height - 48;
+			pos.X = posX;
+			pos.Y = posY;
 			//posY = Game1.height / 2;
 			Console.WriteLine(posX + ", " + posY);
 			body = new Body(world, ConvertUnits.ToSimUnits(posX, posY));
 			body.BodyType = BodyType.Dynamic;
 			body.IgnoreGravity = true;
 			lastForce = 130f;
-			name = new Text(contentManager, "Travis");
+			name = new Text(contentManager, "Spells");
 			name.SetColor(Color.Black);
-			hp = new ScrollingVal(contentManager, maxHealth);
-			pp = new ScrollingVal(contentManager, maxMagic);
 
-			nameOffset = new Vector2((61 - name.width) / 2, 7);
+			nameOffset = new Vector2((Game1.width - name.width) / 2, Game1.height - 40);
 			//nameWidth = letterPos[letterPos.Length - 1];
 			//Console.WriteLine("NameWidth: " + nameWidth);
 		}
@@ -63,7 +63,7 @@ namespace RPG
 			body.SetTransform(ConvertUnits.ToSimUnits(posX, posY), 0);
 		}
 
-		public override bool IsDone(GameTime gameTime, double combatTimer, KeyboardState prevState)
+		public override bool IsDone(GameTime gameTime, double combatTimer)
 		{
 			fullTimer += gameTime.ElapsedGameTime.TotalSeconds;
 			if (fullTimer > 1)
@@ -117,28 +117,14 @@ namespace RPG
 
 		public void Draw(SpriteBatch sb)
 		{
-			Vector2 pos = ConvertUnits.ToDisplayUnits(body.Position);
-			sb.Draw(portrait, new Rectangle((int)pos.X, (int)pos.Y, 61, 55), new Rectangle(0, 0, 61, 55), Color.White);
+			sb.Draw(portrait, new Rectangle((int)posX, (int)posY, portrait.Width, portrait.Height), new Rectangle(0, 0, portrait.Width, portrait.Height), Color.White);
 
-			name.Draw(sb, pos + nameOffset);
-
-			hp.Draw(sb, pos, health);
-			pos.Y += 11;
-			pp.Draw(sb, pos, magic);
+			name.Draw(sb, nameOffset);
 		}
 
 		public void Update(GameTime gameTime, KeyboardState state)
 		{
-			if (state.IsKeyDown(Keys.A))
-				health = 0;
-			else if (state.IsKeyDown(Keys.S))
-				health = 101;
-			else if (state.IsKeyDown(Keys.D))
-				health = 202;
 
-			hp.Update(gameTime, health);
-			pp.Update(gameTime, magic);
-			//Console.WriteLine("Divided: " + rollingHealth/10);
 		}
 	}
 }

@@ -34,10 +34,11 @@ namespace RPG
 		private int maxLines;
 		private int linesToShift;
 		private int linesShifted;
+		private int textWidth;
 		private bool wait;
 
 		private byte cursorBob;
-		private bool cursorDown;
+		private bool cursorDown, centered;
 		private double cursorTimer;
 
 		private byte textOffset;
@@ -46,7 +47,7 @@ namespace RPG
 		private byte deathOffX;
 		private Color textColor;
 
-		public Hud(string[] message, ContentManager content, int width = 26, int height = 3, int posX = -1, int posY = -1, bool canClose = true)
+		public Hud(string[] message, ContentManager content, int width = 26, int height = 3, int posX = -1, int posY = -1, bool canClose = true, bool centered = false)
         {
 			lengthRef = new int[] { 2, 2, 3, 2, 5, 9, 7, 2, 3, 3, 3, 5, 2, 2, 2, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 2, 3, 3, 5, 3, 4, 5, 6, 5, 5, 5, 4, 4, 5, 5, 1, 4, 5, 4, 7, 5, 5, 5, 5, 5, 5, 5, 5, 6, 7, 5, 5, 4, 5, 4, 6, 4, 5, 1, 4, 4, 4, 4, 4, 3, 4, 4, 1, 2, 4, 1, 7, 4, 4, 4, 4, 3, 4, 3, 4, 5, 7, 4, 4, 4, 2, 5, 2, 6, 7, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255 };
 			indeces = new int[message.Length][];
@@ -54,6 +55,7 @@ namespace RPG
 				indeces[i] = new int[message[i].Length];
 			lineLength = 0;
 			this.maxLines = height - 2;
+			this.centered = centered;
 			linesShifted = 0;
 			linesToShift = 0;
 			wait = false;
@@ -112,12 +114,16 @@ namespace RPG
 						if (j < messages[i].Length - 1)
 						{
 							indeces[i][j+1] = lengthRef[(int)(letter - ' ')] + 1;// + indeces[i][j-1] + 1;
-							if (j > 0)//keeps the offset cumulative
+
+							//Keep the offset cumulative
+							if (j > 0)
 								indeces[i][j+1] += indeces[i][j];
 						}
 					}
 				}
 			//DeathMode(true);
+			if(messages[0].Length > 0)
+			textWidth = indeces[0][messages[0].Length - 1];
         }
 
 		public void DeathMode(bool enabled)
@@ -148,9 +154,10 @@ namespace RPG
 			visible = !canClose;
 		}
 
-		public void Update(GameTime gameTime, KeyboardState prevState)
+		public void Update(GameTime gameTime, KeyboardState prevStateKb, MouseState prevStateM)
 		{
-			if (Keyboard.GetState().IsKeyDown(Keys.Space) && !prevState.IsKeyDown(Keys.Space))
+			if ((Keyboard.GetState().IsKeyDown(Keys.Space) && prevStateKb.IsKeyUp(Keys.Space)) ||
+			    (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
 			{
 				if (wait)
 				{
@@ -311,12 +318,11 @@ namespace RPG
 					}
 					else if(lineCount >= linesToShift)
 					{
-						//int lineOffset = 0;
-						//if (i > 0)
-							//lineOffset = indeces[curMessage][i - 1];
-						//3: x14 + 7
-						//2: x15 + 9
-						sb.Draw(textbox, new Rectangle(offsetX + 8 + indeces[curMessage][i], offsetY + (lineCount - linesToShift) * spacing + textOffset, 16, 16), new Rectangle(locations[curMessage][i].X, locations[curMessage][i].Y, 16, 16), textColor);
+						//Draw character
+						if(centered)
+							sb.Draw(textbox, new Rectangle(offsetX + 1  + ((width + 1)*4) - textWidth/2 + indeces[curMessage][i], offsetY + (lineCount - linesToShift) * spacing + textOffset, 16, 16), new Rectangle(locations[curMessage][i].X, locations[curMessage][i].Y, 16, 16), textColor);
+						else
+							sb.Draw(textbox, new Rectangle(offsetX + 8 + indeces[curMessage][i], offsetY + (lineCount - linesToShift) * spacing + textOffset, 16, 16), new Rectangle(locations[curMessage][i].X, locations[curMessage][i].Y, 16, 16), textColor);
 					}
 				}
 				//Draws cusor bobbing up and down

@@ -190,12 +190,12 @@ technique Technique1
 {
 	pass Pass1
 	{
-		PixelShader = compile ps_3_0 Layer5();
+		PixelShader = compile ps_3_0 Interlace();
 	}
 
 	pass Pass2
 	{
-		PixelShader = compile ps_3_0 Layer5();
+		PixelShader = compile ps_3_0 Interlace();
 	}
 }
 

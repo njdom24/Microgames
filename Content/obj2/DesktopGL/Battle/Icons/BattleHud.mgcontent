@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/Content/Battle/Icons/BattleHud.png</SourceFile>
-  <SourceTime>2020-01-27T17:42:45.787272-05:00</SourceTime>
-  <DestFile>/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/AnyCPU/Debug/Content/Battle/Icons/BattleHud.xnb</DestFile>
-  <DestTime>2020-01-28T16:57:19.0544049-05:00</DestTime>
+  <SourceFile>/home/damino/Documents/Microgames/Content/Battle/Icons/BattleHud.png</SourceFile>
+  <SourceTime>2020-03-18T02:34:12.9537195-04:00</SourceTime>
+  <DestFile>/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/Content/Battle/Icons/BattleHud.xnb</DestFile>
+  <DestTime>2020-03-18T02:34:15.9323861-04:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2020-01-27T12:04:06.8418775-05:00</ImporterTime>
+  <ImporterTime>2020-03-14T23:30:21.4569843-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2020-01-27T12:04:06.8418775-05:00</ProcessorTime>
+  <ProcessorTime>2020-03-14T23:30:21.4569843-04:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>

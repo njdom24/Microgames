@@ -223,7 +223,7 @@ namespace RPG
 		byte MiniScreen.Update(GameTime gameTime, KeyboardState prevStateKb, MouseState prevStateM)
 		{
 			if(speaking)
-				hud.Update(gameTime, prevState);
+				hud.Update(gameTime, prevStateKb, prevStateM);
 			if (hud.IsWaiting() || hud.isFinished() && hud.visible)
 				talkingNPC.CloseMouth();
 

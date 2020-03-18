@@ -1,6 +1,3 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/Content/HighlightColor.png","/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/AnyCPU/Debug/Content/HighlightColor.xnb","TextureProcessor","Texture2DContent",11309,93,0.112041
-"/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/Content/Map/Transition.png","/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/AnyCPU/Debug/Content/Map/Transition.xnb","TextureProcessor","Texture2DContent",7435,231925,0.226248
-"/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/Content/Menus/Palette.png","/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/AnyCPU/Debug/Content/Menus/Palette.xnb","TextureProcessor","Texture2DContent",5094,230485,0.13822
-"/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/Content/OkButton.png","/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/AnyCPU/Debug/Content/OkButton.xnb","TextureProcessor","Texture2DContent",977,1585,0.154691
-"/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/Content/OkButtonPressed.png","/home/damino/Documents/CS 545/Microgames/MonoRPG-GL/bin/DesktopGL/AnyCPU/Debug/Content/OkButtonPressed.xnb","TextureProcessor","Texture2DContent",999,1585,0.001702
+"Z:/home/damino/Documents/Microgames/Content/Battle/BattleBG.fx","Z:/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/Content/Battle/BattleBG.xnb","EffectProcessor","CompiledEffectContent",5853,4225,0.7599997
+"Z:/home/damino/Documents/Microgames/Content/Map/transitions.fx","Z:/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/Content/Map/transitions.xnb","EffectProcessor","CompiledEffectContent",892,1206,0.0881561
