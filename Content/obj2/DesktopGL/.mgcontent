@@ -4,60 +4,11 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>/home/damino/Documents/Microgames/Content/Menus/Palette.png</File>
-    <File>/home/damino/Documents/Microgames/Content/HighlightColor.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/HitEffects.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/005_GRN.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Effects/PkFireA_GRN.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Textbox/Text.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/BattleHud.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/Attack.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/Bag.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/BorderLarge.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/BorderSmall.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/HitMarker.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/MusicNote.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/Run.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/Spells.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/YouWon.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Player.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/003.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/003Atlas.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/003Byte.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/003Palette.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/005.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Background.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/BackgroundL.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/BG.PNG</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/ByteTexture.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/ByteTexturePalette.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Effects/PkFireA.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Knight.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/image.jpg</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/layer.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/ManiMani.gif</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Numbers/ScrollingNums.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Yellow.PNG</File>
-    <File>/home/damino/Documents/Microgames/Content/corneria.tmx</File>
-    <File>/home/damino/Documents/Microgames/Content/Corneria_gutter.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Debug.png</File>
-    <File>/home/damino/Documents/Microgames/Content/lightmask.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Map/Hand.jpg</File>
-    <File>/home/damino/Documents/Microgames/Content/Map/Lucas/Teen.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Map/pkmnbtl2.wav</File>
-    <File>/home/damino/Documents/Microgames/Content/Map/Tazmily/fulltileset.PNG</File>
-    <File>/home/damino/Documents/Microgames/Content/Map/Tazmily/Hinawa/Hinawa.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Map/Tazmily/Tazmily.tmx</File>
-    <File>/home/damino/Documents/Microgames/Content/Map/Transition.png</File>
-    <File>/home/damino/Documents/Microgames/Content/OkButton.png</File>
-    <File>/home/damino/Documents/Microgames/Content/OkButtonPressed.png</File>
-    <File>/home/damino/Documents/Microgames/Content/OpenedDoor.png</File>
-    <File>/home/damino/Documents/Microgames/Content/overworld_gutter.png</File>
-    <File>/home/damino/Documents/Microgames/Content/overworld_jobs.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Textbox/Chars.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Textbox/Textbox.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Map/TransitionAnim.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Tree.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Map/TransitionAnim_GRN.png</File>
+    <File>Z:/home/damino/Documents/Microgames/Content/Battle/BattleBG.fx</File>
+    <File>Z:/home/damino/Documents/Microgames/Content/Map/transitions.fx</File>
   </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
 </SourceFileCollection>

@@ -18,11 +18,11 @@ namespace RPG
 		private Texture2D background;
 		private int offsetX, offsetY;
 		private int width, height;
-		private int spacingX, spacingY;
+		private int spacingX, defaultSpacingX, spacingY;
 		private int rows, columns;
 		private int deathOffX;
 		private int prevIndexX, prevIndexY;
-		private int highlightWidth;
+		private int highlightWidth, defaultWidth;
 		private int dividerHeight;
 
 		private int cursorBob;
@@ -32,7 +32,7 @@ namespace RPG
 		private Selector selectorX, selectorY;
 		private string[][] items;
 		//width 104
-		public Menu(ContentManager contentManager, string[] itemList, int rows = 7, int highlightWidth = 86, int width = 25, int height = 12, int offsetX = 0, int offsetY = 0)
+		public Menu(ContentManager contentManager, string[] itemList, int rows = 7, int highlightWidth = 86, int width = 25, int height = 12, int offsetX = 0, int offsetY = 0, int spacingX = 22)
 		{
 			textbox = contentManager.Load<Texture2D>("Textbox/Text");
 			background = contentManager.Load<Texture2D>("HighlightColor");
@@ -46,6 +46,8 @@ namespace RPG
 			//items = new string[] {  "Offense", "Recovery", "Support" };
 
 			this.highlightWidth = highlightWidth;
+			this.defaultWidth = highlightWidth;
+
 			this.width = width;//10
 			this.height = height;
 
@@ -53,7 +55,8 @@ namespace RPG
 			this.offsetY = offsetY;
 
 			dividerHeight = (height+2) * 8 - 20;
-			spacingX = 103;
+			this.spacingX = spacingX;
+			defaultSpacingX = 45;
 			spacingY = 14;
 			if (itemList.Length < rows)
 				this.rows = items.Length;
@@ -121,25 +124,67 @@ namespace RPG
 			return -1;
 		}
 
+		public int GetSelectionX(KeyboardState prevStateKb, MouseState prevStateM, int mouseX, int mouseY)
+		{
+			return selectorX.GetIndex();
+		}
+
+		public int GetSelectionY(KeyboardState prevStateKb, MouseState prevStateM, int mouseX, int mouseY)
+		{
+			return selectorY.GetIndex();
+		}
+
 		public void Update(GameTime gameTime, KeyboardState prevStateKb, MouseState prevStateM, int mouseX, int mouseY)
 		{
 			cursorTimer += gameTime.ElapsedGameTime.TotalSeconds;
 			bool x = selectorX.Update(prevStateKb);
 			bool y = selectorY.Update(prevStateKb);
 
+			if (selectorX.GetIndex() > 0)
+				highlightWidth = 18;
+			else
+				highlightWidth = defaultWidth;
+
 			//Prioritize mouse input
-			if ((prevStateM.Position != Mouse.GetState().Position)
-			&& (mouseX > offsetX + 10 && mouseX < offsetX + highlightWidth + 15))
+			if ((prevStateM.Position != Mouse.GetState().Position))
 			{
-				//Select based off mouse input
-				lines[prevIndexX][prevIndexY].SetColor(Color.Black);
-				selectorY.SetIndex((mouseY - offsetY) / height - 1);
-				lines[prevIndexX][selectorY.GetIndex()].SetColor(Color.White);
+				int maxWidth = offsetX + defaultWidth + (columns-1)*highlightWidth + 14;
+				int indX = (mouseX - offsetX + 8) / spacingX - 2;
+				int indY = (mouseY - offsetY) / height - 1;
+
+				if (mouseX >= offsetX + 8 && mouseX <= maxWidth && !selectorX.IsValidIndex(indX))
+					indX = 0;
+
+				if (selectorX.IsValidIndex(indX) && selectorY.IsValidIndex(indY))
+				{ 
+					//Select based off mouse input
+					//Text stays white when moving horizontally from the leftmost text
+					Console.WriteLine("BrevX: " + prevIndexX + "BrevY: " + prevIndexY);
+					Console.WriteLine("BurX: " + selectorX.GetIndex() + "BurY: " + selectorY.GetIndex());
+
+					lines[prevIndexX][prevIndexY].SetColor(Color.Black);
+					Console.WriteLine("Setting [" + prevIndexY + "," + prevIndexX + "] black");
+
+					//selectorX.SetIndex(0)
+					selectorY.SetIndex((mouseY - offsetY) / height - 1);
+					selectorX.SetIndex((mouseX - offsetX + 8) / spacingX - 2);
+
+					if (lines[selectorX.GetIndex()][selectorY.GetIndex()] == null)
+					{
+						selectorY.SetIndex(prevIndexY);
+						selectorX.SetIndex(prevIndexX);
+					}
+					//selectorX.SetIndex(0);
+
+					//lines[selectorX.GetIndex()][selectorY.GetIndex()].SetColor(Color.White);
+				}
+
 			}
 			//Prioritize keyboard input
 			else if(x || y)
 			{
-				lines[prevIndexX][prevIndexY].SetColor(Color.Black);
+				if (prevIndexX != 0 || selectorX.GetIndex() <= 0)
+					lines[prevIndexX][prevIndexY].SetColor(Color.Black);
 				int posX = selectorX.GetIndex();//0 - 1
 				int posY = selectorY.GetIndex();//0 - 6
 
@@ -192,6 +237,9 @@ namespace RPG
 							{
 								//iterate through x values of y. first one to be found is where the switch occurs
 								for (int j = 0; j < lines.Length; j++)
+								{
+									//TODO: Ficks!!!!
+									Console.WriteLine("Stand up");
 									if (lines[j][i] != null)
 									{
 										Console.WriteLine("Thing found!: " + items[j][i]);
@@ -200,8 +248,9 @@ namespace RPG
 										selectorX.SetIndex(j);
 										selectorY.SetIndex(i);
 										i = -1;
-										j = lines[j].Length;//exit
+										j = lines.Length;//exit
 									}
+								}
 							}
 					}
 					//if moving right, if NOTHING is found all the way to the right, go to the furthest down element on the next available column
@@ -218,6 +267,12 @@ namespace RPG
 							}
 						if(!found)
 						{
+							posX = prevIndexX;
+							posY = prevIndexY;
+							selectorX.SetIndex(posX);
+							selectorY.SetIndex(posX);
+
+							/*
 							for(int i = posX; i < lines.Length; i++)
 								for(int j = 0; j < lines[i].Length; j++)
 								{
@@ -232,6 +287,7 @@ namespace RPG
 										Console.WriteLine("Found: :" + items[posX][posY] );
 									}
 								}
+							*/	
 						}
 					}
 					//if moving left, if NOTHING is found all the way to the left, go to the furthest down element on the next available column
@@ -271,6 +327,11 @@ namespace RPG
 
 			prevIndexX = selectorX.GetIndex();
 			prevIndexY = selectorY.GetIndex();
+
+			//Whiten leftmost element of selection, blacken the others
+			for (int i = 0; i < rows; i++)
+				lines[0][i].SetColor(Color.Black);
+			lines[0][selectorY.GetIndex()].SetColor(Color.White);
 		}
 
 		public void Draw(SpriteBatch sb)
@@ -278,15 +339,27 @@ namespace RPG
 			//DrawBlank(sb);
 			Vector2 pos = new Vector2(offsetX + 16, offsetY + 7);
 
-			sb.Draw(background, new Rectangle((int)pos.X - 3 + spacingX*selectorX.GetIndex(), (int)pos.Y + spacingY*selectorY.GetIndex() + 1, highlightWidth, 14), new Rectangle(0, 0, 1, 1), Color.White);
+			//Draw highlight on lefthand side of current row
+			if (selectorX.GetIndex() > 0)
+			{
+				sb.Draw(background, new Rectangle((int)pos.X - 3, (int)pos.Y + spacingY * selectorY.GetIndex() + 1, defaultWidth, 14), new Rectangle(0, 0, 1, 1), Color.White);
+				sb.Draw(background, new Rectangle((int)pos.X - 3 + spacingX * (selectorX.GetIndex()-1) + defaultSpacingX, (int)pos.Y + spacingY * selectorY.GetIndex() + 1, highlightWidth, 14), new Rectangle(0, 0, 1, 1), Color.White);
+			}
+			else
+				//Draw highlight under selected text
+				sb.Draw(background, new Rectangle((int)pos.X - 3 + spacingX*selectorX.GetIndex(), (int)pos.Y + spacingY*selectorY.GetIndex() + 1, defaultWidth, 14), new Rectangle(0, 0, 1, 1), Color.White);
 			//for loop it, also move it down with an offset and change 96 into something calculated
 
 			//Draw divider line
 			//sb.Draw(background, new Rectangle((int)(pos.X - 3 + (spacingX + highlightWidth)/2 + 1.51), (int)pos.Y + 3, 1, dividerHeight), new Rectangle(1, 0, 1, 1), Color.White);
 
+			//Draw cursor
+			if(selectorX.GetIndex() == 0)
+				sb.Draw(textbox, new Rectangle((int)pos.X - 10 + cursorBob + spacingX*selectorX.GetIndex(), (int)pos.Y + spacingY * selectorY.GetIndex() + 3, 6, 9), new Rectangle(48, 96, 6, 9), Color.White);
+			else
+				sb.Draw(textbox, new Rectangle((int)pos.X - 10 + cursorBob + spacingX * (selectorX.GetIndex() - 1) + defaultSpacingX, (int)pos.Y + spacingY * selectorY.GetIndex() + 3, 6, 9), new Rectangle(48, 96, 6, 9), Color.White);
 
-			sb.Draw(textbox, new Rectangle((int)pos.X - 10 + cursorBob + spacingX*selectorX.GetIndex(), (int)pos.Y + spacingY * selectorY.GetIndex() + 3, 6, 9), new Rectangle(48, 96, 6, 9), Color.White);
-
+			//Draw each piece of text
 			for(int i = 0; i < lines.Length; i++)
 			{
 				for(int j = 0; j < lines[i].Length; j++)
@@ -296,11 +369,16 @@ namespace RPG
 
 					pos.Y += spacingY;
 				}
-				pos.X += spacingX;
+
+				if (i == 0)
+					pos.X += defaultSpacingX;
+				else
+					pos.X += spacingX;
 				pos.Y -= spacingY * lines[0].Length;
 			}
 			//lines[prevIndexX][prevIndexY].SetColor(Color.White);
-			lines[selectorX.GetIndex()][selectorY.GetIndex()].SetColor(Color.White);
+			if(lines[selectorX.GetIndex()][selectorY.GetIndex()] != null)
+				lines[selectorX.GetIndex()][selectorY.GetIndex()].SetColor(Color.White);
 
 		}
 		//48, 96

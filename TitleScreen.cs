@@ -12,21 +12,60 @@ namespace RPG
 		private MouseState state;
 		private Texture2D background;
 		private Menu options;
+		private Effect paletteShader;
+		private Button backButton;
+
 		//private Button startButton;
 		int mouseX, mouseY;
 		private enum Phase { Title, Settings };
 		private Phase phase;
+
+		private Tuple<Vector4, Vector4, Vector4>[] palettes =
+		{
+			//Default (Game Boy)
+			Tuple.Create(new Color(192, 192, 128).ToVector4(),
+						 new Color(128, 128, 64).ToVector4(),
+			             new Color(64, 64, 0).ToVector4()),
+
+			//Deuteranopia
+			Tuple.Create(new Color(225, 255, 245).ToVector4(),
+						 new Color(107, 174, 214).ToVector4(),
+						 new Color(100, 170, 45).ToVector4()),
+
+			//Protanopia
+			Tuple.Create(new Color(251,106,74).ToVector4(),
+						 new Color(160,60,155).ToVector4(),
+						 new Color(115,15,40).ToVector4()),
+
+			//Tritanopia
+			Tuple.Create(new Color(250,185,45).ToVector4(),
+						 new Color(49,130,189).ToVector4(),
+						 new Color(105,90,140).ToVector4())
+		};
+
 		//Intentionally keep inner and outer MouseStates separate so pausing doesn't act weird
-		public TitleScreen(ContentManager contentManager)
+		public TitleScreen(ContentManager contentManager, Effect paletteShader)
 		{
 			this.contentManager = contentManager;
+			this.paletteShader = paletteShader;
 			mouseX = 0;
 			mouseY = 0;
 			state = Mouse.GetState();
 			background = contentManager.Load<Texture2D>("Menus/Palette");
 			options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Test1", "Test2" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 			phase = Phase.Title;
+
+			backButton = new Button(contentManager, 0, Game1.height - 15);
+
 			//startButton = new Button(contentManager, Game1.width / 2, Game1.height / 2);
+		}
+
+		void SetColor(int index)
+		{
+			Tuple<Vector4, Vector4, Vector4> rgba = palettes[index];
+			paletteShader.Parameters["col_light"].SetValue(rgba.Item1);
+			paletteShader.Parameters["col_med"].SetValue(rgba.Item2);
+			paletteShader.Parameters["col_dark"].SetValue(rgba.Item3);
 		}
 
 		public void Unload()
@@ -51,7 +90,7 @@ namespace RPG
 							return 1;
 						case 1:
 							phase = Phase.Settings;
-							options = new Menu(contentManager, new string[] { "Volume", "Palette" }, 2, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+							options = new Menu(contentManager, new string[] { "Volume", "Palette", null, "P1", null, "P2", null, "P3", null, "P4" }, 2, 40, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 							break;
 						default:
 							break;
@@ -59,10 +98,23 @@ namespace RPG
 
 					break;
 				case Phase.Settings:
-					if (prevStateKb.IsKeyDown(Keys.Escape) && Keyboard.GetState().IsKeyUp(Keys.Escape))
+					backButton.Update(mouseX, mouseY);
+					if ((prevStateKb.IsKeyDown(Keys.Escape) && Keyboard.GetState().IsKeyUp(Keys.Escape))
+					    || backButton.IsPressed(prevStateM))
 					{
 						phase = Phase.Title;
 						options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Test1", "Test2" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+					}
+					if (options.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY) == 1)
+					{ 
+						int indX = options.GetSelectionX(prevStateKb, prevStateM, mouseX, mouseY);
+						if (indX > 0)
+							SetColor(indX - 1);
+					}
+					else switch (options.GetSelection(prevStateKb, prevStateM, mouseX, mouseY))
+					{
+						default:
+							break;
 					}
 					break;
 			}
@@ -78,6 +130,8 @@ namespace RPG
 			sb.Draw(background, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
 			options.Draw(sb);
 			//startButton.Draw(sb);
+			if(phase == Phase.Settings)
+				backButton.Draw(sb);
 			sb.End();
 		}
 	}

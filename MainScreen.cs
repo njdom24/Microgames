@@ -14,10 +14,10 @@ namespace RPG
 		private PresentationParameters pp;
 		private MiniScreen microgame;
 
-		private RenderTarget2D mainTarget, lastFrame;
+		private RenderTarget2D mainTarget, lastFrame, bufferTarget;
 		private GraphicsDevice graphicsDevice;
 		private Texture2D lio, stairClimber;
-		private Effect transition;
+		private Effect transition, paletteShader;
 		private double timer;
 		private Song song;
 		private KeyboardState prevStateKb;
@@ -31,6 +31,7 @@ namespace RPG
 		private enum Phase { MainMenu, InGame, Transition, BetweenGames };
 		private Phase curPhase;
 		private bool fromGame;
+
 
 
 		public MainScreen(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp)
@@ -50,20 +51,31 @@ namespace RPG
 			this.graphicsDevice = graphicsDevice;
 
 			lastFrame = new RenderTarget2D(graphicsDevice, Game1.width + 2, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
+			bufferTarget = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
 			mainTarget = final;
 
-			microgame = new TitleScreen(cm);
 			lio = contentManager.Load<Texture2D>("Map/Hand");
 			stairClimber = contentManager.Load<Texture2D>("Map/TransitionAnim");
 
 			transition = contentManager.Load<Effect>("Map/transitions");
 			transition.Parameters["time"].SetValue((float)timer);
+
+			paletteShader = contentManager.Load<Effect>("Battle/BattleBG");
+			paletteShader.Parameters["col_light"].SetValue(new Color(192,192,128).ToVector4());
+			paletteShader.Parameters["col_med"].SetValue(new Color(128, 128, 64).ToVector4());
+			paletteShader.Parameters["col_dark"].SetValue(new Color(64, 64, 0).ToVector4());
+
+			//effect.Techniques[1].Passes[0].Apply();
+
 			song = contentManager.Load<Song>("Map/pkmnbtl2");
 			//MediaPlayer.Play(song);
 			prevStateKb = Keyboard.GetState();
 			prevStateM = Mouse.GetState();
 
+			microgame = new TitleScreen(cm, paletteShader);
 		}
+
+
 
 		void Screen.Update(GameTime dt)
 		{
@@ -77,7 +89,7 @@ namespace RPG
 							cm.Dispose();
 							cm = new ContentManager(contentManager.ServiceProvider);
 							cm.RootDirectory = contentManager.RootDirectory;
-							microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
+							microgame = new Battle(cm, bufferTarget, graphicsDevice, pp);
 							//microgame = new TitleScreen(cm);
 							curPhase = Phase.Transition;
 							break;
@@ -122,7 +134,7 @@ namespace RPG
 						cm = new ContentManager(contentManager.ServiceProvider);
 						cm.RootDirectory = contentManager.RootDirectory;
 
-						microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
+						microgame = new Battle(cm, bufferTarget, graphicsDevice, pp);
 
 						curPhase = Phase.Transition;
 						fromGame = false;
@@ -164,10 +176,10 @@ namespace RPG
 				sb.Draw(lio, new Rectangle(Game1.width + 1, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Transparent);
 
 				sb.End();
-				graphicsDevice.SetRenderTarget(mainTarget);
+				graphicsDevice.SetRenderTarget(bufferTarget);
 				if (microgame is Battle)
 				{
-					((Battle)microgame).ChangeTarget(mainTarget);
+					((Battle)microgame).ChangeTarget(bufferTarget);
 				}
 			}
 
@@ -176,19 +188,19 @@ namespace RPG
 			switch (curPhase)
 			{
 				case Phase.MainMenu:
-					graphicsDevice.SetRenderTarget(mainTarget);
+					graphicsDevice.SetRenderTarget(bufferTarget);
 					microgame.Draw(sb);
 
 					break;
 				//Only needed for Battle
 				case Phase.InGame:
-					graphicsDevice.SetRenderTarget(mainTarget);
+					graphicsDevice.SetRenderTarget(bufferTarget);
 					microgame.Draw(sb);
 					//microgame.Draw(sb);
 					break;
 				case Phase.Transition:
 					//Battle uses nested render targets
-					graphicsDevice.SetRenderTarget(mainTarget);
+					graphicsDevice.SetRenderTarget(bufferTarget);
 					microgame.Draw(sb);
 
 					if (currentFlashes > maxFlashes)
@@ -280,11 +292,16 @@ namespace RPG
 					}
 					break;
 				case Phase.BetweenGames:
-					graphicsDevice.SetRenderTarget(mainTarget);
+					graphicsDevice.SetRenderTarget(bufferTarget);
 					microgame.Draw(sb);
 
 					break;
 			}
+			graphicsDevice.SetRenderTarget(mainTarget);
+			sb.Begin(SpriteSortMode.Immediate);
+			paletteShader.Techniques[1].Passes[0].Apply();
+			sb.Draw(bufferTarget, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(0,0, Game1.width, Game1.height), Color.White);
+			sb.End();
 
 			//new Color(Color.Gray, 255);
 

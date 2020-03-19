@@ -2,6 +2,11 @@
 texture2D palette;
 sampler paletteSampler = sampler_state { Texture = <palette>; };
 float time;
+
+float4 col_dark;
+float4 col_med;
+float4 col_light;
+
 float paletteWidth;
 float2 VerticalStretch(float4 pos : SV_POSITION, float4 color1 : COLOR0, float2 texCoord : TEXCOORD0) : SV_TARGET0
 {
@@ -186,6 +191,30 @@ float4 Interlace(float4 pos : SV_POSITION, float4 color1 : COLOR0, float2 texCoo
 	return color;
 }
 
+float4 PaletteSwap(float4 pos : SV_POSITION, float4 color1 : COLOR0, float2 texCoord : TEXCOORD0) : SV_TARGET0
+{
+	//Makes smaller images maintain their size and wrap if necessary
+	//Only swaps for 256x256 images rn
+	//texCoord.x = texCoord.x * (320.0 / 256.0) - 0.3;
+	//texCoord.y = texCoord.y * (180.0 / 256.0) - 0.095;
+	//Distortions
+	//texCoord.y = texCoord.y + time * 0.2;
+	//texCoord.y = texCoord.y + 0.1*sin(texCoord.y*4 + time * 1);
+	//Maps color indexes to respective indexes in a palette
+	float4 color = tex2D(s0, texCoord);
+	
+	//Swaps dark color
+	if(color.r*255.0 >= 20 && color.r*255.0 <= 90)
+		color.rgb = col_dark;
+	else if(color.r*255.0 >= 90 && color.r*255.0 <= 150)
+		color.rgb = col_med;
+	else if(color.r*255.0 >= 150 && color.r*255.0 <= 202)
+		color.rgb = col_light;
+	//float4 mask = tex2D(paletteSampler, (1.0/paletteWidth)*(color.r + floor(10*time)) + 0.25);
+
+	return color;
+}
+
 technique Technique1
 {
 	pass Pass1
@@ -203,11 +232,11 @@ technique Technique2
 {
 	pass Pass1
 	{
-		PixelShader = compile ps_3_0 Layer5();
+		PixelShader = compile ps_3_0 PaletteSwap();
 	}
 	pass Pass2
 	{
-		PixelShader = compile ps_3_0 Layer5();
+		PixelShader = compile ps_3_0 PaletteSwap();
 	}
 }
 

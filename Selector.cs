@@ -80,5 +80,10 @@ namespace RPG
 		{
 			return names[current];
 		}
+
+		public bool IsValidIndex(int index)
+		{
+			return index < length && index >= 0;
+		}
 	}
 }

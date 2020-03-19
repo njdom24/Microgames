@@ -31,9 +31,15 @@ namespace RPG
 		//x and y are mouse coordinates
 		//Prev unpressed, now pressed -> pressed
 		//Prev pressed, now unpressed -> clicked
-		public void Update(int x, int y, bool pressed)
+		public void Update(int x, int y)
 		{
 			hovered = (x > posX && x < image.Width + posX) && (y > posY && y < image.Height + posY);
+		}
+
+		public bool IsPressed(MouseState prevStateM)
+		{
+			bool pressed = prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released;
+			return hovered && pressed;
 		}
 	}
 }

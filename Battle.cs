@@ -148,6 +148,7 @@ namespace RPG
 		{
 			graphicsDevice.SetRenderTarget(firstEffect);
 			sb.Begin(sortMode: SpriteSortMode.Immediate);
+			//effect.Techniques[1].Passes[0].Apply();
 			effect.CurrentTechnique.Passes[0].Apply();
 			graphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
 			sb.Draw(background, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);//Draw to texture
