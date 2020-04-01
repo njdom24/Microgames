@@ -23,16 +23,12 @@ namespace RPG
 		private KeyboardState prevStateKb;
 		private MouseState prevStateM;
 
-		private readonly int stairWidth = 500;
-		private readonly int stairHeight = 325;
-
 		int currentFlashes, maxFlashes;
 
 		private enum Phase { MainMenu, InGame, Transition, BetweenGames };
 		private Phase curPhase;
 		private bool fromGame;
-
-
+		private Random random;
 
 		public MainScreen(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp)
 		{
@@ -54,14 +50,16 @@ namespace RPG
 			bufferTarget = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
 			mainTarget = final;
 
-			lio = contentManager.Load<Texture2D>("Map/Hand");
+			lio = contentManager.Load<Texture2D>("Menus/TransitionTest");
+			//lio = contentManager.Load<Texture2D>("Battle/BackgroundL");
 			stairClimber = contentManager.Load<Texture2D>("Map/TransitionAnim");
 
 			transition = contentManager.Load<Effect>("Map/transitions");
 			transition.Parameters["time"].SetValue((float)timer);
 
 			paletteShader = contentManager.Load<Effect>("Battle/BattleBG");
-			paletteShader.Parameters["col_light"].SetValue(new Color(192,192,128).ToVector4());
+			paletteShader.Parameters["col_light"].SetValue(new Color(192, 192, 128).ToVector4());
+			paletteShader.Parameters["col_extra"].SetValue(new Color(160, 160, 96).ToVector4());
 			paletteShader.Parameters["col_med"].SetValue(new Color(128, 128, 64).ToVector4());
 			paletteShader.Parameters["col_dark"].SetValue(new Color(64, 64, 0).ToVector4());
 
@@ -73,9 +71,24 @@ namespace RPG
 			prevStateM = Mouse.GetState();
 
 			microgame = new TitleScreen(cm, paletteShader);
+
+			random = new Random();
 		}
 
+		MiniScreen ChooseGame()
+		{
+			int num = random.Next(0,2);
 
+			switch (num)
+			{
+				case 0:
+					return new Battle(cm, bufferTarget, graphicsDevice, pp);
+				case 1:
+					return new FallingApples(cm, graphicsDevice);
+				default:
+					return new FallingApples(cm, graphicsDevice);
+			}
+		}
 
 		void Screen.Update(GameTime dt)
 		{
@@ -89,7 +102,9 @@ namespace RPG
 							cm.Dispose();
 							cm = new ContentManager(contentManager.ServiceProvider);
 							cm.RootDirectory = contentManager.RootDirectory;
-							microgame = new Battle(cm, bufferTarget, graphicsDevice, pp);
+							//microgame = new Battle(cm, bufferTarget, graphicsDevice, pp);
+							microgame = new FallingApples(cm, graphicsDevice);
+							//microgame = ChooseGame();
 							//microgame = new TitleScreen(cm);
 							curPhase = Phase.Transition;
 							break;
@@ -134,8 +149,9 @@ namespace RPG
 						cm = new ContentManager(contentManager.ServiceProvider);
 						cm.RootDirectory = contentManager.RootDirectory;
 
-						microgame = new Battle(cm, bufferTarget, graphicsDevice, pp);
-
+						//microgame = new Battle(cm, bufferTarget, graphicsDevice, pp);
+						//microgame = new FallingApples(cm, graphicsDevice);
+						microgame = ChooseGame();
 						curPhase = Phase.Transition;
 						fromGame = false;
 					}
@@ -244,8 +260,8 @@ namespace RPG
 						//Top and bottom bars, don't draw during transition screen
 						if (!(microgame is BetweenGames))
 						{ 
-							sb.Draw(lio, new Rectangle(0, blackBar + Game1.height / 2, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Black);
-							sb.Draw(lio, new Rectangle(0, -blackBar - Game1.height / 2, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Black);
+							sb.Draw(lio, new Rectangle(0, blackBar + Game1.height / 2, Game1.width, Game1.height / 2), new Rectangle(0, Game1.height/2, Game1.width, Game1.height/2), Color.White);
+							sb.Draw(lio, new Rectangle(0, -blackBar , Game1.width, Game1.height / 2), new Rectangle(0, 0, Game1.width, Game1.height/2), Color.White);
 						}
 
 

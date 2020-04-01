@@ -74,6 +74,7 @@
     <Compile Include="TitleScreen.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="BetweenGames.cs" />
+    <Compile Include="FallingApples.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
