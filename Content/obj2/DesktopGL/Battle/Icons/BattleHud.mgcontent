@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>/home/damino/Documents/Microgames/Content/Battle/Icons/BattleHud.png</SourceFile>
-  <SourceTime>2020-03-18T02:34:12.9537195-04:00</SourceTime>
+  <SourceTime>2020-03-31T14:28:44.3123724-04:00</SourceTime>
   <DestFile>/home/damino/Documents/Microgames/bin/DesktopGL/AnyCPU/Debug/Content/Battle/Icons/BattleHud.xnb</DestFile>
-  <DestTime>2020-03-18T02:34:15.9323861-04:00</DestTime>
+  <DestTime>2020-03-31T14:28:53.7081637-04:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-03-14T23:30:21.4569843-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

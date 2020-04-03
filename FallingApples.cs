@@ -142,8 +142,7 @@ namespace RPG
 			{
 				Vector2 pos = a.GetPos();
 				float rotation = a.GetRotation();
-				//sb.Draw(apple, new Rectangle((int)pos.X, (int)pos.Y, apple.Width, apple.Height), new Rectangle(0, 0, apple.Width, apple.Height), Color.White);
-				//sb.Draw(apple, null, new Rectangle((int)pos.X, (int)pos.Y, apple.Width, apple.Height), new Rectangle(0, 0, apple.Width, apple.Height), new Vector2(0,0), rotation);
+
 				sb.Draw(apple, new Rectangle((int)pos.X, (int)pos.Y, apple.Width, apple.Height), new Rectangle(0, 0, apple.Width, apple.Height), Color.White, rotation, new Vector2(apple.Width/2, apple.Height/2), SpriteEffects.None, 1);
 			}
 
@@ -192,9 +191,9 @@ namespace RPG
 			{
 				mousePos = (int)(mState.X * Game1.resMultiplier);
 
-				if (mouseX <= Game1.width - basket.Width && mousePos - mouseX > 5)
+				if (mouseX <= Game1.width && mousePos - mouseX > 5)
 					mouseX += maxVelocity * dt.ElapsedGameTime.TotalSeconds;
-				else if (mouseX >= 0 && mousePos - mouseX < -5)
+				else if (mouseX >= basket.Width / 2 && mousePos - mouseX < -5)
 					mouseX -= maxVelocity * dt.ElapsedGameTime.TotalSeconds;
 
 				basketBody.SetTransform(new Vector2((float)mouseX, Game1.height - basket.Height - 6), 0);

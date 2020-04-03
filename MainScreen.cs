@@ -77,7 +77,8 @@ namespace RPG
 
 		MiniScreen ChooseGame()
 		{
-			int num = random.Next(0,2);
+			int num = random.Next(0,3);
+			return new Galaga(cm, graphicsDevice);
 
 			switch (num)
 			{
@@ -86,7 +87,7 @@ namespace RPG
 				case 1:
 					return new FallingApples(cm, graphicsDevice);
 				default:
-					return new FallingApples(cm, graphicsDevice);
+					return new Galaga(cm, graphicsDevice);
 			}
 		}
 
@@ -103,8 +104,8 @@ namespace RPG
 							cm = new ContentManager(contentManager.ServiceProvider);
 							cm.RootDirectory = contentManager.RootDirectory;
 							//microgame = new Battle(cm, bufferTarget, graphicsDevice, pp);
-							microgame = new FallingApples(cm, graphicsDevice);
-							//microgame = ChooseGame();
+							//microgame = new FallingApples(cm, graphicsDevice);
+							microgame = ChooseGame();
 							//microgame = new TitleScreen(cm);
 							curPhase = Phase.Transition;
 							break;
