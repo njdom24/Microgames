@@ -10,22 +10,28 @@ namespace RPG
 	{
 		private Texture2D image;
 		private int posX, posY;
+		private int height;
 		private bool hovered;
+		private Text text;
 
-		public Button(ContentManager contentManager, int posX, int posY)
+		public Button(ContentManager contentManager, int posX, int posY, int height = 1)
 		{
 			image = contentManager.Load<Texture2D>("OkButton");
 			this.posX = posX;
 			this.posY = posY;
 			hovered = false;
+			this.height = height;
+
+			text = new Text(contentManager, "OK");
 		}
 
 		public void Draw(SpriteBatch sb)
 		{
 			if(hovered)
-				sb.Draw(image, new Rectangle(posX, posY, image.Width, image.Height), Color.DimGray);
+				sb.Draw(image, new Rectangle(posX, posY, image.Width, image.Height), Color.DarkOliveGreen);
 			else
 				sb.Draw(image, new Rectangle(posX, posY, image.Width, image.Height), Color.White);
+			text.Draw(sb, new Vector2(posX + image.Width/2 - text.width/2, posY + image.Height/2 - 8*height));
 		}
 
 		//x and y are mouse coordinates

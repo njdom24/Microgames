@@ -10,7 +10,7 @@ namespace RPG
 	{
 		private ContentManager contentManager;
 		private MouseState state;
-		private Texture2D background;
+		private Texture2D background, sprite;
 		private Menu options;
 		private Effect paletteShader;
 		private Button backButton;
@@ -21,7 +21,7 @@ namespace RPG
 		private Phase phase;
 
 		//Order should be lightest to darkest
-		private Tuple<Vector4, Vector4, Vector4, Vector4>[] palettes =
+		public static Tuple<Vector4, Vector4, Vector4, Vector4>[] palettes =
 		{
 			//Default (Game Boy)
 			Tuple.Create(new Color(192, 192, 128).ToVector4(),
@@ -64,10 +64,11 @@ namespace RPG
 			mouseY = 0;
 			state = Mouse.GetState();
 			background = contentManager.Load<Texture2D>("Menus/Palette");
+			sprite = contentManager.Load<Texture2D>("Menus/wiz");
 			options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Test1", "Test2" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 			phase = Phase.Title;
 
-			backButton = new Button(contentManager, 0, Game1.height - 15);
+			backButton = new Button(contentManager, 0, Game1.height - 30);
 
 			//startButton = new Button(contentManager, Game1.width / 2, Game1.height / 2);
 		}
@@ -141,6 +142,7 @@ namespace RPG
 			sb.Begin();
 			//Adjust for output buffer
 			sb.Draw(background, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
+			sb.Draw(sprite, new Rectangle(Game1.width-sprite.Width, Game1.height - sprite.Height, sprite.Width, sprite.Height), new Rectangle(0, 0, sprite.Width, sprite.Height), Color.White);
 			options.Draw(sb);
 			//startButton.Draw(sb);
 			if(phase == Phase.Settings)

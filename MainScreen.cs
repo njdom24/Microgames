@@ -16,7 +16,9 @@ namespace RPG
 
 		private RenderTarget2D mainTarget, lastFrame, bufferTarget;
 		private GraphicsDevice graphicsDevice;
-		private Texture2D lio, stairClimber;
+		private Texture2D lio, stairClimber, pauseScreen;
+		private Menu pauseMenu;
+
 		private Effect transition, paletteShader;
 		private double timer;
 		private Song song;
@@ -25,8 +27,8 @@ namespace RPG
 
 		int currentFlashes, maxFlashes;
 
-		private enum Phase { MainMenu, InGame, Transition, BetweenGames };
-		private Phase curPhase;
+		private enum Phase { MainMenu, InGame, Transition, BetweenGames, Paused };
+		private Phase curPhase, prevPhase;
 		private bool fromGame;
 		private Random random;
 
@@ -53,6 +55,7 @@ namespace RPG
 			lio = contentManager.Load<Texture2D>("Menus/TransitionTest");
 			//lio = contentManager.Load<Texture2D>("Battle/BackgroundL");
 			stairClimber = contentManager.Load<Texture2D>("Map/TransitionAnim");
+			pauseScreen = contentManager.Load<Texture2D>("Menus/PauseScreen");
 
 			transition = contentManager.Load<Effect>("Map/transitions");
 			transition.Parameters["time"].SetValue((float)timer);
@@ -63,8 +66,6 @@ namespace RPG
 			paletteShader.Parameters["col_med"].SetValue(new Color(128, 128, 64).ToVector4());
 			paletteShader.Parameters["col_dark"].SetValue(new Color(64, 64, 0).ToVector4());
 
-			//effect.Techniques[1].Passes[0].Apply();
-
 			song = contentManager.Load<Song>("Map/pkmnbtl2");
 			//MediaPlayer.Play(song);
 			prevStateKb = Keyboard.GetState();
@@ -73,13 +74,24 @@ namespace RPG
 			microgame = new TitleScreen(cm, paletteShader);
 
 			random = new Random();
+
+			pauseMenu = new Menu(contentManager, new string[] { "Volume", "Palette", null, "P1", null, "P2", null, "P3", null, "P4", null, "P5" }, 2, 40, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+		}
+
+		void SetColor(int index)
+		{
+			Tuple<Vector4, Vector4, Vector4, Vector4> rgba = TitleScreen.palettes[index];
+			paletteShader.Parameters["col_light"].SetValue(rgba.Item1);
+			paletteShader.Parameters["col_extra"].SetValue(rgba.Item2);
+			paletteShader.Parameters["col_med"].SetValue(rgba.Item3);
+			paletteShader.Parameters["col_dark"].SetValue(rgba.Item4);
 		}
 
 		MiniScreen ChooseGame()
 		{
-			int num = random.Next(0,3);
-			return new Galaga(cm, graphicsDevice);
-
+			int num = random.Next(0,2);
+			//return new Galaga(cm, bufferTarget, graphicsDevice);
+			//return new Galaga(cm, bufferTarget, graphicsDevice, pp);
 			switch (num)
 			{
 				case 0:
@@ -87,13 +99,18 @@ namespace RPG
 				case 1:
 					return new FallingApples(cm, graphicsDevice);
 				default:
-					return new Galaga(cm, graphicsDevice);
+					return new Galaga(cm, bufferTarget, graphicsDevice, pp);
 			}
 		}
 
 		void Screen.Update(GameTime dt)
 		{
-			switch (curPhase) 
+			if (curPhase != Phase.Paused && curPhase != Phase.MainMenu && Keyboard.GetState().IsKeyUp(Keys.Escape) && prevStateKb.IsKeyDown(Keys.Escape))
+			{
+				prevPhase = curPhase;
+				curPhase = Phase.Paused;
+			}
+			else switch (curPhase) 
 			{
 				case Phase.MainMenu:
 					switch (microgame.Update(dt, prevStateKb, prevStateM))
@@ -158,6 +175,31 @@ namespace RPG
 					}
 
 					break;
+				case Phase.Paused:
+					Console.WriteLine("am paused");
+					if (Keyboard.GetState().IsKeyUp(Keys.Escape) && prevStateKb.IsKeyDown(Keys.Escape))
+					{
+						curPhase = prevPhase;
+					}
+					else
+					{ 
+						MouseState state = Mouse.GetState();
+						int mouseX = (int)(state.X * Game1.resMultiplier);
+						int mouseY = (int)(state.Y * Game1.resMultiplier);
+						pauseMenu.Update(dt, prevStateKb, prevStateM, mouseX, mouseY);
+
+						if (pauseMenu.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY) == 1)
+						{
+							int indX = pauseMenu.GetSelectionX(prevStateKb, prevStateM, mouseX, mouseY);
+							if (indX > 0)
+							{
+								Console.WriteLine("tryna set color");
+								SetColor(indX - 1);
+							}
+						}
+						//pauseMenu.GetSelection(prevStateKb, prevStateM, mouseX, mouseY);
+					}
+					break;
 					
 			}
 
@@ -174,7 +216,6 @@ namespace RPG
 		void Screen.Draw(SpriteBatch sb)
 		{
 			//Render microgame internally
-			//graphicsDevice.SetRenderTarget(internalTarget);
 
 			//Render black background, then render the last frame in the middle, leaving 2 1-pixel borders on the sides
 			if (curPhase != Phase.Transition)
@@ -248,11 +289,6 @@ namespace RPG
 							sb.Begin();
 						}
 
-
-						//sb.Draw(lio, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
-						//sb.Draw(internalTarget, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
-
-
 						sb.End();
 						microgame.Draw(sb);
 						sb.Begin();
@@ -265,8 +301,6 @@ namespace RPG
 							sb.Draw(lio, new Rectangle(0, -blackBar , Game1.width, Game1.height / 2), new Rectangle(0, 0, Game1.width, Game1.height/2), Color.White);
 						}
 
-
-						//sb.Draw(lastFrame, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(1, 0, Game1.width, Game1.height), Color.Red);
 						sb.End();
 
 						sb.Begin(SpriteSortMode.Immediate);
@@ -285,7 +319,6 @@ namespace RPG
 						int flashCol = (int)(timer * 1700);
 
 						sb.Draw(lastFrame, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(1, 0, Game1.width, Game1.height), new Color(flashCol, flashCol, flashCol));
-
 						sb.End();
 
 						if (currentFlashes == maxFlashes)
@@ -305,7 +338,6 @@ namespace RPG
 							}
 						}
 
-
 					}
 					break;
 				case Phase.BetweenGames:
@@ -313,14 +345,49 @@ namespace RPG
 					microgame.Draw(sb);
 
 					break;
+					
+				case Phase.Paused:
+					graphicsDevice.SetRenderTarget(bufferTarget);
+					microgame.Draw(sb);
+					break;
 			}
 			graphicsDevice.SetRenderTarget(mainTarget);
 			sb.Begin(SpriteSortMode.Immediate);
-			paletteShader.Techniques[1].Passes[0].Apply();
-			sb.Draw(bufferTarget, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(0,0, Game1.width, Game1.height), Color.White);
-			sb.End();
 
-			//new Color(Color.Gray, 255);
+			if (curPhase != Phase.Paused)
+			{
+				paletteShader.Techniques[1].Passes[0].Apply();
+				sb.Draw(bufferTarget, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
+				sb.End();
+			}
+
+			else
+			{
+				paletteShader.Techniques[3].Passes[0].Apply();
+				sb.Draw(bufferTarget, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
+				sb.End();
+
+				sb.Begin(SpriteSortMode.Immediate);
+				paletteShader.Techniques[1].Passes[0].Apply();
+				sb.Draw(pauseScreen, new Rectangle(0, 0, pauseScreen.Width, pauseScreen.Height), Color.White);
+				sb.End();
+
+				graphicsDevice.SetRenderTarget(bufferTarget);
+				graphicsDevice.Clear(Color.Transparent);
+				sb.Begin(blendState:BlendState.AlphaBlend);
+				//The text is becoming white because the shader overrides it. Need to render the text to a buffer first
+				pauseMenu.Draw(sb);
+				sb.End();
+
+				graphicsDevice.SetRenderTarget(mainTarget);
+				sb.Begin(SpriteSortMode.Immediate);
+				paletteShader.Techniques[1].Passes[0].Apply();
+				sb.Draw(bufferTarget, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
+				sb.End();
+			}
+			
+
+
 
 
 		}

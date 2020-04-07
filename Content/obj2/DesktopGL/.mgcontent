@@ -4,13 +4,11 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>/home/damino/Documents/Microgames/Content/Galaga/Ship.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Menus/Palette.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Effects/PkFireA_GRN.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Textbox/Text.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/BattleHud.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Tree.png</File>
     <File>Z:/home/damino/Documents/Microgames/Content/Battle/BattleBG.fx</File>
     <File>Z:/home/damino/Documents/Microgames/Content/Map/transitions.fx</File>
   </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
 </SourceFileCollection>

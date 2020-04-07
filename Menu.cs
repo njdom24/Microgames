@@ -155,6 +155,7 @@ namespace RPG
 				if (mouseX >= offsetX + 8 && mouseX <= maxWidth && !selectorX.IsValidIndex(indX))
 					indX = 0;
 
+				if (indX != prevIndexX || indY != prevIndexY) 
 				if (selectorX.IsValidIndex(indX) && selectorY.IsValidIndex(indY))
 				{ 
 					//Select based off mouse input
@@ -162,7 +163,11 @@ namespace RPG
 					Console.WriteLine("BrevX: " + prevIndexX + "BrevY: " + prevIndexY);
 					Console.WriteLine("BurX: " + selectorX.GetIndex() + "BurY: " + selectorY.GetIndex());
 
+					if (lines[indX][indY] != null)
 					lines[prevIndexX][prevIndexY].SetColor(Color.Black);
+
+					//if (lines[indX][indY] != null)
+						//lines[indX][indY].SetColor(Color.Black);
 					Console.WriteLine("Setting [" + prevIndexY + "," + prevIndexX + "] black");
 
 					//selectorX.SetIndex(0)

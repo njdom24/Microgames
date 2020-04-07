@@ -110,9 +110,10 @@ namespace RPG
 		private double mouseX;
 		private int maxVelocity;
 		private int mousePos;
+		private int enemiesKilled;
 		private bool usingKeyboard;
 
-		private double timer;
+		private double timer, bgTimer;
 
 		private World world;
 		private Body shipBody;
@@ -121,12 +122,14 @@ namespace RPG
 		private List<Pellet> pellets;
 		private List<Alien> aliens;
 
-		public Galaga (ContentManager contentManager, GraphicsDevice pDevice)
+		public Galaga (ContentManager contentManager, RenderTarget2D final, GraphicsDevice gDevice, PresentationParameters pp)
 		{
-			background = contentManager.Load<Texture2D>("Corneria_gutter");
+			background = contentManager.Load<Texture2D>("Galaga/BG");
+			enemiesKilled = 0;
 			ship = contentManager.Load<Texture2D>("Galaga/Ship");
 			shipWidth = ship.Width - 4;
 			timer = 0.0;
+			bgTimer = 0.0;
 			maxVelocity = 200;
 			ConvertUnits.SetDisplayUnitToSimUnitRatio(10);
 			world = new World(Vector2.Zero);
@@ -161,6 +164,7 @@ namespace RPG
 				Pellet p = (Pellet)fp2.Fixture.Body.UserData;
 				p.Destroy(world);
 				pellets.Remove(p);
+				enemiesKilled++;
 			}
 			else if (fp2.Fixture.Body.UserData is Alien && fp1.Fixture.Body.UserData is Pellet)
 			{
@@ -171,6 +175,7 @@ namespace RPG
 				Pellet p = (Pellet)fp1.Fixture.Body.UserData;
 				p.Destroy(world);
 				pellets.Remove(p);
+				enemiesKilled++;
 			}
 		}
 
@@ -200,6 +205,8 @@ namespace RPG
 
 		public byte Update(GameTime dt, KeyboardState prevStateKb, MouseState prevStateM)
 		{
+			if (enemiesKilled == 3)
+				return 255;
 			timer += dt.ElapsedGameTime.TotalSeconds * 2;
 
 			//Don't need widthOffset due to body position being centered around the body
@@ -242,7 +249,7 @@ namespace RPG
 			}
 
 			if ((kbState.IsKeyDown(Keys.Space) && prevStateKb.IsKeyUp(Keys.Space)) || 
-			    (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
+			    (prevStateM.LeftButton == ButtonState.Released && Mouse.GetState().LeftButton == ButtonState.Pressed))
 			{
 				pellets.Add(new Pellet(world, (int)shipBody.Position.X));
 			}
@@ -262,7 +269,10 @@ namespace RPG
 
 			world.Step((float)dt.ElapsedGameTime.TotalSeconds);
 
+			//UpdateBackground(dt);
+
 			return 1;
 		}
+
 	}
 }

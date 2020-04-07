@@ -12,15 +12,17 @@ namespace RPG
 		private readonly int stairWidth = 500;
 		private readonly int stairHeight = 325;
 
-		private Texture2D stairClimber;
+		private Texture2D background;
+		private Texture2D wizZoom;
+		private double animTimer;
 		private double timer;
-		private int iterations;
 		
 		public BetweenGames(ContentManager contentManager)
 		{
-			stairClimber = contentManager.Load<Texture2D>("Map/TransitionAnim_GRN");
+			background = contentManager.Load<Texture2D>("Menus/TransBG_GRN");
+			wizZoom = contentManager.Load<Texture2D>("Menus/wizZOOM");
+			animTimer = 0.0;
 			timer = 0.0;
-			iterations = 0;
 		}
 
 		void MiniScreen.Unload()
@@ -29,25 +31,24 @@ namespace RPG
 
 		byte MiniScreen.Update(GameTime dt, KeyboardState prevStateKb, MouseState prevStateM)
 		{
-			timer += dt.ElapsedGameTime.TotalSeconds * 22;
-			if (iterations > 4)
+			timer += dt.ElapsedGameTime.TotalSeconds * 3;
+			animTimer += dt.ElapsedGameTime.TotalSeconds * 40;
+			if (animTimer > 4*40)
 				return 255;
 			return 1;
 		}
 
 		void MiniScreen.Draw(SpriteBatch sb)
 		{
-			if (timer > 15)
-			{
-				timer = 0;
-				iterations++;
-			}
+			sb.Begin(samplerState: SamplerState.PointWrap);
 
-			int frameX = (int)timer % 5;
-			int frameY = (int)timer / 5;
+			sb.Draw(background, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle((int)animTimer, 0, Game1.width, Game1.height), Color.White);
+			double heightOffset = Math.Sin(timer);
 
-			sb.Begin();
-			sb.Draw(stairClimber, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(frameX * stairWidth, frameY * stairHeight, stairWidth, stairHeight), Color.White);
+			heightOffset *= 20;
+
+			Console.WriteLine("timeroffset: " + heightOffset);
+			sb.Draw(wizZoom, new Rectangle((Game1.width - wizZoom.Width)/2, (Game1.height - wizZoom.Height) / 2 + (int)heightOffset, wizZoom.Width, wizZoom.Height), new Rectangle(0, 0, wizZoom.Width, wizZoom.Height), Color.White);
 			sb.End();
 		}
 	}

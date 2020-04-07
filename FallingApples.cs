@@ -66,7 +66,7 @@ namespace RPG
 
 	public class FallingApples : MiniScreen
 	{
-		private Texture2D background, basket, apple;
+		private Texture2D background, basket, hat, apple;
 		private double mouseX;
 		private double spawnTimer;
 		private int maxVelocity;
@@ -86,7 +86,8 @@ namespace RPG
 		public FallingApples(ContentManager contentManager, GraphicsDevice pDevice)
 		{
 			background = contentManager.Load<Texture2D>("Corneria_gutter");
-			basket = contentManager.Load<Texture2D>("FallingApples/Basket");
+			hat = contentManager.Load<Texture2D>("FallingApples/wizJUNP_Back");
+			basket = contentManager.Load<Texture2D>("FallingApples/wizJUNP");
 			apple = contentManager.Load<Texture2D>("FallingApples/Apple");
 			timer = 0.0;
 			spawnTimer = 0.0;
@@ -94,7 +95,7 @@ namespace RPG
 			ConvertUnits.SetDisplayUnitToSimUnitRatio(10);
 			world = new World(Vector2.Zero);
 
-			basketBody = BodyFactory.CreateRectangle(world, basket.Width, (int)(basket.Height*0.9), 0, new Vector2(Game1.width/2, Game1.height - basket.Height - 6));
+			basketBody = BodyFactory.CreateRectangle(world, basket.Width, (int)(basket.Height/8), 0, new Vector2(Game1.width/2, Game1.height - basket.Height / 2 - 18));
 			basketBody.BodyType = BodyType.Static;
 			basketBody.IgnoreGravity = true;
 			basketBody.IsSensor = true;
@@ -136,18 +137,18 @@ namespace RPG
 			sb.Begin();
 			sb.Draw(background, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(220, 48, 3, 3), new Color(30,30,30));//Sourcing white background from a placeholder spritesheet
 
-			//sb.Draw(apple, new Rectangle(0, (int)( 6 * timer * timer * timer ) - apple.Height, apple.Width, apple.Height), new Rectangle(0, 0, apple.Width, apple.Height), Color.White);
+			sb.Draw(hat, new Rectangle((int)basketBody.Position.X - basket.Width / 2, (int)basketBody.Position.Y - basket.Height / 8 - 20, basket.Width, basket.Height), new Rectangle(0, 0, basket.Width, basket.Height), Color.White);
 
 			foreach (Apple a in apples)
 			{
 				Vector2 pos = a.GetPos();
 				float rotation = a.GetRotation();
 
-				sb.Draw(apple, new Rectangle((int)pos.X, (int)pos.Y, apple.Width, apple.Height), new Rectangle(0, 0, apple.Width, apple.Height), Color.White, rotation, new Vector2(apple.Width/2, apple.Height/2), SpriteEffects.None, 1);
+				sb.Draw(apple, new Rectangle((int)pos.X, (int)pos.Y, apple.Width*2, apple.Height*2), new Rectangle(0, 0, apple.Width, apple.Height), Color.White, rotation, new Vector2(apple.Width/2, apple.Height/2), SpriteEffects.None, 1);
 			}
 
 
-			sb.Draw(basket, new Rectangle((int)basketBody.Position.X - basket.Width/2, (int)basketBody.Position.Y - 12, basket.Width, basket.Height), new Rectangle(0, 0, basket.Width, basket.Height), Color.White);
+			sb.Draw(basket, new Rectangle((int)basketBody.Position.X - basket.Width/2, (int)basketBody.Position.Y - basket.Height/8 - 20, basket.Width, basket.Height), new Rectangle(0, 0, basket.Width, basket.Height), Color.White);
 			sb.End();
 		}
 
@@ -180,11 +181,11 @@ namespace RPG
 
 				if (kbState.IsKeyDown(Keys.Right))
 				{
-					basketBody.SetTransform(new Vector2((float)(pos.X + maxVelocity * dt.ElapsedGameTime.TotalSeconds), Game1.height - basket.Height - 6), 0);
+					basketBody.SetTransform(new Vector2((float)(pos.X + maxVelocity * dt.ElapsedGameTime.TotalSeconds), Game1.height - basket.Height/2 - 18), 0);
 				}
 				else if (kbState.IsKeyDown(Keys.Left))
 				{
-					basketBody.SetTransform(new Vector2((float)(pos.X - maxVelocity * dt.ElapsedGameTime.TotalSeconds), Game1.height - basket.Height - 6), 0);
+					basketBody.SetTransform(new Vector2((float)(pos.X - maxVelocity * dt.ElapsedGameTime.TotalSeconds), Game1.height - basket.Height/2 - 18), 0);
 				}
 			}
 			else
@@ -196,8 +197,9 @@ namespace RPG
 				else if (mouseX >= basket.Width / 2 && mousePos - mouseX < -5)
 					mouseX -= maxVelocity * dt.ElapsedGameTime.TotalSeconds;
 
-				basketBody.SetTransform(new Vector2((float)mouseX, Game1.height - basket.Height - 6), 0);
+				basketBody.SetTransform(new Vector2((float)mouseX, Game1.height - basket.Height/2 - 18), 0);
 			}
+			//TODO: MOVE THE DRAW UP
 
 
 			for (int i = 0; i < apples.Count; i++)
