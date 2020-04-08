@@ -33,7 +33,6 @@
     <File>/home/damino/Documents/Microgames/Content/Battle/Numbers/ScrollingNums.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Player.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Yellow.PNG</File>
-    <File>/home/damino/Documents/Microgames/Content/corneria.tmx</File>
     <File>/home/damino/Documents/Microgames/Content/Corneria_gutter.png</File>
     <File>/home/damino/Documents/Microgames/Content/Debug.png</File>
     <File>/home/damino/Documents/Microgames/Content/HighlightColor.png</File>
@@ -43,7 +42,6 @@
     <File>/home/damino/Documents/Microgames/Content/Map/pkmnbtl2.wav</File>
     <File>/home/damino/Documents/Microgames/Content/Map/Tazmily/fulltileset.PNG</File>
     <File>/home/damino/Documents/Microgames/Content/Map/Tazmily/Hinawa/Hinawa.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Map/Tazmily/Tazmily.tmx</File>
     <File>/home/damino/Documents/Microgames/Content/Map/Transition.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/Palette.png</File>
     <File>/home/damino/Documents/Microgames/Content/OkButton.png</File>
@@ -73,8 +71,6 @@
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton.png</File>
   </SourceFiles>
   <DestFiles>
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

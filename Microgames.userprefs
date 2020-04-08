@@ -9,7 +9,7 @@
       <File FileName="Content/Battle/BattleBG.fx" Line="243" Column="29" />
       <File FileName="Menu.cs" Line="166" Column="36" />
       <File FileName="MainScreen.cs" Line="56" Column="65" />
-      <File FileName="TitleScreen.cs" Line="23" Column="40" />
+      <File FileName="TitleScreen.cs" Line="42" Column="44" />
       <File FileName="Battle.cs" Line="100" Column="39" />
       <File FileName="Button.cs" Line="35" Column="4" />
       <File FileName="Text.cs" Line="46" Column="56" />

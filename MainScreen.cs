@@ -75,7 +75,7 @@ namespace RPG
 
 			random = new Random();
 
-			pauseMenu = new Menu(contentManager, new string[] { "Volume", "Palette", null, "P1", null, "P2", null, "P3", null, "P4", null, "P5" }, 2, 40, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+			pauseMenu = new Menu(contentManager, new string[] { "Return to Title", "Volume", "Palette", null, null, "P1", null, null, "P2", null, null, "P3", null, null, "P4", null, null, "P5" }, 3, 69, offsetX: Game1.width / 4, offsetY: Game1.height / 2, defaultSpacingX: 75);
 		}
 
 		void SetColor(int index)
@@ -188,7 +188,7 @@ namespace RPG
 						int mouseY = (int)(state.Y * Game1.resMultiplier);
 						pauseMenu.Update(dt, prevStateKb, prevStateM, mouseX, mouseY);
 
-						if (pauseMenu.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY) == 1)
+						if (pauseMenu.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY) == 2)
 						{
 							int indX = pauseMenu.GetSelectionX(prevStateKb, prevStateM, mouseX, mouseY);
 							if (indX > 0)

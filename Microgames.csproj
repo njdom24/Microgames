@@ -114,9 +114,6 @@
     <EmbeddedResource Include="Icon.ico" />
     <EmbeddedResource Include="Icon.bmp" />
     <EmbeddedResource Include="Properties\Resource.resx" />
-    <EmbeddedResource Include="Content\Map\Tazmily\Tazmily.tmx">
-      <Link>Properties\Tazmily.tmx</Link>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
@@ -416,7 +413,6 @@
     <None Include="Content\obj\Windows\Textbox\Chars.mgcontent" />
     <None Include="Content\obj\Windows\Textbox\Text.mgcontent" />
     <None Include="Content\obj\Windows\Textbox\Textbox.mgcontent" />
-    <None Include="Content\corneria.tmx" />
     <None Include="Content\Corneria_gutter.png" />
     <None Include="Content\Debug.png" />
     <None Include="Content\File.fx" />

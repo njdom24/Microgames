@@ -32,7 +32,7 @@ namespace RPG
 		private Selector selectorX, selectorY;
 		private string[][] items;
 		//width 104
-		public Menu(ContentManager contentManager, string[] itemList, int rows = 7, int highlightWidth = 86, int width = 25, int height = 12, int offsetX = 0, int offsetY = 0, int spacingX = 22)
+		public Menu(ContentManager contentManager, string[] itemList, int rows = 7, int defaultWidth = 86, int width = 25, int height = 12, int offsetX = 0, int offsetY = 0, int spacingX = 22, int defaultSpacingX = 45)
 		{
 			textbox = contentManager.Load<Texture2D>("Textbox/Text");
 			background = contentManager.Load<Texture2D>("HighlightColor");
@@ -45,8 +45,8 @@ namespace RPG
 			
 			//items = new string[] {  "Offense", "Recovery", "Support" };
 
-			this.highlightWidth = highlightWidth;
-			this.defaultWidth = highlightWidth;
+			highlightWidth = 18;
+			this.defaultWidth = defaultWidth;
 
 			this.width = width;//10
 			this.height = height;
@@ -56,7 +56,7 @@ namespace RPG
 
 			dividerHeight = (height+2) * 8 - 20;
 			this.spacingX = spacingX;
-			defaultSpacingX = 45;
+			this.defaultSpacingX = defaultSpacingX;
 			spacingY = 14;
 			if (itemList.Length < rows)
 				this.rows = items.Length;
@@ -140,16 +140,11 @@ namespace RPG
 			bool x = selectorX.Update(prevStateKb);
 			bool y = selectorY.Update(prevStateKb);
 
-			if (selectorX.GetIndex() > 0)
-				highlightWidth = 18;
-			else
-				highlightWidth = defaultWidth;
-
 			//Prioritize mouse input
 			if ((prevStateM.Position != Mouse.GetState().Position))
 			{
 				int maxWidth = offsetX + defaultWidth + (columns-1)*highlightWidth + 14;
-				int indX = (mouseX - offsetX + 8) / spacingX - 2;
+				int indX = (mouseX - offsetX - defaultSpacingX + 4) / spacingX;
 				int indY = (mouseY - offsetY) / height - 1;
 
 				if (mouseX >= offsetX + 8 && mouseX <= maxWidth && !selectorX.IsValidIndex(indX))
@@ -172,12 +167,16 @@ namespace RPG
 
 					//selectorX.SetIndex(0)
 					selectorY.SetIndex((mouseY - offsetY) / height - 1);
-					selectorX.SetIndex((mouseX - offsetX + 8) / spacingX - 2);
+					selectorX.SetIndex((mouseX - offsetX - defaultSpacingX + 4) / spacingX);
 
-					if (lines[selectorX.GetIndex()][selectorY.GetIndex()] == null)
-					{
-						selectorY.SetIndex(prevIndexY);
-						selectorX.SetIndex(prevIndexX);
+						if (lines[selectorX.GetIndex()][selectorY.GetIndex()] == null)
+						{
+							selectorY.SetIndex(prevIndexY);
+							selectorX.SetIndex(prevIndexX);
+						}
+						else
+						{
+							lines[selectorX.GetIndex()][selectorY.GetIndex()].SetColor(Color.White);
 					}
 					//selectorX.SetIndex(0);
 
@@ -360,7 +359,7 @@ namespace RPG
 
 			//Draw cursor
 			if(selectorX.GetIndex() == 0)
-				sb.Draw(textbox, new Rectangle((int)pos.X - 10 + cursorBob + spacingX*selectorX.GetIndex(), (int)pos.Y + spacingY * selectorY.GetIndex() + 3, 6, 9), new Rectangle(48, 96, 6, 9), Color.White);
+				sb.Draw(textbox, new Rectangle((int)pos.X - 10 + cursorBob + spacingX * selectorX.GetIndex(), (int)pos.Y + spacingY * selectorY.GetIndex() + 3, 6, 9), new Rectangle(48, 96, 6, 9), Color.White);
 			else
 				sb.Draw(textbox, new Rectangle((int)pos.X - 10 + cursorBob + spacingX * (selectorX.GetIndex() - 1) + defaultSpacingX, (int)pos.Y + spacingY * selectorY.GetIndex() + 3, 6, 9), new Rectangle(48, 96, 6, 9), Color.White);
 
