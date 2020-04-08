@@ -365,11 +365,6 @@
 /processorParam:TextureFormat=Color
 /build:Battle/Yellow.PNG
 
-#begin corneria.tmx
-/importer:TiledMapImporter
-/processor:TiledMapProcessor
-/build:corneria.tmx
-
 #begin Corneria_gutter.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -471,11 +466,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Map/Tazmily/Hinawa/Hinawa.png
-
-#begin Map/Tazmily/Tazmily.tmx
-/importer:TiledMapImporter
-/processor:TiledMapProcessor
-/build:Map/Tazmily/Tazmily.tmx
 
 #begin Map/Transition.png
 /importer:TextureImporter
