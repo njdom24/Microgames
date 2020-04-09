@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{905B6B3B-33B1-49FB-B691-AE30F88CB4F5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TitleScreen.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MainScreen.cs">
     <Files>
       <File FileName="Game1.cs" Line="85" Column="74" />
       <File FileName="Map.cs" Line="96" Column="39" />

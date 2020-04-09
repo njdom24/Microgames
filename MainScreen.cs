@@ -188,14 +188,33 @@ namespace RPG
 						int mouseY = (int)(state.Y * Game1.resMultiplier);
 						pauseMenu.Update(dt, prevStateKb, prevStateM, mouseX, mouseY);
 
-						if (pauseMenu.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY) == 2)
-						{
-							int indX = pauseMenu.GetSelectionX(prevStateKb, prevStateM, mouseX, mouseY);
-							if (indX > 0)
-							{
-								Console.WriteLine("tryna set color");
-								SetColor(indX - 1);
-							}
+						switch (pauseMenu.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY))
+						{ 
+							case 0:
+								if (Mouse.GetState().LeftButton == ButtonState.Released && prevStateM.LeftButton == ButtonState.Pressed)
+								{ 
+									microgame.Unload();
+									cm.Dispose();
+									cm = new ContentManager(contentManager.ServiceProvider);
+									cm.RootDirectory = contentManager.RootDirectory;
+
+									microgame = new TitleScreen(cm, paletteShader);
+									//microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
+
+									curPhase = Phase.Transition;
+									fromGame = true;
+								}
+								break;
+							case 2:
+								int indX = pauseMenu.GetSelectionX(prevStateKb, prevStateM, mouseX, mouseY);
+								if (indX > 0)
+								{
+									Console.WriteLine("tryna set color");
+									SetColor(indX - 1);
+								}
+								break;
+							default:
+								break;	
 						}
 						//pauseMenu.GetSelection(prevStateKb, prevStateM, mouseX, mouseY);
 					}
