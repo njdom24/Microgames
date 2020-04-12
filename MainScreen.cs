@@ -16,11 +16,11 @@ namespace RPG
 
 		private RenderTarget2D mainTarget, lastFrame, bufferTarget;
 		private GraphicsDevice graphicsDevice;
-		private Texture2D lio, stairClimber, pauseScreen;
+		private Texture2D lio, stairClimber, pauseScreen, continueIcon, countdown;
 		private Menu pauseMenu;
 
 		private Effect transition, paletteShader;
-		private double timer;
+		private double timer, countdownTimer;
 		private Song song;
 		private KeyboardState prevStateKb;
 		private MouseState prevStateM;
@@ -30,6 +30,7 @@ namespace RPG
 		private enum Phase { MainMenu, InGame, Transition, BetweenGames, Paused };
 		private Phase curPhase, prevPhase;
 		private bool fromGame;
+		private int continues;
 		private Random random;
 
 		public MainScreen(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp)
@@ -45,6 +46,7 @@ namespace RPG
 			currentFlashes = 7;
 			maxFlashes = 7;
 			timer = 0.2;
+			countdownTimer = 0.0;
 
 			this.graphicsDevice = graphicsDevice;
 
@@ -56,6 +58,8 @@ namespace RPG
 			//lio = contentManager.Load<Texture2D>("Battle/BackgroundL");
 			stairClimber = contentManager.Load<Texture2D>("Map/TransitionAnim");
 			pauseScreen = contentManager.Load<Texture2D>("Menus/PauseScreen");
+			continueIcon = contentManager.Load<Texture2D>("Menus/TransitionButton");
+			countdown = contentManager.Load<Texture2D>("Menus/Countdown");
 
 			transition = contentManager.Load<Effect>("Map/transitions");
 			transition.Parameters["time"].SetValue((float)timer);
@@ -67,6 +71,7 @@ namespace RPG
 			paletteShader.Parameters["col_dark"].SetValue(new Color(64, 64, 0).ToVector4());
 
 			song = contentManager.Load<Song>("Map/pkmnbtl2");
+			continues = 3;
 			//MediaPlayer.Play(song);
 			prevStateKb = Keyboard.GetState();
 			prevStateM = Mouse.GetState();
@@ -144,18 +149,39 @@ namespace RPG
 				case Phase.InGame:
 					byte result = microgame.Update(dt, prevStateKb, prevStateM);
 
+					if(result != 254)
+						countdownTimer += dt.ElapsedGameTime.TotalSeconds;
+
+					//Won game (or time is up but animations are still playing)
 					if (result == 255)
 					{
+						countdownTimer = 0.0;
 						microgame.Unload();
 						cm.Dispose();
 						cm = new ContentManager(contentManager.ServiceProvider);
 						cm.RootDirectory = contentManager.RootDirectory;
 
-						microgame = new BetweenGames(cm);
-						//microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
+						microgame = new BetweenGames(cm, continues, false);
 
 						curPhase = Phase.Transition;
 						fromGame = true;
+					}
+					//Lost game
+					else if (countdownTimer >= 8)
+					{
+						countdownTimer = 0.0;
+
+						microgame.Unload();
+						cm.Dispose();
+						cm = new ContentManager(contentManager.ServiceProvider);
+						cm.RootDirectory = contentManager.RootDirectory;
+
+						continues--;
+						microgame = new BetweenGames(cm, continues, true);
+
+						curPhase = Phase.Transition;
+						fromGame = true;
+						//BetweenGames phase will handle switching to TitleScreen on 0 continues
 					}
 
 					break;
@@ -167,9 +193,11 @@ namespace RPG
 						cm = new ContentManager(contentManager.ServiceProvider);
 						cm.RootDirectory = contentManager.RootDirectory;
 
-						//microgame = new Battle(cm, bufferTarget, graphicsDevice, pp);
-						//microgame = new FallingApples(cm, graphicsDevice);
-						microgame = ChooseGame();
+						if (continues > 0)
+							microgame = ChooseGame();
+						else
+							microgame = new TitleScreen(cm, paletteShader);
+		
 						curPhase = Phase.Transition;
 						fromGame = false;
 					}
@@ -248,7 +276,7 @@ namespace RPG
 				microgame.Draw(sb);
 				sb.Begin(blendState: BlendState.Opaque);
 
-				//Sidebars
+				//Top/bottom bars
 				sb.Draw(lio, new Rectangle(0, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Transparent);
 				sb.Draw(lio, new Rectangle(Game1.width + 1, 0, 1, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.Transparent);
 
@@ -273,6 +301,10 @@ namespace RPG
 				case Phase.InGame:
 					graphicsDevice.SetRenderTarget(bufferTarget);
 					microgame.Draw(sb);
+					sb.Begin();
+					int offset = countdownTimer >= 8 ? 7*48 : ((int)countdownTimer) * 48;
+					sb.Draw(countdown, new Rectangle(0, 0, 48, countdown.Height), new Rectangle(offset, 0, 48, countdown.Height), Color.White);
+					sb.End();
 					//microgame.Draw(sb);
 					break;
 				case Phase.Transition:
@@ -311,7 +343,6 @@ namespace RPG
 						sb.End();
 						microgame.Draw(sb);
 						sb.Begin();
-
 
 						//Top and bottom bars, don't draw during transition screen
 						if (!(microgame is BetweenGames))
@@ -362,7 +393,6 @@ namespace RPG
 				case Phase.BetweenGames:
 					graphicsDevice.SetRenderTarget(bufferTarget);
 					microgame.Draw(sb);
-
 					break;
 					
 				case Phase.Paused:

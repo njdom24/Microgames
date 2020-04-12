@@ -69,8 +69,12 @@
     <File>/home/damino/Documents/Microgames/Content/Galaga/BG.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/PauseScreen.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton_Lost.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/Countdown.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

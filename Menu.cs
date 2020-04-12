@@ -169,14 +169,14 @@ namespace RPG
 					selectorY.SetIndex((mouseY - offsetY) / height - 1);
 					selectorX.SetIndex((mouseX - offsetX - defaultSpacingX + 4) / spacingX);
 
-						if (lines[selectorX.GetIndex()][selectorY.GetIndex()] == null)
-						{
-							selectorY.SetIndex(prevIndexY);
-							selectorX.SetIndex(prevIndexX);
-						}
-						else
-						{
-							lines[selectorX.GetIndex()][selectorY.GetIndex()].SetColor(Color.White);
+					if (lines[selectorX.GetIndex()][selectorY.GetIndex()] == null)
+					{
+						selectorY.SetIndex(prevIndexY);
+						selectorX.SetIndex(prevIndexX);
+					}
+					else
+					{
+						lines[selectorX.GetIndex()][selectorY.GetIndex()].SetColor(Color.White);
 					}
 					//selectorX.SetIndex(0);
 

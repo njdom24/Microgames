@@ -4,6 +4,9 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>/home/damino/Documents/Microgames/Content/Menus/Countdown.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton_Lost.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/003.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/003Atlas.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/003Byte.png</File>
@@ -68,6 +71,5 @@
     <File>/home/damino/Documents/Microgames/Content/FallingApples/wizJUNP_Back.png</File>
     <File>/home/damino/Documents/Microgames/Content/Galaga/BG.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/PauseScreen.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton.png</File>
   </SourceFiles>
 </SourceFileCollection>

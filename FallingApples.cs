@@ -199,13 +199,14 @@ namespace RPG
 
 				basketBody.SetTransform(new Vector2((float)mouseX, Game1.height - basket.Height/2 - 18), 0);
 			}
-			//TODO: MOVE THE DRAW UP
 
-
+			//Destroys apples that go below the screen
 			for (int i = 0; i < apples.Count; i++)
 			{
 				if (apples[i] != null && (apples[i].Update(dt.ElapsedGameTime.TotalSeconds * 2)))
+				{
 					apples.RemoveAt(i);
+				}
 			}
 
 			spawnTimer += dt.ElapsedGameTime.TotalSeconds;

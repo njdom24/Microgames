@@ -57,8 +57,7 @@ namespace RPG
 		private Texture2D combatIndicator;
 		private Texture2D palette;
 
-		private int playerMove;
-		private int enemyMove;
+		private int playerMove, enemyMove;
 
 		private enum Phase {IntroPhase, PlayerPhase, SelectTarget, EnemyPhase, AttackPhase, AnimPhase, BlinkPhase, PlayerDeathPhase, EnemyDeathPhase, YouWin};
 		private Phase curPhase;
@@ -69,7 +68,7 @@ namespace RPG
 		private double animTimer;
 		private double darkenTimer;
 		private bool enemyDraw;
-		private byte flashCount;
+		private byte flashCount, toReturn;
 
 		private bool deathMessageDisplayed;
 
@@ -125,6 +124,7 @@ namespace RPG
 			timerMult = 1;
 
 			darkenTimer = 1;
+			toReturn = 1;
 		}
 
 		void MiniScreen.Unload()
@@ -417,10 +417,10 @@ namespace RPG
 
 			//prevState = Keyboard.GetState();
 
-			if (prevStateKb.IsKeyDown(Keys.Q) && Keyboard.GetState().IsKeyUp(Keys.Q))
-				return 255;
+			//if (prevStateKb.IsKeyDown(Keys.Q) && Keyboard.GetState().IsKeyUp(Keys.Q))
+			//	return 255;
 
-			return 1;
+			return toReturn;
 		}
 
 		private void advanceBattle(GameTime gameTime, KeyboardState prevStateKb, MouseState prevStateM)
@@ -453,6 +453,7 @@ namespace RPG
 							//magic.Dispose();
 							playerMove = 1;
 							magic = content.Load<Texture2D>("Battle/Effects/PkFireA_GRN");
+							toReturn = 254;
 
 							curPhase = Phase.EnemyPhase;
 						}

@@ -68,7 +68,7 @@ namespace RPG
 			options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Test1", "Test2" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 			phase = Phase.Title;
 
-			backButton = new Button(contentManager, 0, Game1.height - 30);
+			backButton = new Button(contentManager, 4, Game1.height - 30);
 
 			//startButton = new Button(contentManager, Game1.width / 2, Game1.height / 2);
 		}
@@ -142,7 +142,7 @@ namespace RPG
 			sb.Begin();
 			//Adjust for output buffer
 			sb.Draw(background, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
-			sb.Draw(sprite, new Rectangle(Game1.width-sprite.Width, Game1.height - sprite.Height, sprite.Width, sprite.Height), new Rectangle(0, 0, sprite.Width, sprite.Height), Color.White);
+			sb.Draw(sprite, new Rectangle(0, Game1.height - sprite.Height, sprite.Width, sprite.Height), new Rectangle(0, 0, sprite.Width, sprite.Height), Color.White);
 			options.Draw(sb);
 			//startButton.Draw(sb);
 			if(phase == Phase.Settings)
