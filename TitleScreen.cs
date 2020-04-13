@@ -23,12 +23,12 @@ namespace RPG
 		//Order should be lightest to darkest
 		public static Tuple<Vector4, Vector4, Vector4, Vector4>[] palettes =
 		{
-			//Default (Game Boy)
-			Tuple.Create(new Color(192, 192, 128).ToVector4(),
-			             new Color(160, 160, 96).ToVector4(),
-						 new Color(128, 128, 64).ToVector4(),
-			             new Color(64, 64, 0).ToVector4()),
-
+			//Default (Stylish)
+			Tuple.Create(new Color(250, 231, 190).ToVector4(),//skin
+						 new Color(234, 80, 115).ToVector4(),//blush
+						 new Color(113, 68, 123).ToVector4(),//purple
+						 new Color(176, 108, 57).ToVector4()),//brown
+			
 			//Deuteranopia
 			Tuple.Create(new Color(225, 255, 245).ToVector4(),
 						 new Color(160, 95, 190).ToVector4(),
@@ -47,12 +47,13 @@ namespace RPG
 						 new Color(7, 81, 156).ToVector4(),
 						 new Color(49, 130, 189).ToVector4(),
 						 new Color(105, 90, 140).ToVector4()),
+			
+			//Game Boy
+			Tuple.Create(new Color(192, 192, 128).ToVector4(),
+						 new Color(160, 160, 96).ToVector4(),
+						 new Color(128, 128, 64).ToVector4(),
+						 new Color(64, 64, 0).ToVector4()),
 
-			//Stylish
-			Tuple.Create(new Color(250, 231, 190).ToVector4(),//skin
-						 new Color(234, 80, 115).ToVector4(),//blush
-						 new Color(113, 68, 123).ToVector4(),//purple
-						 new Color(176, 108, 57).ToVector4())//brown
 		};
 
 		//Intentionally keep inner and outer MouseStates separate so pausing doesn't act weird

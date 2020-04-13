@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework.Media;
+using System.IO;
+using System.Text;
 
 namespace RPG
 {
@@ -35,14 +37,22 @@ namespace RPG
 		private int continues;
 		private Random random;
 
-		public MainScreen(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp)
+		private FileStream fs;
+
+		public MainScreen(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp, FileStream fs)
 		{
 			this.contentManager = contentManager;
+			this.fs = fs;
 			cm = new ContentManager(contentManager.ServiceProvider);
 			cm.RootDirectory = contentManager.RootDirectory;
 			this.pp = pp;
 
-			curPhase = Phase.Introduction;
+			//Console.WriteLine("BYTE: " + fs.ReadByte());
+			if (fs.ReadByte().Equals(49))
+				curPhase = Phase.MainMenu;
+			else
+				curPhase = Phase.Introduction;
+			
 			fromGame = false;
 			//curPhase = Phase.BetweenGames;
 			currentFlashes = 7;
@@ -69,10 +79,10 @@ namespace RPG
 			transition.Parameters["time"].SetValue((float)timer);
 
 			paletteShader = contentManager.Load<Effect>("Battle/BattleBG");
-			paletteShader.Parameters["col_light"].SetValue(new Color(192, 192, 128).ToVector4());
-			paletteShader.Parameters["col_extra"].SetValue(new Color(160, 160, 96).ToVector4());
-			paletteShader.Parameters["col_med"].SetValue(new Color(128, 128, 64).ToVector4());
-			paletteShader.Parameters["col_dark"].SetValue(new Color(64, 64, 0).ToVector4());
+			paletteShader.Parameters["col_light"].SetValue(new Color(250, 231, 190).ToVector4());
+			paletteShader.Parameters["col_extra"].SetValue(new Color(234, 80, 115).ToVector4());
+			paletteShader.Parameters["col_med"].SetValue(new Color(113, 68, 123).ToVector4());
+			paletteShader.Parameters["col_dark"].SetValue(new Color(176, 108, 57).ToVector4());
 
 			song = contentManager.Load<Song>("Map/pkmnbtl2");
 			continues = 3;
@@ -144,8 +154,13 @@ namespace RPG
 					introText.Update(dt, prevStateKb, prevStateM);
 					if (introText.messageComplete())
 					{ 
+						//TODO: Make an exit button
 						if (prevStateKb.IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyDown(Keys.Space) || (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
 						{
+							byte[] bytes = Encoding.UTF8.GetBytes("1\n");
+							fs.Write(bytes, 0, bytes.Length);
+							fs.Close();
+
 							curPhase = Phase.MainMenu;
 						}
 					}
@@ -194,7 +209,14 @@ namespace RPG
 						cm = new ContentManager(contentManager.ServiceProvider);
 						cm.RootDirectory = contentManager.RootDirectory;
 
-						microgame = new BetweenGames(cm, continues, false);
+						if (continues <= 2)
+						{
+							//Regain a life
+							microgame = new BetweenGames(cm, continues, false, true);
+							continues++;
+						}
+						else
+							microgame = new BetweenGames(cm, continues, false);
 
 						curPhase = Phase.Transition;
 						fromGame = true;
@@ -229,7 +251,10 @@ namespace RPG
 						if (continues > 0)
 							microgame = ChooseGame();
 						else
+						{
+							continues = 3;
 							microgame = new TitleScreen(cm, paletteShader);
+						}
 		
 						curPhase = Phase.Transition;
 						fromGame = false;
@@ -320,8 +345,6 @@ namespace RPG
 					((Battle)microgame).ChangeTarget(bufferTarget);
 				}
 			}
-
-
 
 			switch (curPhase)
 			{
@@ -522,10 +545,6 @@ namespace RPG
 				sb.Draw(bufferTarget, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
 				sb.End();
 			}
-			
-
-
-
 
 		}
 

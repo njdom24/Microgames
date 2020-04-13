@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.IO;
 
 namespace RPG
 {
@@ -66,7 +67,8 @@ namespace RPG
 			//nearest = bilinear = original;
 			//currentScreen = new OldMap(GraphicsDevice, Content, 16, 16, 10, 10);
 			//currentScreen = new Battle(Content, original, GraphicsDevice, pp);
-			currentScreen = new MainScreen(Content, original, GraphicsDevice, pp);
+			FileStream fs = File.Open("save.txt", System.IO.FileMode.OpenOrCreate);
+			currentScreen = new MainScreen(Content, original, GraphicsDevice, pp, fs);
 			//currentScreen = new Map(GraphicsDevice, Content, 48, 48, 10, 10);
 			//currentScreen = new Environment();
 			sb = new SpriteBatch(GraphicsDevice);

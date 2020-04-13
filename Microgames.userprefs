@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{905B6B3B-33B1-49FB-B691-AE30F88CB4F5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MainScreen.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Game1.cs">
     <Files>
       <File FileName="Game1.cs" Line="24" Column="17" />
       <File FileName="Microgame.cs" Line="45" Column="4" />

@@ -15,9 +15,10 @@ namespace RPG
 		private double timer, fallTimer;
 		public int continues, lastDrawnContinues;
 		private Rectangle[] positions;
+		private bool regain;
 		//If continues != lastDrawnContinues, that means it was just lost and must be animated
 
-		public BetweenGames(ContentManager contentManager, int continues = 3, bool lost = true)
+		public BetweenGames(ContentManager contentManager, int continues = 3, bool lost = true, bool regain = false)
 		{
 			background = contentManager.Load<Texture2D>("Menus/TransBG_GRN");
 			wizZoom = contentManager.Load<Texture2D>("Menus/wizZOOM");
@@ -26,6 +27,7 @@ namespace RPG
 			animTimer = 0.0;
 			timer = 0.0;
 			fallTimer = 0.0;
+			this.regain = regain;
 			this.continues = continues;
 
 			if (lost)
@@ -51,7 +53,10 @@ namespace RPG
 			animTimer += dt.ElapsedGameTime.TotalSeconds * 40;
 
 			if(timer > 6)
-				fallTimer += dt.ElapsedGameTime.TotalSeconds * 20;
+				if (regain)
+					fallTimer -= dt.ElapsedGameTime.TotalSeconds * 20;
+				else
+					fallTimer += dt.ElapsedGameTime.TotalSeconds * 20;
 			
 			if (animTimer > 4*40)
 				return 255;
@@ -71,7 +76,16 @@ namespace RPG
 			if (lastDrawnContinues > continues)
 			{
 				int x = positions[lastDrawnContinues - 1].X;
-				sb.Draw(lostIcon, new Rectangle(x, Game1.height - continueIcon.Height + (int)(fallTimer*10), continueIcon.Width, continueIcon.Height), new Rectangle(0, 0, continueIcon.Width, continueIcon.Height), Color.White);
+				sb.Draw(lostIcon, new Rectangle(x, Game1.height - continueIcon.Height + (int)(fallTimer * 10), continueIcon.Width, continueIcon.Height), new Rectangle(0, 0, continueIcon.Width, continueIcon.Height), Color.White);
+			}
+			else if (regain)
+			{
+				int x = positions[continues].X;
+				int expectedHeight = positions[continues].Y;
+				if ((int)(Game1.height * 1.3) + (int)(fallTimer * 10) <= expectedHeight)
+					sb.Draw(continueIcon, new Rectangle(x, expectedHeight, continueIcon.Width, continueIcon.Height), new Rectangle(0, 0, continueIcon.Width, continueIcon.Height), Color.White);
+				else
+					sb.Draw(continueIcon, new Rectangle(x, (int)(Game1.height*1.3) + (int)(fallTimer * 10), continueIcon.Width, continueIcon.Height), new Rectangle(0, 0, continueIcon.Width, continueIcon.Height), Color.White);
 			}
 		}
 
