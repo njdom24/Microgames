@@ -71,8 +71,10 @@
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton_Lost.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/Countdown.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/Controls.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

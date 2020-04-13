@@ -16,8 +16,10 @@ namespace RPG
 
 		private RenderTarget2D mainTarget, lastFrame, bufferTarget;
 		private GraphicsDevice graphicsDevice;
-		private Texture2D lio, stairClimber, pauseScreen, continueIcon, countdown;
+		private Texture2D lio, stairClimber, pauseScreen, continueIcon, countdown, controls;
 		private Menu pauseMenu;
+		private Hud introText;
+		private bool controlsShown;
 
 		private Effect transition, paletteShader;
 		private double timer, countdownTimer;
@@ -27,7 +29,7 @@ namespace RPG
 
 		int currentFlashes, maxFlashes;
 
-		private enum Phase { MainMenu, InGame, Transition, BetweenGames, Paused };
+		private enum Phase { Introduction, FinalMessage, MainMenu, InGame, Transition, BetweenGames, Paused };
 		private Phase curPhase, prevPhase;
 		private bool fromGame;
 		private int continues;
@@ -40,13 +42,14 @@ namespace RPG
 			cm.RootDirectory = contentManager.RootDirectory;
 			this.pp = pp;
 
-			curPhase = Phase.MainMenu;
+			curPhase = Phase.Introduction;
 			fromGame = false;
 			//curPhase = Phase.BetweenGames;
 			currentFlashes = 7;
 			maxFlashes = 7;
 			timer = 0.2;
 			countdownTimer = 0.0;
+			controlsShown = false;
 
 			this.graphicsDevice = graphicsDevice;
 
@@ -60,6 +63,7 @@ namespace RPG
 			pauseScreen = contentManager.Load<Texture2D>("Menus/PauseScreen");
 			continueIcon = contentManager.Load<Texture2D>("Menus/TransitionButton");
 			countdown = contentManager.Load<Texture2D>("Menus/Countdown");
+			controls = contentManager.Load<Texture2D>("Menus/Controls");
 
 			transition = contentManager.Load<Effect>("Map/transitions");
 			transition.Parameters["time"].SetValue((float)timer);
@@ -79,6 +83,8 @@ namespace RPG
 			microgame = new TitleScreen(cm, paletteShader);
 
 			random = new Random();
+
+			introText = new Hud(new string[] { "Welcome to Microgames!\nClick the mouse or press the spacebar to continue.", "Because this is your first time, continue to see\nthe controls." }, cm, 30, 2, posY: -1, canClose: true);
 
 			pauseMenu = new Menu(contentManager, new string[] { "Return to Title", "Volume", "Palette", null, null, "P1", null, null, "P2", null, null, "P3", null, null, "P4", null, null, "P5" }, 3, 69, offsetX: Game1.width / 4, offsetY: Game1.height / 2, defaultSpacingX: 75);
 		}
@@ -117,6 +123,33 @@ namespace RPG
 			}
 			else switch (curPhase) 
 			{
+				case Phase.Introduction:
+					introText.Update(dt, prevStateKb, prevStateM);
+
+					if (introText.messageComplete())
+					{
+						if (!controlsShown)
+						{
+							controlsShown = true;
+							break;
+						}
+						else if (prevStateKb.IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyDown(Keys.Space) || (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
+						{
+							curPhase = Phase.FinalMessage;
+							introText = new Hud(new string[] { "You can revisit that screen in Settings.\nHave fun!" }, cm, 30, 2, posY: -1, canClose: true);
+						}
+					}
+					break;
+				case Phase.FinalMessage:
+					introText.Update(dt, prevStateKb, prevStateM);
+					if (introText.messageComplete())
+					{ 
+						if (prevStateKb.IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyDown(Keys.Space) || (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
+						{
+							curPhase = Phase.MainMenu;
+						}
+					}
+					break;
 				case Phase.MainMenu:
 					switch (microgame.Update(dt, prevStateKb, prevStateM))
 					{
@@ -292,6 +325,27 @@ namespace RPG
 
 			switch (curPhase)
 			{
+				case Phase.Introduction:
+					graphicsDevice.SetRenderTarget(bufferTarget);
+					microgame.Draw(sb);
+
+					sb.Begin();
+					introText.Draw(sb);
+
+					if (introText.messageComplete())
+					{
+						sb.Draw(controls, new Rectangle(0, 0, controls.Width, controls.Height), Color.White);
+					}
+					sb.End();
+					break;
+				case Phase.FinalMessage:
+					graphicsDevice.SetRenderTarget(bufferTarget);
+					microgame.Draw(sb);
+
+					sb.Begin();
+					introText.Draw(sb);
+					sb.End();
+					break;	
 				case Phase.MainMenu:
 					graphicsDevice.SetRenderTarget(bufferTarget);
 					microgame.Draw(sb);

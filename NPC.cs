@@ -73,7 +73,7 @@ namespace RPG
 			else
 			{
 				offsetX = 9;//multiplied in draw by width
-				offsetY = 27;//not multiplied, FIX THIS!!!
+				offsetY = 27;
 			}
 			if (vertical)
 				curStateH = HorizontalState.None;

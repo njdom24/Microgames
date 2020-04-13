@@ -1,14 +1,6 @@
-﻿using FarseerPhysics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Tiled;
-using MonoGame.Extended.Tiled.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 
 namespace RPG
 {
@@ -17,11 +9,7 @@ namespace RPG
 	/// </summary>
 	public class Game1 : Game
 	{
-		//GraphicsDeviceManager graphics;
-
 		private GraphicsDeviceManager manager;
-		private Screen myMap;
-		private Screen battle;
 		private Screen currentScreen;
 		private SpriteBatch sb;
 		private SpriteBatch render;
@@ -32,10 +20,6 @@ namespace RPG
 		public static readonly int width = 320;//400;
 		public static readonly int height = 180;//240;
 		public static float resMultiplier;
-
-		//private Texture2D light;
-
-		//private Texture2D tileset;
 
 		public Game1()
 		{

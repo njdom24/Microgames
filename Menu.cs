@@ -112,7 +112,7 @@ namespace RPG
 		public int GetSelection(KeyboardState prevStateKb, MouseState prevStateM, int mouseX, int mouseY)
 		{
 
-			if (prevStateKb.IsKeyDown(Keys.Space) && Keyboard.GetState().IsKeyUp(Keys.Space))
+			if (prevStateKb.IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyDown(Keys.Space))
 				return selectorY.GetIndex();
 			if (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released)
 			{
