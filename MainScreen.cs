@@ -326,17 +326,16 @@ namespace RPG
 			switch (curPhase)
 			{
 				case Phase.Introduction:
+					
 					graphicsDevice.SetRenderTarget(bufferTarget);
 					microgame.Draw(sb);
-
-					sb.Begin();
-					introText.Draw(sb);
-
-					if (introText.messageComplete())
+					if (!introText.messageComplete())
 					{
-						sb.Draw(controls, new Rectangle(0, 0, controls.Width, controls.Height), Color.White);
+						sb.Begin();
+						introText.Draw(sb);
+						sb.End();
 					}
-					sb.End();
+
 					break;
 				case Phase.FinalMessage:
 					graphicsDevice.SetRenderTarget(bufferTarget);
@@ -457,13 +456,48 @@ namespace RPG
 			graphicsDevice.SetRenderTarget(mainTarget);
 			sb.Begin(SpriteSortMode.Immediate);
 
-			if (curPhase != Phase.Paused)
+			if (curPhase == Phase.Introduction || curPhase == Phase.FinalMessage)
+			{
+				Console.WriteLine("FSAFSAF");
+				paletteShader.Techniques[3].Passes[0].Apply();
+				sb.Draw(bufferTarget, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
+				sb.End();
+
+				sb.Begin(SpriteSortMode.Immediate);
+				paletteShader.Techniques[1].Passes[0].Apply();
+
+				sb.End();
+
+				graphicsDevice.SetRenderTarget(bufferTarget);
+				graphicsDevice.Clear(Color.Transparent);
+				sb.Begin(blendState: BlendState.AlphaBlend);
+				//The text is becoming white because the shader overrides it. Need to render the text to a buffer first
+
+				
+				sb.End();
+
+				graphicsDevice.SetRenderTarget(mainTarget);
+				sb.Begin(SpriteSortMode.Immediate);
+				paletteShader.Techniques[1].Passes[0].Apply();
+				sb.Draw(bufferTarget, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
+				if (introText.messageComplete())
+				{
+					sb.Draw(controls, new Rectangle(0, 0, controls.Width, controls.Height), Color.White);
+				}
+				else
+				{
+					//sb.Begin();
+					introText.Draw(sb);
+					//sb.End();
+				}
+				sb.End();
+			}
+			else if (curPhase != Phase.Paused)
 			{
 				paletteShader.Techniques[1].Passes[0].Apply();
 				sb.Draw(bufferTarget, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(0, 0, Game1.width, Game1.height), Color.White);
 				sb.End();
 			}
-
 			else
 			{
 				paletteShader.Techniques[3].Passes[0].Apply();
