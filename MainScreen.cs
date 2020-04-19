@@ -146,7 +146,7 @@ namespace RPG
 						else if (prevStateKb.IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyDown(Keys.Space) || (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
 						{
 							curPhase = Phase.FinalMessage;
-							introText = new Hud(new string[] { "You can revisit that screen in Settings.\nHave fun!" }, cm, 30, 2, posY: -1, canClose: true);
+							introText = new Hud(new string[] {"You can revisit that screen in Settings.\nHave fun!" }, cm, 30, 2, posY: -1, canClose: true);
 						}
 					}
 					break;

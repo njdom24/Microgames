@@ -67,8 +67,9 @@ namespace RPG
 	public class FallingApples : MiniScreen
 	{
 		private Texture2D background, basket, hat, apple;
+		private Texture2D animatedBG;
 		private double mouseX;
-		private double spawnTimer;
+		private double spawnTimer, bgTimer;
 		private int maxVelocity;
 		private int mousePos;
 		private int collectedCount;
@@ -89,8 +90,11 @@ namespace RPG
 			hat = contentManager.Load<Texture2D>("FallingApples/wizJUNP_Back");
 			basket = contentManager.Load<Texture2D>("FallingApples/wizJUNP");
 			apple = contentManager.Load<Texture2D>("FallingApples/Apple");
+			animatedBG = contentManager.Load<Texture2D>("FallingApples/background_grn");
+
 			timer = 0.0;
 			spawnTimer = 0.0;
+			bgTimer = 0.0;
 			maxVelocity = 200;
 			ConvertUnits.SetDisplayUnitToSimUnitRatio(10);
 			world = new World(Vector2.Zero);
@@ -137,6 +141,12 @@ namespace RPG
 			sb.Begin();
 			sb.Draw(background, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(220, 48, 3, 3), new Color(30,30,30));//Sourcing white background from a placeholder spritesheet
 
+			int index = (int)bgTimer;
+			int indexX = index % 50 * Game1.width;
+			int indexY = index / 50 * Game1.height;
+
+			sb.Draw(animatedBG, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(indexX, indexY, Game1.width, Game1.height), Color.White);
+
 			sb.Draw(hat, new Rectangle((int)basketBody.Position.X - basket.Width / 2, (int)basketBody.Position.Y - basket.Height / 8 - 20, basket.Width, basket.Height), new Rectangle(0, 0, basket.Width, basket.Height), Color.White);
 
 			foreach (Apple a in apples)
@@ -160,6 +170,9 @@ namespace RPG
 		public byte Update(GameTime dt, KeyboardState prevStateKb, MouseState prevStateM)
 		{
 			timer += dt.ElapsedGameTime.TotalSeconds * 2;
+			bgTimer += dt.ElapsedGameTime.TotalSeconds * 24;//background moves at 24fps
+
+			bgTimer %= 149;
 
 			//Don't need widthOffset due to body position being centered around the body
 			int widthOffset = basket.Width / 2;
