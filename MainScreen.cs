@@ -34,7 +34,7 @@ namespace RPG
 		private enum Phase { Introduction, FinalMessage, MainMenu, InGame, Transition, BetweenGames, Paused };
 		private Phase curPhase, prevPhase;
 		private bool fromGame;
-		private int continues;
+		private int continues, score;
 		private Random random;
 
 		private FileStream fs;
@@ -86,6 +86,7 @@ namespace RPG
 
 			song = contentManager.Load<Song>("Map/pkmnbtl2");
 			continues = 3;
+			score = 0;
 			//MediaPlayer.Play(song);
 			prevStateKb = Keyboard.GetState();
 			prevStateM = Mouse.GetState();
@@ -203,6 +204,7 @@ namespace RPG
 					//Won game (or time is up but animations are still playing)
 					if (result == 255)
 					{
+						score++;
 						countdownTimer = 0.0;
 						microgame.Unload();
 						cm.Dispose();
@@ -212,11 +214,11 @@ namespace RPG
 						if (continues <= 2)
 						{
 							//Regain a life
-							microgame = new BetweenGames(cm, continues, false, true);
+							microgame = new BetweenGames(cm, score, continues, false, true);
 							continues++;
 						}
 						else
-							microgame = new BetweenGames(cm, continues, false);
+							microgame = new BetweenGames(cm, score, continues, false);
 
 						curPhase = Phase.Transition;
 						fromGame = true;
@@ -232,7 +234,7 @@ namespace RPG
 						cm.RootDirectory = contentManager.RootDirectory;
 
 						continues--;
-						microgame = new BetweenGames(cm, continues, true);
+						microgame = new BetweenGames(cm, score, continues, true);
 
 						curPhase = Phase.Transition;
 						fromGame = true;

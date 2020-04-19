@@ -11,7 +11,7 @@ namespace RPG
 {
 	class ScrollingVal
 	{
-		private Texture2D scrollingNums;
+		private Texture2D scrollingNums, bg;
 		private double numTimer;
 		private int countdown;
 
@@ -22,6 +22,7 @@ namespace RPG
 		public ScrollingVal(ContentManager contentManager, int defaultVal = 0)
 		{
 			scrollingNums = contentManager.Load<Texture2D>("Battle/Numbers/ScrollingNums");//5x8
+			bg = contentManager.Load<Texture2D>("Menus/TransitionPlate");
 
 			rollingHealth = defaultVal;
 			hund = (sbyte)(rollingHealth / 100);
@@ -33,7 +34,7 @@ namespace RPG
 		{
 			rollingHealth = one + 10 * ten + 100 * hund;
 			if (rollingHealth != health)
-				numTimer += gameTime.ElapsedGameTime.TotalSeconds;
+				numTimer += gameTime.ElapsedGameTime.TotalSeconds/10;
 
 			if (numTimer > 0.01)//100 pixels per second
 			{
@@ -108,6 +109,8 @@ namespace RPG
 
 		public void Draw(SpriteBatch sb, Vector2 pos, int health)
 		{
+			sb.Draw(bg, new Vector2(0, 0), Color.White);
+
 			if (rollingHealth < health)
 			{
 				sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45, (int)pos.Y + 22, 5, 8), new Rectangle(0, one * 9 - 1 + countdown, 5, 8), Color.White);

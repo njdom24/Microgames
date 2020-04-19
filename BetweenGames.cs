@@ -16,17 +16,27 @@ namespace RPG
 		public int continues, lastDrawnContinues;
 		private Rectangle[] positions;
 		private bool regain;
+		private int score;
+		private ScrollingVal scoreDisplay;
 		//If continues != lastDrawnContinues, that means it was just lost and must be animated
 
-		public BetweenGames(ContentManager contentManager, int continues = 3, bool lost = true, bool regain = false)
+		public BetweenGames(ContentManager contentManager, int score, int continues = 3, bool lost = true, bool regain = false)
 		{
 			background = contentManager.Load<Texture2D>("Menus/TransBG_GRN");
 			wizZoom = contentManager.Load<Texture2D>("Menus/wizZOOM");
 			continueIcon = contentManager.Load<Texture2D>("Menus/TransitionButton");
 			lostIcon = contentManager.Load<Texture2D>("Menus/TransitionButton_Lost");
+
+			if(lost)
+				scoreDisplay = new ScrollingVal(contentManager, score);
+			else
+				scoreDisplay = new ScrollingVal(contentManager, score-1);
+			
 			animTimer = 0.0;
 			timer = 0.0;
 			fallTimer = 0.0;
+
+			this.score = score;
 			this.regain = regain;
 			this.continues = continues;
 
@@ -57,6 +67,8 @@ namespace RPG
 					fallTimer -= dt.ElapsedGameTime.TotalSeconds * 20;
 				else
 					fallTimer += dt.ElapsedGameTime.TotalSeconds * 20;
+			
+			scoreDisplay.Update(dt, score);
 			
 			if (animTimer > 4*40)
 				return 255;
@@ -100,6 +112,8 @@ namespace RPG
 
 			Console.WriteLine("timeroffset: " + heightOffset);
 			sb.Draw(wizZoom, new Rectangle((Game1.width - wizZoom.Width)/2, (Game1.height - wizZoom.Height) / 2 + (int)heightOffset, wizZoom.Width, wizZoom.Height), new Rectangle(0, 0, wizZoom.Width, wizZoom.Height), Color.White);
+
+			scoreDisplay.Draw(sb, Vector2.Zero, score);
 
 			if (animTimer < 4 * 39.5)
 				DrawContinues(sb);
