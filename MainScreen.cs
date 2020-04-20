@@ -82,10 +82,7 @@ namespace RPG
 			transition.Parameters["time"].SetValue((float)timer);
 
 			paletteShader = contentManager.Load<Effect>("Battle/BattleBG");
-			paletteShader.Parameters["col_light"].SetValue(new Color(250, 231, 190).ToVector4());
-			paletteShader.Parameters["col_extra"].SetValue(new Color(234, 80, 115).ToVector4());
-			paletteShader.Parameters["col_med"].SetValue(new Color(113, 68, 123).ToVector4());
-			paletteShader.Parameters["col_dark"].SetValue(new Color(176, 108, 57).ToVector4());
+			SetColor(GetSaveElem("Palette"));//Restore palette from save
 
 			song = contentManager.Load<Song>("Map/pkmnbtl2");
 			continues = 3;
@@ -101,6 +98,70 @@ namespace RPG
 			introText = new Hud(new string[] { "Welcome to Microgames!\nClick the mouse or press the spacebar to continue.", "Because this is your first time, continue to see\nthe controls." }, cm, 30, 2, posY: -1, canClose: true);
 
 			pauseMenu = new Menu(contentManager, new string[] { "Return to Title", "Volume", "Palette", null, null, "P1", null, null, "P2", null, null, "P3", null, null, "P4", null, null, "P5" }, 3, 69, offsetX: Game1.width / 4, offsetY: Game1.height / 2, defaultSpacingX: 75);
+		}
+
+		int GetSaveElem(string elem)
+		{
+			elem += ": ";
+			StreamReader file = new StreamReader("save.txt");
+			string fileText = file.ReadToEnd();
+			file.Close();
+
+			int elemIndex = fileText.IndexOf(elem, 0, StringComparison.CurrentCulture) + elem.Length;
+			int endIndex = fileText.IndexOf('\n', elemIndex);
+			if (endIndex == -1)
+				endIndex = fileText.Length - 1;
+
+			return int.Parse(fileText.Substring(elemIndex, endIndex - elemIndex));
+		}
+
+		public static void UpdateSaveElem(string elem, int val)
+		{
+			elem += ": ";
+			StreamReader file = new StreamReader("save.txt");
+			string fileText = file.ReadToEnd();
+			file.Close();
+
+			StreamWriter outFile = new StreamWriter("save.txt");
+
+			int beforeText = fileText.IndexOf(elem, 0, StringComparison.CurrentCulture);
+			int afterText = fileText.IndexOf('\n', beforeText);
+			if (afterText == -1)
+				afterText = fileText.Length - 1;
+			int afterIndex = beforeText + elem.Length;
+
+			string outputText = fileText.Substring(0, beforeText) + elem + val + fileText.Substring(afterText);
+			outFile.Write(outputText);
+
+			outFile.Close();
+		}
+
+		double GetLossRatio(string game)
+		{
+			game += ": ";
+
+			StreamReader file = new StreamReader("save.txt");
+			string fileText = file.ReadToEnd();
+			file.Close();
+
+			int afterIndex = fileText.IndexOf(game, 0, StringComparison.CurrentCulture) + game.Length;
+			int afterWins = fileText.IndexOf('W', afterIndex);
+			string wins = fileText.Substring(afterIndex, afterWins - afterIndex);
+
+			int lossIndex = fileText.IndexOf('L', afterWins + 2);
+			string losses = fileText.Substring(afterWins + 2, lossIndex - afterWins - 2);
+			double winCount = int.Parse(wins);
+			double lossCount = int.Parse(losses);
+
+			return lossCount / (winCount + lossCount);
+		}
+
+		MiniScreen GetMostLost()
+		{
+			if (GetLossRatio("Battle") > GetLossRatio("Apples"))
+				return new Battle(cm, bufferTarget, graphicsDevice, pp);
+			else
+				return new FallingApples(cm, graphicsDevice);
 		}
 
 		void UpdateSaveGame(string game, bool won)
@@ -133,6 +194,7 @@ namespace RPG
 
 		void SetColor(int index)
 		{
+			UpdateSaveElem("Palette", index);
 			Tuple<Vector4, Vector4, Vector4, Vector4> rgba = TitleScreen.palettes[index];
 			paletteShader.Parameters["col_light"].SetValue(rgba.Item1);
 			paletteShader.Parameters["col_extra"].SetValue(rgba.Item2);
@@ -208,12 +270,19 @@ namespace RPG
 							cm.Dispose();
 							cm = new ContentManager(contentManager.ServiceProvider);
 							cm.RootDirectory = contentManager.RootDirectory;
-							//microgame = new Battle(cm, bufferTarget, graphicsDevice, pp);
-							//microgame = new FallingApples(cm, graphicsDevice);
 							microgame = ChooseGame();
 							//microgame = new TitleScreen(cm);
 							curPhase = Phase.Transition;
 							break;
+						case 2:
+								microgame.Unload();
+								cm.Dispose();
+								cm = new ContentManager(contentManager.ServiceProvider);
+								cm.RootDirectory = contentManager.RootDirectory;
+								microgame = GetMostLost();
+								//microgame = new TitleScreen(cm);
+								curPhase = Phase.Transition;
+								break;	
 					}
 					break;
 				case Phase.Transition:
@@ -238,6 +307,7 @@ namespace RPG
 					//Won game (or time is up but animations are still playing)
 					if (result == 255)
 					{
+						UpdateSaveGame(microgame.ToString(), true);
 						score++;
 						countdownTimer = 0.0;
 						microgame.Unload();
@@ -260,6 +330,7 @@ namespace RPG
 					//Lost game
 					else if (countdownTimer >= 8 || result == 2)
 					{
+						UpdateSaveGame(microgame.ToString(), false);
 						countdownTimer = 0.0;
 
 						microgame.Unload();

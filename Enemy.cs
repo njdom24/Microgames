@@ -56,6 +56,7 @@ namespace RPG
 
 		private Color color;
 		public string deathMessage;
+		private string name;
 
 		public Enemy(ContentManager contentManager, World world, double secondsPerBeat, int enemyType, double threshHold = 0, int offsetTop = 0, int offsetBottom = 0)
 		{
@@ -65,10 +66,16 @@ namespace RPG
 			hitY = 0;
 			hitTimer = 0;
 
-			if(enemyType == 0)
+			if (enemyType == 0)
+			{
 				sprite = contentManager.Load<Texture2D>("Battle/Enemies/Borowstree");
+				name = "Borowstree";
+			}
 			else
+			{
 				sprite = contentManager.Load<Texture2D>("Battle/Enemies/Borowater");
+				name = "Borowater";
+			}
 			
 			hitEffects = contentManager.Load<Texture2D>("Battle/Icons/HitEffects");
 			piTimer = 0;
@@ -106,6 +113,11 @@ namespace RPG
 				noteBodies[i].BodyType = BodyType.Dynamic;
 				//notePositions[i] = new Vector2(centerX + horizontalRadius * (float)Math.Cos(i * Math.PI / 8), centerY - verticalRadius * ((float)Math.Sin(i * Math.PI / 8) - (float)Math.Cos(i * Math.PI / 8)));
 			}
+		}
+
+		public string GetName()
+		{
+			return name;
 		}
 
 		//Turns every colored pixel of the sprite white

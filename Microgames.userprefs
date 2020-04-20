@@ -1,23 +1,23 @@
 ﻿<Properties StartupConfiguration="{905B6B3B-33B1-49FB-B691-AE30F88CB4F5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Game1.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MainScreen.cs">
     <Files>
       <File FileName="Game1.cs" Line="84" Column="49" />
       <File FileName="Microgame.cs" Line="45" Column="4" />
       <File FileName="Screen.cs" Line="22" Column="17" />
       <File FileName="Content/Battle/BattleBG.fx" Line="243" Column="29" />
       <File FileName="Menu.cs" Line="341" Column="29" />
-      <File FileName="TitleScreen.cs" Line="5" Column="37" />
       <File FileName="Hud.cs" Line="143" Column="28" />
       <File FileName="BetweenGames.cs" Line="101" Column="5" />
       <File FileName="ScrollingVal.cs" Line="112" Column="48" />
-      <File FileName="MainScreen.cs" Line="115" Column="6" />
+      <File FileName="TitleScreen.cs" Line="78" Column="4" />
+      <File FileName="MainScreen.cs" Line="140" Column="3" />
       <File FileName="Battle.cs" Line="506" Column="11" />
-      <File FileName="Enemy.cs" Line="72" Column="4" />
-      <File FileName="Button.cs" Line="35" Column="4" />
-      <File FileName="Text.cs" Line="46" Column="56" />
-      <File FileName="Galaga.cs" Line="181" Column="3" />
-      <File FileName="Icons.cs" Line="38" Column="28" />
-      <File FileName="FallingApples.cs" Line="173" Column="51" />
+      <File FileName="Enemy.cs" Line="63" Column="29" />
+      <File FileName="Button.cs" Line="6" Column="1" />
+      <File FileName="Text.cs" Line="11" Column="2" />
+      <File FileName="Galaga.cs" Line="102" Column="25" />
+      <File FileName="Icons.cs" Line="28" Column="29" />
+      <File FileName="FallingApples.cs" Line="99" Column="4" />
       <File FileName="Selector.cs" Line="8" Column="14" />
       <File FileName="PrimitiveBatch.cs" Line="1" Column="1" />
       <File FileName="Program.cs" Line="22" Column="2" />

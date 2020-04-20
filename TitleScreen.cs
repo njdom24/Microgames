@@ -66,7 +66,7 @@ namespace RPG
 			state = Mouse.GetState();
 			background = contentManager.Load<Texture2D>("Menus/Palette");
 			sprite = contentManager.Load<Texture2D>("Menus/wiz");
-			options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Test1", "Test2" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+			options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Practice", "Test2" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 			phase = Phase.Title;
 
 			backButton = new Button(contentManager, 4, Game1.height - 30);
@@ -76,6 +76,7 @@ namespace RPG
 
 		void SetColor(int index)
 		{
+			MainScreen.UpdateSaveElem("Palette", index);
 			Tuple<Vector4, Vector4, Vector4, Vector4> rgba = palettes[index];
 			paletteShader.Parameters["col_light"].SetValue(rgba.Item1);
 			paletteShader.Parameters["col_extra"].SetValue(rgba.Item2);
@@ -107,6 +108,8 @@ namespace RPG
 							phase = Phase.Settings;
 							options = new Menu(contentManager, new string[] { "Volume", "Palette", null, "P1", null, "P2", null, "P3", null, "P4", null, "P5" }, 2, 40, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 							break;
+						case 2:
+							return 2;
 						default:
 							break;
 					}
@@ -118,7 +121,7 @@ namespace RPG
 					    || backButton.IsPressed(prevStateM))
 					{
 						phase = Phase.Title;
-						options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Test1", "Test2" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+						options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Practice", "Test2" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 					}
 					if (options.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY) == 1)
 					{ 
@@ -139,7 +142,7 @@ namespace RPG
 
 		void MiniScreen.Draw(SpriteBatch sb)
 		{
-			Console.WriteLine("Mouse X: " + state.X);
+			//Console.WriteLine("Mouse X: " + state.X);
 			sb.Begin();
 			//Adjust for output buffer
 			sb.Draw(background, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);

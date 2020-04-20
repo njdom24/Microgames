@@ -122,7 +122,7 @@ namespace RPG
 			//graphicsDevice.Textures[2] = palette;
 			this.final = final;//required for scaling
 			this.graphicsDevice = graphicsDevice;
-			text = new Hud(new string[] { "@Tree draws near!" }, content, 30, 2, posY: 3, canClose: true);
+			text = new Hud(new string[] { "@The " + enemy.GetName() + " draws near!" }, content, 30, 2, posY: 3, canClose: true);
 			//text.finishText();
 			commandName = new Hud(new string[] { options.GetSelectedName() }, content, 6, 0, Game1.width / 3 - 50, 2, canClose: false, centered: true);
 			offsetHeightBottom = text.getHeight();
@@ -134,6 +134,11 @@ namespace RPG
 
 			darkenTimer = 1;
 			toReturn = 1;
+		}
+
+		public override string ToString()
+		{
+			return "Battle";
 		}
 
 		void MiniScreen.Unload()

@@ -110,7 +110,7 @@ namespace RPG
 
 			heightOffset *= 20;
 
-			Console.WriteLine("timeroffset: " + heightOffset);
+			//Console.WriteLine("timeroffset: " + heightOffset);
 			sb.Draw(wizZoom, new Rectangle((Game1.width - wizZoom.Width)/2, (Game1.height - wizZoom.Height) / 2 + (int)heightOffset, wizZoom.Width, wizZoom.Height), new Rectangle(0, 0, wizZoom.Width, wizZoom.Height), Color.White);
 
 			scoreDisplay.Draw(sb, Vector2.Zero, score);

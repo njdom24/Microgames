@@ -32,6 +32,11 @@ namespace RPG
 			this.hPos = hPos;
 		}
 
+		public override string ToString()
+		{
+			return "Apples";
+		}
+
 		public bool Update(double dt)
 		{
 			heightTimer += dt;
@@ -73,7 +78,7 @@ namespace RPG
 		private int maxVelocity;
 		private int mousePos;
 		private int collectedCount;
-		private bool usingKeyboard;
+		private bool usingKeyboard, facingLeft;
 
 		private double timer;
 
@@ -113,6 +118,12 @@ namespace RPG
 			random = new Random();
 			collectedCount = 0;
 			usingKeyboard = true;
+			facingLeft = false;
+		}
+
+		public override string ToString()
+		{
+			return "Apples";
 		}
 
 		private void BroadphaseHandler(ref FixtureProxy fp1, ref FixtureProxy fp2)
@@ -138,6 +149,8 @@ namespace RPG
 
 		public void Draw(SpriteBatch sb)
 		{
+			var flipEffect = facingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
 			sb.Begin();
 			sb.Draw(background, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(220, 48, 3, 3), new Color(30,30,30));//Sourcing white background from a placeholder spritesheet
 
@@ -147,7 +160,7 @@ namespace RPG
 
 			sb.Draw(animatedBG, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle(indexX, indexY, Game1.width, Game1.height), Color.White);
 
-			sb.Draw(hat, new Rectangle((int)basketBody.Position.X - basket.Width / 2, (int)basketBody.Position.Y - basket.Height / 8 - 20, basket.Width, basket.Height), new Rectangle(0, 0, basket.Width, basket.Height), Color.White);
+			sb.Draw(hat, new Rectangle((int)basketBody.Position.X - basket.Width / 2, (int)basketBody.Position.Y - basket.Height / 8 - 20, basket.Width, basket.Height), new Rectangle(0, 0, basket.Width, basket.Height), Color.White, 0, Vector2.Zero, flipEffect, 1);
 
 			foreach (Apple a in apples)
 			{
@@ -157,8 +170,7 @@ namespace RPG
 				sb.Draw(apple, new Rectangle((int)pos.X, (int)pos.Y, apple.Width*2, apple.Height*2), new Rectangle(0, 0, apple.Width, apple.Height), Color.White, rotation, new Vector2(apple.Width/2, apple.Height/2), SpriteEffects.None, 1);
 			}
 
-
-			sb.Draw(basket, new Rectangle((int)basketBody.Position.X - basket.Width/2, (int)basketBody.Position.Y - basket.Height/8 - 20, basket.Width, basket.Height), new Rectangle(0, 0, basket.Width, basket.Height), Color.White);
+			sb.Draw(basket, new Rectangle((int)basketBody.Position.X - basket.Width / 2, (int)basketBody.Position.Y - basket.Height / 8 - 20, basket.Width, basket.Height), new Rectangle(0, 0, basket.Width, basket.Height), Color.White, 0, Vector2.Zero, flipEffect, 1);
 			sb.End();
 		}
 
@@ -194,10 +206,12 @@ namespace RPG
 
 				if (kbState.IsKeyDown(Keys.Right))
 				{
+					facingLeft = false;
 					basketBody.SetTransform(new Vector2((float)(pos.X + maxVelocity * dt.ElapsedGameTime.TotalSeconds), Game1.height - basket.Height/2 - 18), 0);
 				}
 				else if (kbState.IsKeyDown(Keys.Left))
 				{
+					facingLeft = true;
 					basketBody.SetTransform(new Vector2((float)(pos.X - maxVelocity * dt.ElapsedGameTime.TotalSeconds), Game1.height - basket.Height/2 - 18), 0);
 				}
 			}
@@ -206,9 +220,15 @@ namespace RPG
 				mousePos = (int)(mState.X * Game1.resMultiplier);
 
 				if (mouseX <= Game1.width && mousePos - mouseX > 5)
+				{
+					facingLeft = false;
 					mouseX += maxVelocity * dt.ElapsedGameTime.TotalSeconds;
+				}
 				else if (mouseX >= basket.Width / 2 && mousePos - mouseX < -5)
+				{
+					facingLeft = true;
 					mouseX -= maxVelocity * dt.ElapsedGameTime.TotalSeconds;
+				}
 
 				basketBody.SetTransform(new Vector2((float)mouseX, Game1.height - basket.Height/2 - 18), 0);
 			}
