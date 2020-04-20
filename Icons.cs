@@ -27,17 +27,17 @@ namespace RPG
 
 		private Selector selector;
 
-		public Icons(ContentManager contentManager, int width = 12, int height = 12, int count = 4)
+		public Icons(ContentManager contentManager, int width = 42, int height = 42, int count = 3)
 		{
 			desaturate = contentManager.Load<Effect>("Battle/Icons/IconChange");
-			iconSet = contentManager.Load<Texture2D>("Battle/Icons/BattleHud");
+			iconSet = contentManager.Load<Texture2D>("Battle/Icons/BattleHudNew");
 			test = contentManager.Load<Texture2D>("Battle/Icons/Attack");
 			this.width = width;
 			this.height = height;
 			this.count = count;
-			x = (Game1.width - 64 - 2) / 2;
-			y = Game1.height - 25;
-			selector = new Selector(4, names: new string[] { "Attack", "Bag", "PSI", "Run" });
+			x = (Game1.width - 48*3 ) / 2;
+			y = Game1.height - 48;
+			selector = new Selector(3, names: new string[] { "Attack", "Bag", "PSI" });
 			index = 0;
 		}
 
@@ -49,9 +49,9 @@ namespace RPG
 			mouseX = (int)(state.X * Game1.resMultiplier);
 			mouseY = (int)(state.Y * Game1.resMultiplier);
 
-			index = (mouseX - x) / 16;
+			index = (mouseX - x) / 48;
 
-			if(!state.Equals(prevStateM) && mouseY > y && mouseY < y+16)
+			if(!state.Equals(prevStateM) && mouseY > y && mouseY < y+48)
 				selector.SetIndex(index);
 		}
 
@@ -72,35 +72,35 @@ namespace RPG
 
 		public void Draw(SpriteBatch sb, int selected)//sb starts initialized with no effect
 		{
-			//16 is the icon dimensions w/ border
-			//12 is w/o border
+			//48 is the icon dimensions w/ border -> 48
+			//42 is w/o border -> 42
 
-			//2 is the "padding" created by the border pixels
+			//2 is the "padding" created by the border pixels -> 3
 
 			//Draw selected icon + border
-			sb.Draw(iconSet, new Rectangle(16 * selected + x, y, 16, 16), new Rectangle(14, 12+12, 16, 16), Color.White);//Border
-			sb.Draw(iconSet, new Rectangle(16 * selected + 2 + x, 2 + y, 12, 12), new Rectangle(12 * selected, 0, 12, 12), Color.White);//Icon
+			sb.Draw(iconSet, new Rectangle(48 * selected + x, y, 48, 48), new Rectangle(14, 42+42, 48, 48), Color.White);//Border
+			sb.Draw(iconSet, new Rectangle(48 * selected + 3 + x, 3 + y, 42, 42), new Rectangle(42 * selected, 0, 42, 42), Color.White);//Icon
 
 			//Draw borders before selected
 			for (int i = 0; i < selected; i++)
 			{
-				sb.Draw(iconSet, new Rectangle(16 * i + 1 + x, 1 + y, 14, 14), new Rectangle(0, 12+12, 14, 14), Color.White);
+				sb.Draw(iconSet, new Rectangle(48 * i + 1 + x, 1 + y, 14, 14), new Rectangle(0, 42+42, 14, 14), Color.White);
 			}
 			//Draw borders after selected
 			for (int i = count - 1; i > selected; i--)
 			{
-				sb.Draw(iconSet, new Rectangle(16 * i + 1 + x, 1 + y, 14, 14), new Rectangle(0, 12+12, 14, 14), Color.White);
+				sb.Draw(iconSet, new Rectangle(48 * i + 1 + x, 1 + y, 14, 14), new Rectangle(0, 42+42, 14, 14), Color.White);
 			}
 
 			//Draw icons before selected
 			for(int i = 0; i < selected; i++)
 			{
-				sb.Draw(iconSet, new Rectangle(16 * i + 2 + x, 2 + y, 12, 12), new Rectangle(12 * i, 12, 12, 12), Color.White);
+				sb.Draw(iconSet, new Rectangle(48 * i + 3 + x, 3 + y, 42, 42), new Rectangle(42 * i, 42, 42, 42), Color.White);
 			}
 			//Draw icons after selected
 			for(int i = count-1; i > selected; i--)
 			{
-				sb.Draw(iconSet, new Rectangle(16 * i + 2 + x, 2 + y, 12, 12), new Rectangle(12 * i, 12, 12, 12), Color.White);
+				sb.Draw(iconSet, new Rectangle(48 * i + 3 + x, 3 + y, 42, 42), new Rectangle(42 * i, 42, 42, 42), Color.White);
 			}
 		}
 	}

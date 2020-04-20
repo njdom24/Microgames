@@ -18,7 +18,6 @@
     <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Knight.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Icons/Attack.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Icons/Bag.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/BattleHud.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Icons/BorderLarge.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Icons/BorderSmall.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Icons/HitEffects.png</File>
@@ -74,8 +73,15 @@
     <File>/home/damino/Documents/Microgames/Content/Menus/Controls.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/background_grn.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionPlate.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Borowstree.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/BattleHud.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/BattleHudNew.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Borowater.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

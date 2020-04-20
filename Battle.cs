@@ -69,11 +69,16 @@ namespace RPG
 		private double darkenTimer;
 		private bool enemyDraw;
 		private byte flashCount, toReturn;
+		private Color magicColor;
+		private int enemyType;
 
 		private bool deathMessageDisplayed;
 
 		public Battle(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp)
 		{
+			//Generates 0 or 1
+			enemyType = new Random().Next(0, 2);
+
 			exitReady = false;
 			curPhase = Phase.IntroPhase;
 			effect = contentManager.Load<Effect>("Battle/BattleBG");
@@ -93,7 +98,7 @@ namespace RPG
 			blackRect.SetData(new Color[] { Color.Black });
 
 			travis = new Battler(contentManager, world);
-			enemy = new Enemy(contentManager, world, secondsPerBeat, threshHold);
+			enemy = new Enemy(contentManager, world, secondsPerBeat, enemyType, threshHold);
 			enemyDraw = true;
 
 			MultiSampleCount = pp.MultiSampleCount;
@@ -117,11 +122,13 @@ namespace RPG
 			this.graphicsDevice = graphicsDevice;
 			text = new Hud(new string[] { "@Tree draws near!" }, content, 30, 2, posY: 3, canClose: true);
 			//text.finishText();
-			commandName = new Hud(new string[] { options.GetSelectedName() }, content, 6, 0, Game1.width / 2 - 30, 2, canClose: false, centered: true);
+			commandName = new Hud(new string[] { options.GetSelectedName() }, content, 6, 0, Game1.width / 3 - 50, 2, canClose: false, centered: true);
 			offsetHeightBottom = text.getHeight();
 			offsetHeightTop = 32;
 			flashCounter = 1;
 			timerMult = 1;
+
+			magicColor = Color.White;
 
 			darkenTimer = 1;
 			toReturn = 1;
@@ -184,6 +191,7 @@ namespace RPG
 				if (waiter == null)
 				{ 
 					commandName.Draw(sb);
+					//Draw spell icons
 					options.Draw(sb, options.GetIndex());
 				}
 			}
@@ -196,7 +204,7 @@ namespace RPG
 			sb.End();
 
 			if (options.IndexChanged())
-				commandName = new Hud(new string[] { options.GetSelectedName() }, content, 6, 0, Game1.width/2 - 30, 2, canClose: false, centered: true);
+				commandName = new Hud(new string[] { options.GetSelectedName() }, content, 6, 0, Game1.width / 3 - 50, 2, canClose: false, centered: true);
 		}
 
 		void MiniScreen.Draw(SpriteBatch sb)
@@ -226,7 +234,7 @@ namespace RPG
 			if(curPhase == Phase.AnimPhase && !text.visible)
 			{
 				int frame = magicAnim.getFrame();
-				sb.Draw(magic, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle((frame % 4) * Game1.width, (frame / 4)*Game1.height, Game1.width, Game1.height), Color.White);
+				sb.Draw(magic, new Rectangle(0, 0, Game1.width, Game1.height), new Rectangle((frame % 4) * Game1.width, (frame / 4)*Game1.height, Game1.width, Game1.height), magicColor);
 			}
 			sb.End();
 		}
@@ -443,19 +451,36 @@ namespace RPG
 					if ((Keyboard.GetState().IsKeyDown(Keys.Space) && prevStateKb.IsKeyUp(Keys.Space)) ||
 					    (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
 					{
-						if (options.GetIndex() == 0)
+						switch (options.GetIndex())
 						{
-							playerMove = 0;
-							curPhase = Phase.EnemyPhase;
-						}
-						else if (options.GetIndex() == 1)
-						{
-							//magic.Dispose();
-							playerMove = 1;
-							magic = content.Load<Texture2D>("Battle/Effects/PkFireA_GRN");
-							toReturn = 254;
+							//Earth
+							case 0:
+								//playerMove = 0;
+								playerMove = 1;
+								magic = content.Load<Texture2D>("Battle/Effects/PkFireA_GRN");
+								toReturn = 254;
+								magicColor = Color.Purple;
 
-							curPhase = Phase.EnemyPhase;
+								curPhase = Phase.EnemyPhase;
+								break;
+							//Fire
+							case 1:
+								playerMove = 1;
+								magic = content.Load<Texture2D>("Battle/Effects/PkFireA_GRN");
+								toReturn = 254;
+								magicColor = Color.White;
+
+								curPhase = Phase.EnemyPhase;
+								break;
+							//Water
+							case 2:
+								playerMove = 1;
+								magic = content.Load<Texture2D>("Battle/Effects/PkFireA_GRN");
+								toReturn = 254;
+								magicColor = Color.LightGray;
+
+								curPhase = Phase.EnemyPhase;
+								break;
 						}
 					}
 					break;
@@ -466,13 +491,20 @@ namespace RPG
 				case Phase.AttackPhase:
 					if(enemy.health <= 0)
 					{
-						deathMessageDisplayed = false;
-						curPhase = Phase.EnemyDeathPhase;
-						flasher = enemy;
-						enemy.ChangeToWhite();
-						flashTimer = -0.5;
-						flashCounter = 1;
-						timerMult = 0.5f;
+						if (enemyType == 0 && magicColor.Equals(Color.White) || enemyType == 1 && magicColor.Equals(Color.Purple))
+						{
+							deathMessageDisplayed = false;
+							curPhase = Phase.EnemyDeathPhase;
+							flasher = enemy;
+							enemy.ChangeToWhite();
+							flashTimer = -0.5;
+							flashCounter = 1;
+							timerMult = 0.5f;
+						}
+						else
+						{
+							toReturn = 2;
+						}
 						//text = new Hud(new string[] { "@The enemy dissipates into hollow armor." }, content, 30, 2, posY: 3, canClose: true);
 					}
 					else

@@ -39,7 +39,7 @@ namespace RPG
 			text = contentManager.Load<Texture2D>("Textbox/Text");
 			scrollingNums = contentManager.Load<Texture2D>("Battle/Numbers/ScrollingNums");//5x8
 			posX = (Game1.width - portrait.Width) / 2;
-			posY = Game1.height - 48;
+			posY = Game1.height - 52;
 			pos.X = posX;
 			pos.Y = posY;
 			//posY = Game1.height / 2;
@@ -85,19 +85,6 @@ namespace RPG
 					//body.LinearVelocity = -body.LinearVelocity;
 					moveTimer = 0;
 				}
-				/*
-				if (Math.Abs(lastForce) < 0.2)
-				{
-					ForceFinish();
-					lastForce = 0;
-				}
-				else if (moveTimer > 0.05)
-				{
-					Jostle(-0.75f);
-					//moveDuration = moveDuration / 1.2;
-					moveTimer = 0;
-				}
-				*/
 			}
 			//throw new NotImplementedException();
 			return false;
@@ -119,7 +106,7 @@ namespace RPG
 		{
 			sb.Draw(portrait, new Rectangle((int)posX, (int)posY, portrait.Width, portrait.Height), new Rectangle(0, 0, portrait.Width, portrait.Height), Color.White);
 
-			name.Draw(sb, nameOffset);
+			//name.Draw(sb, nameOffset);
 		}
 
 		public void Update(GameTime gameTime, KeyboardState state)

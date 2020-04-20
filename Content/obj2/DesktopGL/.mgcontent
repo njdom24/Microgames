@@ -4,6 +4,11 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Borowater.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Effects/PkFireA_GRN.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Player.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Icons/BattleHudNew.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Borowstree.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionPlate.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/background_grn.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/Controls.png</File>
@@ -37,7 +42,6 @@
     <File>/home/damino/Documents/Microgames/Content/Battle/layer.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/ManiMani.gif</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Numbers/ScrollingNums.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Player.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Yellow.PNG</File>
     <File>/home/damino/Documents/Microgames/Content/Corneria_gutter.png</File>
     <File>/home/damino/Documents/Microgames/Content/Debug.png</File>
@@ -62,7 +66,6 @@
     <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Tree.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/005_GRN.png</File>
     <File>/home/damino/Documents/Microgames/Content/Map/TransitionAnim_GRN.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Effects/PkFireA_GRN.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/Basket.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/Apple.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionTest.png</File>

@@ -112,6 +112,7 @@ namespace RPG
 		MiniScreen ChooseGame()
 		{
 			int num = random.Next(0,2);
+			//return new Battle(cm, bufferTarget, graphicsDevice, pp);
 			//return new Galaga(cm, bufferTarget, graphicsDevice);
 			//return new Galaga(cm, bufferTarget, graphicsDevice, pp);
 			switch (num)
@@ -224,7 +225,7 @@ namespace RPG
 						fromGame = true;
 					}
 					//Lost game
-					else if (countdownTimer >= 8)
+					else if (countdownTimer >= 8 || result == 2)
 					{
 						countdownTimer = 0.0;
 

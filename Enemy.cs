@@ -57,7 +57,7 @@ namespace RPG
 		private Color color;
 		public string deathMessage;
 
-		public Enemy(ContentManager contentManager, World world, double secondsPerBeat, double threshHold = 0, int offsetTop = 0, int offsetBottom = 0)
+		public Enemy(ContentManager contentManager, World world, double secondsPerBeat, int enemyType, double threshHold = 0, int offsetTop = 0, int offsetBottom = 0)
 		{
 			color = Color.White;
 			offsetter = new Random();
@@ -65,12 +65,15 @@ namespace RPG
 			hitY = 0;
 			hitTimer = 0;
 
-			sprite = contentManager.Load<Texture2D>("Battle/Enemies/Tree");
+			if(enemyType == 0)
+				sprite = contentManager.Load<Texture2D>("Battle/Enemies/Borowstree");
+			else
+				sprite = contentManager.Load<Texture2D>("Battle/Enemies/Borowater");
+			
 			hitEffects = contentManager.Load<Texture2D>("Battle/Icons/HitEffects");
 			piTimer = 0;
 			noteBodies = new Body[15];
 			notePositions = new Vector2[noteBodies.Length];
-			//visOrder = new int[] { 10, 2, 5, 13, 7, 15, 9, 1, 11, 3, 14, 6, 12, 4, 0, 8 };//, 8 };
 			visOrder = new int[] { 10, 2, 5, 13, 7, 14, 9, 1, 8, 3, 11, 6, 12, 4, 0 };//, 8 };
 			visibility = new bool[noteBodies.Length];
 			killed = false;
@@ -122,7 +125,7 @@ namespace RPG
 
 		public void Draw(SpriteBatch sb, double piTimer, Color flashColor, int offsetTop = 0, int offsetBottom = 0)
 		{
-			sb.Draw(sprite, new Rectangle((int)body.Position.X, (int)body.Position.Y, sprite.Width, sprite.Height), flashColor);
+			sb.Draw(sprite, new Rectangle((int)body.Position.X, (int)body.Position.Y - 22, sprite.Width, sprite.Height), flashColor);
 			if(hitTimer > 0)//Draw hit marker
 			{
 				sb.Draw(hitEffects, new Rectangle(centerX + hitX, centerY + 27/2 + hitY, 27, 27), new Rectangle(10, 0, 27, 27), Color.White);
