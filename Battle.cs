@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace RPG
 {
@@ -73,6 +74,7 @@ namespace RPG
 		private int enemyType;
 
 		private bool deathMessageDisplayed;
+		private FileStream fs;
 
 		public Battle(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp)
 		{

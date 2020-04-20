@@ -1,7 +1,7 @@
 ﻿<Properties StartupConfiguration="{905B6B3B-33B1-49FB-B691-AE30F88CB4F5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MainScreen.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Game1.cs">
     <Files>
-      <File FileName="Game1.cs" Line="70" Column="75" />
+      <File FileName="Game1.cs" Line="84" Column="49" />
       <File FileName="Microgame.cs" Line="45" Column="4" />
       <File FileName="Screen.cs" Line="22" Column="17" />
       <File FileName="Content/Battle/BattleBG.fx" Line="243" Column="29" />
@@ -10,8 +10,8 @@
       <File FileName="Hud.cs" Line="143" Column="28" />
       <File FileName="BetweenGames.cs" Line="101" Column="5" />
       <File FileName="ScrollingVal.cs" Line="112" Column="48" />
-      <File FileName="MainScreen.cs" Line="242" Column="46" />
-      <File FileName="Battle.cs" Line="506" Column="21" />
+      <File FileName="MainScreen.cs" Line="115" Column="6" />
+      <File FileName="Battle.cs" Line="506" Column="11" />
       <File FileName="Enemy.cs" Line="72" Column="4" />
       <File FileName="Button.cs" Line="35" Column="4" />
       <File FileName="Text.cs" Line="46" Column="56" />

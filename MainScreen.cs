@@ -48,8 +48,11 @@ namespace RPG
 			this.pp = pp;
 
 			//Console.WriteLine("BYTE: " + fs.ReadByte());
-			if (fs.ReadByte().Equals(49))
+			if (fs.ReadByte().Equals('P'))
+			{
 				curPhase = Phase.MainMenu;
+				fs.Close();
+			}
 			else
 				curPhase = Phase.Introduction;
 			
@@ -100,6 +103,34 @@ namespace RPG
 			pauseMenu = new Menu(contentManager, new string[] { "Return to Title", "Volume", "Palette", null, null, "P1", null, null, "P2", null, null, "P3", null, null, "P4", null, null, "P5" }, 3, 69, offsetX: Game1.width / 4, offsetY: Game1.height / 2, defaultSpacingX: 75);
 		}
 
+		void UpdateSaveGame(string game, bool won)
+		{
+			game += ": ";
+			StreamReader file = new StreamReader("save.txt");
+			string fileText = file.ReadToEnd();
+			file.Close();
+
+			StreamWriter outFile = new StreamWriter("save.txt");
+
+			int afterIndex = fileText.IndexOf(game, 0, StringComparison.CurrentCulture) + game.Length;
+			int afterWins = fileText.IndexOf('W', afterIndex);
+			string wins = fileText.Substring(afterIndex, afterWins - afterIndex);
+			string losses = fileText.Substring(afterWins + 2, fileText.IndexOf('L', afterWins + 2) - afterWins - 2);
+			int winCount = int.Parse(wins);
+			int lossCount = int.Parse(losses);
+
+			if (won)
+				winCount++;
+			else
+				lossCount++;
+
+			string beforeEdit = fileText.Substring(0, afterIndex);
+			string afterEdit = fileText.Substring(fileText.IndexOf('L', afterWins + 2));
+
+			outFile.Write(beforeEdit + winCount + "W " + lossCount + afterEdit);
+			outFile.Close();
+		}
+
 		void SetColor(int index)
 		{
 			Tuple<Vector4, Vector4, Vector4, Vector4> rgba = TitleScreen.palettes[index];
@@ -111,6 +142,8 @@ namespace RPG
 
 		MiniScreen ChooseGame()
 		{
+			//UpdateSaveGame("Battle", true);
+
 			int num = random.Next(0,2);
 			//return new Battle(cm, bufferTarget, graphicsDevice, pp);
 			//return new Galaga(cm, bufferTarget, graphicsDevice);
@@ -159,7 +192,7 @@ namespace RPG
 						//TODO: Make an exit button
 						if (prevStateKb.IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyDown(Keys.Space) || (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
 						{
-							byte[] bytes = Encoding.UTF8.GetBytes("1\n");
+							byte[] bytes = Encoding.UTF8.GetBytes("Palette: 0\nBattle: 0W 0L\nApples: 0W 0L\n");
 							fs.Write(bytes, 0, bytes.Length);
 							fs.Close();
 
