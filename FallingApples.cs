@@ -19,8 +19,9 @@ namespace RPG
 		private Body body;
 		private double heightTimer;
 		private int hPos;
+		private bool evil;
 
-		public Apple(World world, Texture2D sprite, int hPos = 80)
+		public Apple(World world, Texture2D sprite, bool evil, int hPos = 80)
 		{
 			body = BodyFactory.CreateRectangle(world, sprite.Width, sprite.Width, 0, new Vector2(hPos, 0));
 			body.BodyType = BodyType.Static;
@@ -29,6 +30,7 @@ namespace RPG
 			body.UserData = this;
 
 			heightTimer = 0.0;
+			this.evil = evil;
 			this.hPos = hPos;
 		}
 
@@ -52,6 +54,11 @@ namespace RPG
 			return false;
 		}
 
+		public bool IsEvil()
+		{
+			return evil;
+		}
+
 		public void Destroy(World world)
 		{
 			//world.RemoveBody(body);
@@ -71,13 +78,13 @@ namespace RPG
 
 	public class FallingApples : MiniScreen
 	{
-		private Texture2D background, basket, hat, apple;
+		private Texture2D background, basket, hat, apple, badApple;
 		private Texture2D animatedBG;
 		private double mouseX;
 		private double spawnTimer, bgTimer;
 		private int maxVelocity;
 		private int mousePos;
-		private int collectedCount;
+		private int collectedCount, spawnedCount;
 		private bool usingKeyboard, facingLeft;
 
 		private double timer;
@@ -94,7 +101,8 @@ namespace RPG
 			background = contentManager.Load<Texture2D>("Corneria_gutter");
 			hat = contentManager.Load<Texture2D>("FallingApples/wizJUNP_Back");
 			basket = contentManager.Load<Texture2D>("FallingApples/wizJUNP");
-			apple = contentManager.Load<Texture2D>("FallingApples/Apple");
+			apple = contentManager.Load<Texture2D>("FallingApples/goodapple");
+			badApple = contentManager.Load<Texture2D>("FallingApples/badapple");
 			animatedBG = contentManager.Load<Texture2D>("FallingApples/background_grn");
 
 			timer = 0.0;
@@ -113,10 +121,11 @@ namespace RPG
 			world.ContactManager.OnBroadphaseCollision += BroadphaseHandler;
 
 			apples = new List<Apple>();
-			apples.Add(new Apple(world, apple, 50));
+			apples.Add(new Apple(world, apple, false, 50));
 
 			random = new Random();
 			collectedCount = 0;
+			spawnedCount = 0;
 			usingKeyboard = true;
 			facingLeft = false;
 		}
@@ -134,7 +143,11 @@ namespace RPG
 				a.Destroy(world);
 				Console.WriteLine("A: " + collectedCount);
 				apples.Remove((Apple)fp1.Fixture.Body.UserData);
-				collectedCount++;
+
+				if (a.IsEvil())
+					collectedCount = -10;
+				else
+					collectedCount++;
 			}
 			else if (fp2.Fixture.Body.UserData is Apple && fp1.Fixture.Body.UserData.Equals("Basket"))
 			{
@@ -143,7 +156,11 @@ namespace RPG
 				Console.WriteLine("B: " + collectedCount);
 				apples.Remove((Apple)fp2.Fixture.Body.UserData);
 				apples.Remove((Apple)fp2.Fixture.Body.UserData);
-				collectedCount++;
+
+				if (a.IsEvil())
+					collectedCount = -10;
+				else
+					collectedCount++;
 			}
 		}
 
@@ -167,7 +184,10 @@ namespace RPG
 				Vector2 pos = a.GetPos();
 				float rotation = a.GetRotation();
 
-				sb.Draw(apple, new Rectangle((int)pos.X, (int)pos.Y, apple.Width*2, apple.Height*2), new Rectangle(0, 0, apple.Width, apple.Height), Color.White, rotation, new Vector2(apple.Width/2, apple.Height/2), SpriteEffects.None, 1);
+				if (!a.IsEvil())
+					sb.Draw(apple, new Rectangle((int)pos.X, (int)pos.Y, apple.Width, apple.Height), new Rectangle(0, 0, apple.Width, apple.Height), Color.White, rotation, new Vector2(apple.Width / 2, apple.Height / 2), SpriteEffects.None, 1);
+				else
+					sb.Draw(badApple, new Rectangle((int)pos.X, (int)pos.Y, badApple.Width, badApple.Height), new Rectangle(0, 0, badApple.Width, badApple.Height), Color.White, rotation, new Vector2(badApple.Width / 2, badApple.Height / 2), SpriteEffects.None, 1);
 			}
 
 			sb.Draw(basket, new Rectangle((int)basketBody.Position.X - basket.Width / 2, (int)basketBody.Position.Y - basket.Height / 8 - 20, basket.Width, basket.Height), new Rectangle(0, 0, basket.Width, basket.Height), Color.White, 0, Vector2.Zero, flipEffect, 1);
@@ -181,6 +201,9 @@ namespace RPG
 
 		public byte Update(GameTime dt, KeyboardState prevStateKb, MouseState prevStateM)
 		{
+			if (collectedCount < 0)
+				return 2;
+			
 			timer += dt.ElapsedGameTime.TotalSeconds * 2;
 			bgTimer += dt.ElapsedGameTime.TotalSeconds * 24;//background moves at 24fps
 
@@ -248,7 +271,17 @@ namespace RPG
 			{
 				spawnTimer = 0;
 				int spawnPoint = random.Next(20, Game1.width - 20);
-				apples.Add(new Apple(world, apple, spawnPoint));
+
+				if (spawnedCount < 2)
+				{
+					apples.Add(new Apple(world, apple, false, spawnPoint));
+					spawnedCount++;
+				}
+				else
+				{
+					spawnedCount = 0;
+					apples.Add(new Apple(world, badApple, true, spawnPoint));
+				}
 			}
 
 			if (collectedCount == 3)

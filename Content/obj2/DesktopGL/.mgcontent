@@ -4,6 +4,11 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>/home/damino/Documents/Microgames/Content/FallingApples/badapple.png</File>
+    <File>/home/damino/Documents/Microgames/Content/FallingApples/goodapple.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionQuit.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionApples.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionTest.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Borowater.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Effects/PkFireA_GRN.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Player.png</File>
@@ -68,7 +73,6 @@
     <File>/home/damino/Documents/Microgames/Content/Map/TransitionAnim_GRN.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/Basket.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/Apple.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionTest.png</File>
     <File>/home/damino/Documents/Microgames/Content/Galaga/Ship.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/wizJUNP.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/wizZOOM.png</File>

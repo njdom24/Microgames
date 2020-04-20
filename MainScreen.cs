@@ -33,7 +33,7 @@ namespace RPG
 
 		private enum Phase { Introduction, FinalMessage, MainMenu, InGame, Transition, BetweenGames, Paused };
 		private Phase curPhase, prevPhase;
-		private bool fromGame;
+		private bool fromGame, practiceMode;
 		private int continues, score;
 		private Random random;
 
@@ -67,6 +67,7 @@ namespace RPG
 			controlsShown = false;
 
 			this.graphicsDevice = graphicsDevice;
+			practiceMode = false;
 
 			lastFrame = new RenderTarget2D(graphicsDevice, Game1.width + 2, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
 			bufferTarget = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, pp.MultiSampleCount, RenderTargetUsage.DiscardContents);
@@ -99,7 +100,7 @@ namespace RPG
 
 			introText = new Hud(new string[] { "Welcome to Microgames!\nClick the mouse or press the spacebar to continue.", "Because this is your first time, continue to see\nthe controls." }, cm, 30, 2, posY: -1, canClose: true);
 
-			pauseMenu = new Menu(contentManager, new string[] { "Return to Title", "Volume", "Palette", null, null, "P1", null, null, "P2", null, null, "P3", null, null, "P4", null, null, "P5" }, 3, 69, offsetX: Game1.width / 4, offsetY: Game1.height / 2, defaultSpacingX: 75);
+			pauseMenu = new Menu(contentManager, new string[] { "Palette", "Return to Title", "P1", null, "P2", null, "P3", null, "P4", null, "P5", null }, 2, 69, offsetX: Game1.width / 4, offsetY: Game1.height / 2, defaultSpacingX: 75);
 		}
 
 		int GetSaveElem(string elem)
@@ -158,12 +159,19 @@ namespace RPG
 			return lossCount / (winCount + lossCount);
 		}
 
+		//TODO: Make other stuff use this
 		MiniScreen GetMostLost()
 		{
 			if (GetLossRatio("Battle") > GetLossRatio("Apples"))
+			{
+				lio = contentManager.Load<Texture2D>("Menus/TransitionTest");
 				return new Battle(cm, bufferTarget, graphicsDevice, pp);
+			}
 			else
+			{
+				lio = contentManager.Load<Texture2D>("Menus/TransitionApples");
 				return new FallingApples(cm, graphicsDevice);
+			}
 		}
 
 		void UpdateSaveGame(string game, bool won)
@@ -206,18 +214,25 @@ namespace RPG
 
 		MiniScreen ChooseGame()
 		{
-			//UpdateSaveGame("Battle", true);
+			if (practiceMode)
+			{
+				return GetMostLost();
+			}
 
 			int num = random.Next(0,2);
-			//return new Battle(cm, bufferTarget, graphicsDevice, pp);
-			//return new Galaga(cm, bufferTarget, graphicsDevice);
-			//return new Galaga(cm, bufferTarget, graphicsDevice, pp);
+
 			switch (num)
 			{
 				case 0:
+				{
+					lio = contentManager.Load<Texture2D>("Menus/TransitionTest");
 					return new Battle(cm, bufferTarget, graphicsDevice, pp);
+				}
 				case 1:
+				{
+					lio = contentManager.Load<Texture2D>("Menus/TransitionApples");	
 					return new FallingApples(cm, graphicsDevice);
+				}
 				default:
 					return new Galaga(cm, bufferTarget, graphicsDevice, pp);
 			}
@@ -225,10 +240,11 @@ namespace RPG
 
 		void Screen.Update(GameTime dt)
 		{
-			if (curPhase != Phase.Paused && curPhase != Phase.MainMenu && Keyboard.GetState().IsKeyUp(Keys.Escape) && prevStateKb.IsKeyDown(Keys.Escape))
+			if ((curPhase == Phase.Transition || curPhase == Phase.BetweenGames) && Keyboard.GetState().IsKeyUp(Keys.Escape) && prevStateKb.IsKeyDown(Keys.Escape))
 			{
 				prevPhase = curPhase;
 				curPhase = Phase.Paused;
+				//timer = 0.2;
 			}
 			else switch (curPhase) 
 			{
@@ -272,6 +288,7 @@ namespace RPG
 							cm.Dispose();
 							cm = new ContentManager(contentManager.ServiceProvider);
 							cm.RootDirectory = contentManager.RootDirectory;
+							practiceMode = false;
 							microgame = ChooseGame();
 							//microgame = new TitleScreen(cm);
 							curPhase = Phase.Transition;
@@ -281,6 +298,7 @@ namespace RPG
 							cm.Dispose();
 							cm = new ContentManager(contentManager.ServiceProvider);
 							cm.RootDirectory = contentManager.RootDirectory;
+							practiceMode = true;
 							microgame = GetMostLost();
 							//microgame = new TitleScreen(cm);
 							curPhase = Phase.Transition;
@@ -364,6 +382,7 @@ namespace RPG
 							microgame = ChooseGame();
 						else
 						{
+							lio = contentManager.Load<Texture2D>("Menus/TransitionQuit");
 							continues = 3;
 							microgame = new TitleScreen(cm, paletteShader);
 						}
@@ -374,7 +393,6 @@ namespace RPG
 
 					break;
 				case Phase.Paused:
-					Console.WriteLine("am paused");
 					if (Keyboard.GetState().IsKeyUp(Keys.Escape) && prevStateKb.IsKeyDown(Keys.Escape))
 					{
 						curPhase = prevPhase;
@@ -389,8 +407,17 @@ namespace RPG
 						switch (pauseMenu.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY))
 						{ 
 							case 0:
-								if (Mouse.GetState().LeftButton == ButtonState.Released && prevStateM.LeftButton == ButtonState.Pressed)
-								{ 
+									int indX = pauseMenu.GetSelectionX(prevStateKb, prevStateM, mouseX, mouseY);
+									if (indX > 0)
+									{
+										Console.WriteLine("tryna set color");
+										SetColor(indX - 1);
+									}
+									break;
+							case 1:
+								if (Mouse.GetState().LeftButton == ButtonState.Released && prevStateM.LeftButton == ButtonState.Pressed ||
+								    Keyboard.GetState().IsKeyUp(Keys.Space) && prevStateKb.IsKeyDown(Keys.Space))
+								{
 									microgame.Unload();
 									cm.Dispose();
 									cm = new ContentManager(contentManager.ServiceProvider);
@@ -403,14 +430,7 @@ namespace RPG
 									fromGame = true;
 								}
 								break;
-							case 2:
-								int indX = pauseMenu.GetSelectionX(prevStateKb, prevStateM, mouseX, mouseY);
-								if (indX > 0)
-								{
-									Console.WriteLine("tryna set color");
-									SetColor(indX - 1);
-								}
-								break;
+
 							default:
 								break;	
 						}
@@ -503,7 +523,9 @@ namespace RPG
 					if (currentFlashes > maxFlashes)
 					{
 						sb.Begin();
-						int blackBar = (int)(Math.Pow(2, (timer - 1.4) * 14));
+
+						//1.8 is the amount of seconds the preview is active
+						int blackBar = (int)(Math.Pow(2, (timer - 1.8) * 14));
 
 						//Move from transition into the next game
 						if (blackBar > Game1.height / 2)
@@ -512,7 +534,6 @@ namespace RPG
 							currentFlashes = 7;
 							maxFlashes = 7;
 							timer = 0.2;
-
 
 							if (microgame is TitleScreen)
 								curPhase = Phase.MainMenu;

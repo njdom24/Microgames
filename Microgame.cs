@@ -19,8 +19,6 @@ namespace RPG
 
 		byte MiniScreen.Update(GameTime dt, KeyboardState prevStateKb, MouseState prevStateM)
 		{
-
-
 			prevState = Keyboard.GetState();
 
 			return 1;

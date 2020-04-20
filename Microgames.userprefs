@@ -1,17 +1,17 @@
 ﻿<Properties StartupConfiguration="{905B6B3B-33B1-49FB-B691-AE30F88CB4F5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TitleScreen.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MainScreen.cs">
     <Files>
-      <File FileName="Game1.cs" Line="84" Column="49" />
-      <File FileName="Microgame.cs" Line="45" Column="4" />
+      <File FileName="Game1.cs" Line="61" Column="50" />
+      <File FileName="Microgame.cs" Line="21" Column="4" />
       <File FileName="Screen.cs" Line="22" Column="17" />
       <File FileName="Content/Battle/BattleBG.fx" Line="243" Column="29" />
-      <File FileName="Menu.cs" Line="341" Column="29" />
+      <File FileName="Menu.cs" Line="326" Column="18" />
       <File FileName="Hud.cs" Line="143" Column="28" />
       <File FileName="BetweenGames.cs" Line="101" Column="5" />
       <File FileName="ScrollingVal.cs" Line="112" Column="48" />
-      <File FileName="TitleScreen.cs" Line="69" Column="97" />
-      <File FileName="MainScreen.cs" Line="284" Column="37" />
-      <File FileName="Battle.cs" Line="125" Column="40" />
+      <File FileName="TitleScreen.cs" Line="108" Column="31" />
+      <File FileName="MainScreen.cs" Line="234" Column="72" />
+      <File FileName="Battle.cs" Line="122" Column="43" />
       <File FileName="Enemy.cs" Line="120" Column="16" />
       <File FileName="Button.cs" Line="6" Column="1" />
       <File FileName="Text.cs" Line="11" Column="2" />
