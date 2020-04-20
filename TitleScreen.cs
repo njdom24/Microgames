@@ -66,7 +66,7 @@ namespace RPG
 			state = Mouse.GetState();
 			background = contentManager.Load<Texture2D>("Menus/Palette");
 			sprite = contentManager.Load<Texture2D>("Menus/wiz");
-			options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Practice", "Test2" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+			options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Practice", "Quit" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 			phase = Phase.Title;
 
 			backButton = new Button(contentManager, 4, Game1.height - 30);
@@ -106,10 +106,13 @@ namespace RPG
 							return 1;
 						case 1:
 							phase = Phase.Settings;
-							options = new Menu(contentManager, new string[] { "Volume", "Palette", null, "P1", null, "P2", null, "P3", null, "P4", null, "P5" }, 2, 40, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+							options = new Menu(contentManager, new string[] { "Palette", "P1", "P2", "P3", "P4", "P5" }, 1, 40, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 							break;
 						case 2:
 							return 2;
+						//Exit game
+						case 3:
+							return 3;
 						default:
 							break;
 					}
@@ -121,9 +124,9 @@ namespace RPG
 					    || backButton.IsPressed(prevStateM))
 					{
 						phase = Phase.Title;
-						options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Practice", "Test2" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+						options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Practice", "Quit" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 					}
-					if (options.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY) == 1)
+					if (options.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY) == 0)
 					{ 
 						int indX = options.GetSelectionX(prevStateKb, prevStateM, mouseX, mouseY);
 						if (indX > 0)

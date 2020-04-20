@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{905B6B3B-33B1-49FB-B691-AE30F88CB4F5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MainScreen.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TitleScreen.cs">
     <Files>
       <File FileName="Game1.cs" Line="84" Column="49" />
       <File FileName="Microgame.cs" Line="45" Column="4" />
@@ -9,15 +9,15 @@
       <File FileName="Hud.cs" Line="143" Column="28" />
       <File FileName="BetweenGames.cs" Line="101" Column="5" />
       <File FileName="ScrollingVal.cs" Line="112" Column="48" />
-      <File FileName="TitleScreen.cs" Line="78" Column="4" />
-      <File FileName="MainScreen.cs" Line="140" Column="3" />
-      <File FileName="Battle.cs" Line="506" Column="11" />
-      <File FileName="Enemy.cs" Line="63" Column="29" />
+      <File FileName="TitleScreen.cs" Line="69" Column="97" />
+      <File FileName="MainScreen.cs" Line="284" Column="37" />
+      <File FileName="Battle.cs" Line="125" Column="40" />
+      <File FileName="Enemy.cs" Line="120" Column="16" />
       <File FileName="Button.cs" Line="6" Column="1" />
       <File FileName="Text.cs" Line="11" Column="2" />
       <File FileName="Galaga.cs" Line="102" Column="25" />
       <File FileName="Icons.cs" Line="28" Column="29" />
-      <File FileName="FallingApples.cs" Line="99" Column="4" />
+      <File FileName="FallingApples.cs" Line="224" Column="25" />
       <File FileName="Selector.cs" Line="8" Column="14" />
       <File FileName="PrimitiveBatch.cs" Line="1" Column="1" />
       <File FileName="Program.cs" Line="22" Column="2" />

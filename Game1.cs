@@ -68,7 +68,7 @@ namespace RPG
 			//currentScreen = new OldMap(GraphicsDevice, Content, 16, 16, 10, 10);
 			//currentScreen = new Battle(Content, original, GraphicsDevice, pp);
 			FileStream fs = File.Open("save.txt", System.IO.FileMode.OpenOrCreate);
-			currentScreen = new MainScreen(Content, original, GraphicsDevice, pp, fs);
+			currentScreen = new MainScreen(Content, original, GraphicsDevice, pp, fs, this);
 			//currentScreen = new Map(GraphicsDevice, Content, 48, 48, 10, 10);
 			//currentScreen = new Environment();
 			sb = new SpriteBatch(GraphicsDevice);
@@ -131,7 +131,7 @@ namespace RPG
 		}
 		protected override void Update(GameTime gameTime)
 		{
-			HandleInput(gameTime);
+			//HandleInput(gameTime);
 			currentScreen.Update(gameTime);
 
 			base.Update(gameTime);

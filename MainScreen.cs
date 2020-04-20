@@ -38,9 +38,11 @@ namespace RPG
 		private Random random;
 
 		private FileStream fs;
+		private Game game;
 
-		public MainScreen(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp, FileStream fs)
+		public MainScreen(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp, FileStream fs, Game game)
 		{
+			this.game = game;
 			this.contentManager = contentManager;
 			this.fs = fs;
 			cm = new ContentManager(contentManager.ServiceProvider);
@@ -275,14 +277,17 @@ namespace RPG
 							curPhase = Phase.Transition;
 							break;
 						case 2:
-								microgame.Unload();
-								cm.Dispose();
-								cm = new ContentManager(contentManager.ServiceProvider);
-								cm.RootDirectory = contentManager.RootDirectory;
-								microgame = GetMostLost();
-								//microgame = new TitleScreen(cm);
-								curPhase = Phase.Transition;
-								break;	
+							microgame.Unload();
+							cm.Dispose();
+							cm = new ContentManager(contentManager.ServiceProvider);
+							cm.RootDirectory = contentManager.RootDirectory;
+							microgame = GetMostLost();
+							//microgame = new TitleScreen(cm);
+							curPhase = Phase.Transition;
+							break;
+						case 3:
+							game.Exit();
+							break;
 					}
 					break;
 				case Phase.Transition:
