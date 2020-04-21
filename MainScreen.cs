@@ -31,9 +31,9 @@ namespace RPG
 
 		int currentFlashes, maxFlashes;
 
-		private enum Phase { Introduction, FinalMessage, MainMenu, InGame, Transition, BetweenGames, Paused };
+		private enum Phase { Introduction, PracticeUnlock, FinalMessage, MainMenu, InGame, Transition, BetweenGames, Paused };
 		private Phase curPhase, prevPhase;
-		private bool fromGame, practiceMode;
+		private bool fromGame, practiceMode, practiceUnlocked, practiceIntro;
 		private int continues, score;
 		private Random random;
 
@@ -48,15 +48,26 @@ namespace RPG
 			cm = new ContentManager(contentManager.ServiceProvider);
 			cm.RootDirectory = contentManager.RootDirectory;
 			this.pp = pp;
+			paletteShader = contentManager.Load<Effect>("Battle/BattleBG");
 
 			//Console.WriteLine("BYTE: " + fs.ReadByte());
 			if (fs.ReadByte().Equals('P'))
 			{
 				curPhase = Phase.MainMenu;
 				fs.Close();
+				practiceUnlocked = GetSaveElem("Practice") == 1;
+				SetColor(GetSaveElem("Palette"));//Restore palette from save
 			}
 			else
+			{
+				paletteShader.Parameters["col_light"].SetValue(new Color(250, 231, 190).ToVector4());
+				paletteShader.Parameters["col_extra"].SetValue(new Color(234, 80, 115).ToVector4());
+				paletteShader.Parameters["col_med"].SetValue(new Color(113, 68, 123).ToVector4());
+				paletteShader.Parameters["col_dark"].SetValue(new Color(176, 108, 57).ToVector4());
+
+				practiceUnlocked = false;
 				curPhase = Phase.Introduction;
+			}
 			
 			fromGame = false;
 			//curPhase = Phase.BetweenGames;
@@ -84,9 +95,6 @@ namespace RPG
 			transition = contentManager.Load<Effect>("Map/transitions");
 			transition.Parameters["time"].SetValue((float)timer);
 
-			paletteShader = contentManager.Load<Effect>("Battle/BattleBG");
-			SetColor(GetSaveElem("Palette"));//Restore palette from save
-
 			song = contentManager.Load<Song>("Map/pkmnbtl2");
 			continues = 3;
 			score = 0;
@@ -94,7 +102,9 @@ namespace RPG
 			prevStateKb = Keyboard.GetState();
 			prevStateM = Mouse.GetState();
 
-			microgame = new TitleScreen(cm, paletteShader);
+			practiceIntro = false;
+
+			microgame = new TitleScreen(cm, paletteShader, practiceUnlocked);
 
 			random = new Random();
 
@@ -272,7 +282,7 @@ namespace RPG
 						//TODO: Make an exit button
 						if (prevStateKb.IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyDown(Keys.Space) || (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
 						{
-							byte[] bytes = Encoding.UTF8.GetBytes("Palette: 0\nBattle: 0W 0L\nApples: 0W 0L\n");
+							byte[] bytes = Encoding.UTF8.GetBytes("Palette: 0\nPractice: 0\nBattle: 0W 0L\nApples: 0W 0L\n");
 							fs.Write(bytes, 0, bytes.Length);
 							fs.Close();
 
@@ -280,6 +290,18 @@ namespace RPG
 						}
 					}
 					break;
+				case Phase.PracticeUnlock:
+					introText.Update(dt, prevStateKb, prevStateM);
+						if (introText.messageComplete())
+						{
+							//TODO: Make an exit button
+							if (prevStateKb.IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyDown(Keys.Space) || (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
+							{
+								UpdateSaveElem("Practice", 1);
+								curPhase = Phase.MainMenu;
+							}
+						}
+					break;	
 				case Phase.MainMenu:
 					switch (microgame.Update(dt, prevStateKb, prevStateM))
 					{
@@ -382,9 +404,19 @@ namespace RPG
 							microgame = ChooseGame();
 						else
 						{
+							//Out of continues
+							score = 0;
 							lio = contentManager.Load<Texture2D>("Menus/TransitionQuit");
 							continues = 3;
-							microgame = new TitleScreen(cm, paletteShader);
+
+							//First time getting a game over
+							if (!practiceUnlocked)
+							{
+								practiceIntro = true;
+								practiceUnlocked = true;
+								introText = new Hud(new string[] { "You've unlocked practice mode!\nYou can play the games you've lost more frequently.", "Check it out in the menu!" }, cm, 30, 2, posY: -1, canClose: true);
+							}
+							microgame = new TitleScreen(cm, paletteShader, practiceUnlocked);
 						}
 		
 						curPhase = Phase.Transition;
@@ -423,7 +455,7 @@ namespace RPG
 									cm = new ContentManager(contentManager.ServiceProvider);
 									cm.RootDirectory = contentManager.RootDirectory;
 
-									microgame = new TitleScreen(cm, paletteShader);
+									microgame = new TitleScreen(cm, paletteShader, practiceUnlocked);
 									//microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
 
 									curPhase = Phase.Transition;
@@ -492,6 +524,14 @@ namespace RPG
 					}
 
 					break;
+				case Phase.PracticeUnlock:
+					graphicsDevice.SetRenderTarget(bufferTarget);
+					microgame.Draw(sb);
+
+					sb.Begin();
+					introText.Draw(sb);
+					sb.End();
+					break;	
 				case Phase.FinalMessage:
 					graphicsDevice.SetRenderTarget(bufferTarget);
 					microgame.Draw(sb);
@@ -536,7 +576,12 @@ namespace RPG
 							timer = 0.2;
 
 							if (microgame is TitleScreen)
-								curPhase = Phase.MainMenu;
+							{
+								if (practiceIntro)
+									curPhase = Phase.PracticeUnlock;
+								else
+									curPhase = Phase.MainMenu;
+							}
 							else if (fromGame)
 							{
 								fromGame = false;
@@ -612,7 +657,7 @@ namespace RPG
 			graphicsDevice.SetRenderTarget(mainTarget);
 			sb.Begin(SpriteSortMode.Immediate);
 
-			if (curPhase == Phase.Introduction || curPhase == Phase.FinalMessage)
+			if (curPhase == Phase.Introduction || curPhase == Phase.FinalMessage || curPhase == Phase.PracticeUnlock)
 			{
 				Console.WriteLine("FSAFSAF");
 				paletteShader.Techniques[3].Passes[0].Apply();

@@ -19,6 +19,7 @@ namespace RPG
 		int mouseX, mouseY;
 		private enum Phase { Title, Settings };
 		private Phase phase;
+		private bool practiceUnlocked;
 
 		//Order should be lightest to darkest
 		public static Tuple<Vector4, Vector4, Vector4, Vector4>[] palettes =
@@ -57,16 +58,23 @@ namespace RPG
 		};
 
 		//Intentionally keep inner and outer MouseStates separate so pausing doesn't act weird
-		public TitleScreen(ContentManager contentManager, Effect paletteShader)
+		public TitleScreen(ContentManager contentManager, Effect paletteShader, bool unlockPractice)
 		{
 			this.contentManager = contentManager;
 			this.paletteShader = paletteShader;
+			practiceUnlocked = unlockPractice;
+
 			mouseX = 0;
 			mouseY = 0;
 			state = Mouse.GetState();
 			background = contentManager.Load<Texture2D>("Menus/Palette");
 			sprite = contentManager.Load<Texture2D>("Menus/wiz");
-			options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Practice", "Quit" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+
+			if (practiceUnlocked)
+				options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Practice", "Quit" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+			else
+				options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Quit" }, 3, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+			
 			phase = Phase.Title;
 
 			backButton = new Button(contentManager, 4, Game1.height - 30);
@@ -109,6 +117,8 @@ namespace RPG
 							options = new Menu(contentManager, new string[] { "Palette", "P1", "P2", "P3", "P4", "P5" }, 1, 40, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 							break;
 						case 2:
+							if (!practiceUnlocked)
+								return 3;
 							return 2;
 						//Exit game
 						case 3:
@@ -124,7 +134,10 @@ namespace RPG
 					    || backButton.IsPressed(prevStateM))
 					{
 						phase = Phase.Title;
-						options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Practice", "Quit" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+						if(practiceUnlocked)
+							options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Practice", "Quit" }, 4, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+						else
+							options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Quit" }, 3, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 					}
 					if (options.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY) == 0)
 					{ 
