@@ -24,7 +24,7 @@ namespace RPG
 		private bool controlsShown;
 
 		private Effect transition, paletteShader;
-		private double timer, countdownTimer;
+		private double timer, countdownTimer, timerMult;
 		private Song song;
 		private KeyboardState prevStateKb;
 		private MouseState prevStateM;
@@ -36,6 +36,7 @@ namespace RPG
 		private bool fromGame, practiceMode, practiceUnlocked, practiceIntro;
 		private int continues, score;
 		private Random random;
+		private int lastGame, timesRepeated;
 
 		private FileStream fs;
 		private Game game;
@@ -75,6 +76,7 @@ namespace RPG
 			maxFlashes = 7;
 			timer = 0.2;
 			countdownTimer = 0.0;
+			timerMult = 1.0;
 			controlsShown = false;
 
 			this.graphicsDevice = graphicsDevice;
@@ -101,6 +103,9 @@ namespace RPG
 			//MediaPlayer.Play(song);
 			prevStateKb = Keyboard.GetState();
 			prevStateM = Mouse.GetState();
+
+			lastGame = -1;
+			timesRepeated = 0;
 
 			practiceIntro = false;
 
@@ -235,11 +240,31 @@ namespace RPG
 			{
 				case 0:
 				{
+					if (lastGame == 0)
+					{
+						timesRepeated++;
+						if (timesRepeated >= 2)
+							goto case 1;
+					}
+					else
+						timesRepeated = 0;
+
+					lastGame = 0;
 					lio = contentManager.Load<Texture2D>("Menus/TransitionTest");
 					return new Battle(cm, bufferTarget, graphicsDevice, pp);
 				}
 				case 1:
 				{
+					if (lastGame == 1)
+					{
+						timesRepeated++;
+						if (timesRepeated >= 2)
+							goto case 0;
+					}
+					else
+						timesRepeated = 0;
+
+					lastGame = 1;
 					lio = contentManager.Load<Texture2D>("Menus/TransitionApples");	
 					return new FallingApples(cm, graphicsDevice);
 				}
@@ -346,14 +371,19 @@ namespace RPG
 				case Phase.InGame:
 					byte result = microgame.Update(dt, prevStateKb, prevStateM);
 
-					if(result != 254)
-						countdownTimer += dt.ElapsedGameTime.TotalSeconds;
+					if (result != 254)
+						countdownTimer += dt.ElapsedGameTime.TotalSeconds * timerMult;
 
-					//Won game (or time is up but animations are still playing)
+					//Won game
 					if (result == 255)
 					{
 						UpdateSaveGame(microgame.ToString(), true);
 						score++;
+						if (score == 10)
+							timerMult = 1.25;
+						else if (score == 20)
+							timerMult = 1.5;
+						
 						countdownTimer = 0.0;
 						microgame.Unload();
 						cm.Dispose();
@@ -362,9 +392,13 @@ namespace RPG
 
 						if (continues <= 2)
 						{
-							//Regain a life
-							microgame = new BetweenGames(cm, score, continues, false, true);
-							continues++;
+							if (score % 10 == 0)
+							{
+								microgame = new BetweenGames(cm, score, continues, false, true);
+								continues++;
+							}
+							else
+								microgame = new BetweenGames(cm, score, continues, false, false);
 						}
 						else
 							microgame = new BetweenGames(cm, score, continues, false);
@@ -406,6 +440,7 @@ namespace RPG
 						{
 							//Out of continues
 							score = 0;
+							timerMult = 0.0;
 							lio = contentManager.Load<Texture2D>("Menus/TransitionQuit");
 							continues = 3;
 
