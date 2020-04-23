@@ -81,8 +81,10 @@
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionQuit.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/badapple.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/goodapple.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/Controls_Unix.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

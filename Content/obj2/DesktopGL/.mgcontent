@@ -4,6 +4,10 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionPlate.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/Controls_Unix.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/Controls.png</File>
+    <File>/home/damino/Documents/Microgames/Content/OkButton.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/badapple.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/goodapple.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionQuit.png</File>
@@ -14,9 +18,7 @@
     <File>/home/damino/Documents/Microgames/Content/Battle/Player.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Icons/BattleHudNew.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Borowstree.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionPlate.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/background_grn.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Menus/Controls.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/Countdown.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton_Lost.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton.png</File>
@@ -59,7 +61,6 @@
     <File>/home/damino/Documents/Microgames/Content/Map/Tazmily/Hinawa/Hinawa.png</File>
     <File>/home/damino/Documents/Microgames/Content/Map/Transition.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/Palette.png</File>
-    <File>/home/damino/Documents/Microgames/Content/OkButton.png</File>
     <File>/home/damino/Documents/Microgames/Content/OkButtonPressed.png</File>
     <File>/home/damino/Documents/Microgames/Content/OpenedDoor.png</File>
     <File>/home/damino/Documents/Microgames/Content/overworld_gutter.png</File>

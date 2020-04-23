@@ -109,7 +109,7 @@ namespace RPG
 
 		public void Draw(SpriteBatch sb, Vector2 pos, int health)
 		{
-			sb.Draw(bg, new Vector2(0, 0), Color.White);
+			sb.Draw(bg, new Vector2((int)pos.X, (int)pos.Y), Color.White);
 
 			if (rollingHealth < health)
 			{

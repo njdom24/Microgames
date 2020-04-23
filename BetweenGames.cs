@@ -18,9 +18,10 @@ namespace RPG
 		private bool regain;
 		private int score;
 		private ScrollingVal scoreDisplay;
+		private Button pauseButton;
 		//If continues != lastDrawnContinues, that means it was just lost and must be animated
 
-		public BetweenGames(ContentManager contentManager, int score, int continues = 3, bool lost = true, bool regain = false)
+		public BetweenGames(ContentManager contentManager, int score, Button pauseButton, int continues = 3, bool lost = true, bool regain = false)
 		{
 			background = contentManager.Load<Texture2D>("Menus/TransBG_GRN");
 			wizZoom = contentManager.Load<Texture2D>("Menus/wizZOOM");
@@ -39,6 +40,7 @@ namespace RPG
 			this.score = score;
 			this.regain = regain;
 			this.continues = continues;
+			this.pauseButton = pauseButton;
 
 			if (lost)
 				lastDrawnContinues = continues + 1;
@@ -110,13 +112,14 @@ namespace RPG
 
 			heightOffset *= 20;
 
-			//Console.WriteLine("timeroffset: " + heightOffset);
 			sb.Draw(wizZoom, new Rectangle((Game1.width - wizZoom.Width)/2, (Game1.height - wizZoom.Height) / 2 + (int)heightOffset, wizZoom.Width, wizZoom.Height), new Rectangle(0, 0, wizZoom.Width, wizZoom.Height), Color.White);
 
-			scoreDisplay.Draw(sb, Vector2.Zero, score);
+			scoreDisplay.Draw(sb, new Vector2(2, Game1.height - 56), score);
 
 			if (animTimer < 4 * 39.5)
 				DrawContinues(sb);
+
+			pauseButton.Draw(sb);
 			
 			sb.End();
 		}

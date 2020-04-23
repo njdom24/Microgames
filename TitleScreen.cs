@@ -43,8 +43,7 @@ namespace RPG
 						 new Color(115, 15, 40).ToVector4()),
 
 			//Tritanopia
-			Tuple.Create(
-						 new Color(250, 185, 45).ToVector4(),
+			Tuple.Create(new Color(250, 185, 45).ToVector4(),
 						 new Color(7, 81, 156).ToVector4(),
 						 new Color(49, 130, 189).ToVector4(),
 						 new Color(105, 90, 140).ToVector4()),
@@ -114,7 +113,7 @@ namespace RPG
 							return 1;
 						case 1:
 							phase = Phase.Settings;
-							options = new Menu(contentManager, new string[] { "Palette", "P1", "P2", "P3", "P4", "P5" }, 1, 40, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
+							options = new Menu(contentManager, new string[] { "Palette", "Controls", "P1", null, "P2", null, "P3", null, "P4", null, "P5", null }, 2, 40, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 							break;
 						case 2:
 							if (!practiceUnlocked)
@@ -130,7 +129,7 @@ namespace RPG
 					break;
 				case Phase.Settings:
 					backButton.Update(mouseX, mouseY);
-					if ((prevStateKb.IsKeyDown(Keys.Escape) && Keyboard.GetState().IsKeyUp(Keys.Escape))
+					if ((prevStateKb.IsKeyUp(Keys.Escape) && Keyboard.GetState().IsKeyDown(Keys.Escape))
 					    || backButton.IsPressed(prevStateM))
 					{
 						phase = Phase.Title;
@@ -139,6 +138,7 @@ namespace RPG
 						else
 							options = new Menu(contentManager, new string[] { "Start Game", "Settings", "Quit" }, 3, offsetX: Game1.width / 3, offsetY: Game1.height / 2);
 					}
+					//Palette Selection
 					if (options.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY) == 0)
 					{ 
 						int indX = options.GetSelectionX(prevStateKb, prevStateM, mouseX, mouseY);
@@ -147,6 +147,15 @@ namespace RPG
 					}
 					else switch (options.GetSelection(prevStateKb, prevStateM, mouseX, mouseY))
 					{
+						//Controls
+						case 1:
+							if ((prevStateKb.IsKeyDown(Keys.Space) && Keyboard.GetState().IsKeyUp(Keys.Space))
+								|| (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
+							{
+								//Trigger MainScreen to show Controls
+								return 4;
+							}
+							break;
 						default:
 							break;
 					}

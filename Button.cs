@@ -12,9 +12,9 @@ namespace RPG
 		private int posX, posY;
 		private int height;
 		private bool hovered;
-		private Text text;
+		private Text overlayText;
 
-		public Button(ContentManager contentManager, int posX, int posY, int height = 1)
+		public Button(ContentManager contentManager, int posX, int posY, int height = 1, string text = "OK")
 		{
 			image = contentManager.Load<Texture2D>("OkButton");
 			this.posX = posX;
@@ -22,7 +22,7 @@ namespace RPG
 			hovered = false;
 			this.height = height;
 
-			text = new Text(contentManager, "OK");
+			overlayText = new Text(contentManager, text);
 		}
 
 		public void Draw(SpriteBatch sb)
@@ -31,7 +31,7 @@ namespace RPG
 				sb.Draw(image, new Rectangle(posX, posY, image.Width, image.Height), Color.DarkOliveGreen);
 			else
 				sb.Draw(image, new Rectangle(posX, posY, image.Width, image.Height), Color.White);
-			text.Draw(sb, new Vector2(posX + image.Width/2 - text.width/2, posY + image.Height/2 - 8*height));
+			overlayText.Draw(sb, new Vector2(posX + image.Width/2 - overlayText.width/2, posY + image.Height/2 - 8*height));
 		}
 
 		//x and y are mouse coordinates

@@ -94,9 +94,9 @@ namespace RPG
 
 		private List<Apple> apples;
 		private Random random;
+		private bool spawnBadApples;
 
-
-		public FallingApples(ContentManager contentManager, GraphicsDevice pDevice)
+		public FallingApples(ContentManager contentManager, int score)
 		{
 			background = contentManager.Load<Texture2D>("Corneria_gutter");
 			hat = contentManager.Load<Texture2D>("FallingApples/wizJUNP_Back");
@@ -128,6 +128,7 @@ namespace RPG
 			spawnedCount = 0;
 			usingKeyboard = true;
 			facingLeft = false;
+			spawnBadApples = score >= 10;
 		}
 
 		public override string ToString()
@@ -272,13 +273,14 @@ namespace RPG
 				spawnTimer = 0;
 				int spawnPoint = random.Next(20, Game1.width - 20);
 
-				if (spawnedCount < 2)
+				if (spawnedCount < 2 || !spawnBadApples)
 				{
 					apples.Add(new Apple(world, apple, false, spawnPoint));
 					spawnedCount++;
 				}
 				else
 				{
+					//Spawn bad apple
 					spawnedCount = 0;
 					apples.Add(new Apple(world, badApple, true, spawnPoint));
 				}

@@ -134,6 +134,11 @@ namespace RPG
 			return selectorY.GetIndex();
 		}
 
+		public void SetSelectionY(int index)
+		{
+			selectorY.SetIndex(index);
+		}
+
 		public void Update(GameTime gameTime, KeyboardState prevStateKb, MouseState prevStateM, int mouseX, int mouseY)
 		{
 			cursorTimer += gameTime.ElapsedGameTime.TotalSeconds;
