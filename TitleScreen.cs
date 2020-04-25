@@ -145,11 +145,11 @@ namespace RPG
 						if (indX > 0)
 							SetColor(indX - 1);
 					}
-					else switch (options.GetSelection(prevStateKb, prevStateM, mouseX, mouseY))
+					else switch (options.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY))
 					{
 						//Controls
 						case 1:
-							if ((prevStateKb.IsKeyDown(Keys.Space) && Keyboard.GetState().IsKeyUp(Keys.Space))
+							if ( (prevStateKb.IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyDown(Keys.Space))
 								|| (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
 							{
 								//Trigger MainScreen to show Controls

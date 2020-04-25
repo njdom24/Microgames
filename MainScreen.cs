@@ -21,7 +21,7 @@ namespace RPG
 		private Texture2D lio, stairClimber, pauseScreen, continueIcon, countdown, controls;
 		private Menu pauseMenu;
 		private Hud introText;
-		private bool controlsShown, controlRevisit;
+		private bool controlsShown, controlHint, controlRevisit;
 
 		private Effect transition, paletteShader;
 		private double timer, countdownTimer, timerMult;
@@ -80,6 +80,7 @@ namespace RPG
 			timerMult = 1.0;
 			controlsShown = false;
 			controlRevisit = false;
+			controlHint = false;
 
 			this.graphicsDevice = graphicsDevice;
 			practiceMode = false;
@@ -301,19 +302,61 @@ namespace RPG
 			else switch (curPhase) 
 			{
 				case Phase.Introduction:
+					exitButton.Update(mouseX, mouseY);
 					introText.Update(dt, prevStateKb, prevStateM);
 
+					if (controlHint)
+					{ 
+						if ((prevStateKb.IsKeyUp(Keys.Escape) && Keyboard.GetState().IsKeyDown(Keys.Escape)) || exitButton.IsPressed(prevStateM))
+						{
+							controlHint = false;
+							introText.finishMessage();
+								introText.finishText();
+							if (controlRevisit)
+								curPhase = Phase.MainMenu;
+							else
+							{
+								curPhase = Phase.FinalMessage;
+								introText = new Hud(new string[] { "You can revisit that screen in Settings.\nHave fun!" }, cm, 30, 2, posY: -1, canClose: true);
+							}
+						}
+					}
 					if (introText.messageComplete())
 					{
-						if (!controlsShown)
+						if (controlHint)
+						{
+							controlHint = false;
+							//exitButton.Update(mouseX, mouseY);
+
+							if ((prevStateKb.IsKeyUp(Keys.Escape) && Keyboard.GetState().IsKeyDown(Keys.Escape)) || exitButton.IsPressed(prevStateM))
+							{
+								if (controlRevisit)
+									curPhase = Phase.MainMenu;
+								else
+								{
+									curPhase = Phase.FinalMessage;
+									introText = new Hud(new string[] { "You can revisit that screen in Settings.\nHave fun!" }, cm, 30, 2, posY: -1, canClose: true);
+								}
+							}
+
+						}
+						else if (!controlsShown)
 						{
 							controlsShown = true;
 							break;
 						}
-						else 
+						else
 						{
-							exitButton.Update(mouseX, mouseY);
-							if (prevStateKb.IsKeyUp(Keys.Escape) && Keyboard.GetState().IsKeyDown(Keys.Escape) || exitButton.IsPressed(prevStateM))
+							//exitButton.Update(mouseX, mouseY);
+
+							//Hit the wrong buttons to continue
+							if ((prevStateKb.IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyDown(Keys.Space)) ||
+								!exitButton.IsPressed(prevStateM) && (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
+							{
+								controlHint = true;
+								introText = new Hud(new string[] { "You can click the button in the upper left corner\nor hit the Escape key to exit this screen." }, cm, 30, 2, posY: -1, canClose: true);
+							}
+							else if ((prevStateKb.IsKeyUp(Keys.Escape) && Keyboard.GetState().IsKeyDown(Keys.Escape)) || exitButton.IsPressed(prevStateM))
 							{
 								if (controlRevisit)
 									curPhase = Phase.MainMenu;
@@ -325,7 +368,10 @@ namespace RPG
 							}
 						}
 					}
-					break;
+					else
+					{ 
+					}
+						break;
 				case Phase.FinalMessage:
 					if (controlRevisit)
 					{
@@ -745,7 +791,7 @@ namespace RPG
 				graphicsDevice.Clear(Color.Transparent);
 				sb.Begin(blendState: BlendState.AlphaBlend);
 				//The text is becoming white because the shader overrides it. Need to render the text to a buffer first
-				if (introText.messageComplete())
+				if (introText.messageComplete() || controlHint)
 					exitButton.Draw(sb);
 				
 				sb.End();
@@ -758,6 +804,11 @@ namespace RPG
 				{
 					sb.Draw(controls, new Rectangle(0, 0, controls.Width, controls.Height), Color.White);
 
+				}
+				else if (controlHint)
+				{ 
+					sb.Draw(controls, new Rectangle(0, 0, controls.Width, controls.Height), Color.White);
+					introText.Draw(sb);
 				}
 				else
 				{

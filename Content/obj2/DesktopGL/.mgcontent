@@ -4,16 +4,19 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionPlate.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Menus/Controls_Unix.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/Controls.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/Controls_Unix.png</File>
+    <File>/home/damino/Documents/Microgames/Content/OkButton_Outline.png</File>
     <File>/home/damino/Documents/Microgames/Content/OkButton.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Borashki.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Borowater.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransBG_GRN.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionPlate.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/badapple.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/goodapple.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionQuit.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionApples.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionTest.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Borowater.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Effects/PkFireA_GRN.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Player.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Icons/BattleHudNew.png</File>
@@ -78,7 +81,6 @@
     <File>/home/damino/Documents/Microgames/Content/FallingApples/wizJUNP.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/wizZOOM.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/wiz.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Menus/TransBG_GRN.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/wizJUNP_Back.png</File>
     <File>/home/damino/Documents/Microgames/Content/Galaga/BG.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/PauseScreen.png</File>
