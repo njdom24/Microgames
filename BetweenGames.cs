@@ -21,7 +21,7 @@ namespace RPG
 		private Button pauseButton;
 		//If continues != lastDrawnContinues, that means it was just lost and must be animated
 
-		public BetweenGames(ContentManager contentManager, int score, Button pauseButton, int continues = 3, bool lost = true, bool regain = false)
+		public BetweenGames(ContentManager contentManager, int score, double timerOffset, Button pauseButton, int continues = 3, bool lost = true, bool regain = false)
 		{
 			background = contentManager.Load<Texture2D>("Menus/TransBG_GRN");
 			wizZoom = contentManager.Load<Texture2D>("Menus/wizZOOM");
@@ -32,8 +32,8 @@ namespace RPG
 				scoreDisplay = new ScrollingVal(contentManager, score);
 			else
 				scoreDisplay = new ScrollingVal(contentManager, score-1);
-			
-			animTimer = 0.0;
+
+			animTimer = timerOffset;
 			timer = 0.0;
 			fallTimer = 0.0;
 
@@ -62,7 +62,8 @@ namespace RPG
 		byte MiniScreen.Update(GameTime dt, KeyboardState prevStateKb, MouseState prevStateM)
 		{
 			timer += dt.ElapsedGameTime.TotalSeconds * 3;
-			animTimer += dt.ElapsedGameTime.TotalSeconds * 40;
+			animTimer += (dt.ElapsedGameTime.TotalSeconds * 40);
+			animTimer %= background.Width;
 
 			if(timer > 6)
 				if (regain)
@@ -101,6 +102,11 @@ namespace RPG
 				else
 					sb.Draw(continueIcon, new Rectangle(x, (int)(Game1.height*1.3) + (int)(fallTimer * 10), continueIcon.Width, continueIcon.Height), new Rectangle(0, 0, continueIcon.Width, continueIcon.Height), Color.White);
 			}
+		}
+
+		public double GetAnimOffset()
+		{
+			return animTimer;
 		}
 
 		void MiniScreen.Draw(SpriteBatch sb)

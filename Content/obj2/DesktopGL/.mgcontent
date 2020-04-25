@@ -4,6 +4,11 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton_Lost.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Explainer_Borashki.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Explainer_Borowater.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Explainer_Borowstree.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/Controls.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/Controls_Unix.png</File>
     <File>/home/damino/Documents/Microgames/Content/OkButton_Outline.png</File>
@@ -23,8 +28,6 @@
     <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Borowstree.png</File>
     <File>/home/damino/Documents/Microgames/Content/FallingApples/background_grn.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/Countdown.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton_Lost.png</File>
-    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionButton.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/003.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/003Atlas.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/003Byte.png</File>

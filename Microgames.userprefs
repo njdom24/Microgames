@@ -1,28 +1,27 @@
 ﻿<Properties StartupConfiguration="{905B6B3B-33B1-49FB-B691-AE30F88CB4F5}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MainScreen.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Icons.cs">
     <Files>
       <File FileName="Game1.cs" Line="61" Column="50" />
       <File FileName="Microgame.cs" Line="21" Column="4" />
       <File FileName="Screen.cs" Line="22" Column="17" />
       <File FileName="Content/Battle/BattleBG.fx" Line="243" Column="29" />
-      <File FileName="Menu.cs" Line="139" Column="30" />
-      <File FileName="Hud.cs" Line="143" Column="28" />
+      <File FileName="Menu.cs" Line="142" Column="66" />
       <File FileName="BetweenGames.cs" Line="114" Column="4" />
-      <File FileName="MainScreen.cs" Line="304" Column="52" />
       <File FileName="ScrollingVal.cs" Line="37" Column="58" />
-      <File FileName="Battle.cs" Line="122" Column="43" />
-      <File FileName="Enemy.cs" Line="120" Column="16" />
-      <File FileName="Button.cs" Line="27" Column="3" />
+      <File FileName="Battle.cs" Line="90" Column="67" />
+      <File FileName="Icons.cs" Line="13" Column="13" />
+      <File FileName="Enemy.cs" Line="55" Column="23" />
+      <File FileName="Button.cs" Line="31" Column="15" />
       <File FileName="Text.cs" Line="11" Column="2" />
       <File FileName="Galaga.cs" Line="150" Column="31" />
-      <File FileName="Icons.cs" Line="28" Column="29" />
-      <File FileName="TitleScreen.cs" Line="152" Column="77" />
+      <File FileName="Hud.cs" Line="326" Column="7" />
+      <File FileName="MainScreen.cs" Line="357" Column="137" />
+      <File FileName="TitleScreen.cs" Line="133" Column="46" />
       <File FileName="FallingApples.cs" Line="177" Column="43" />
       <File FileName="Selector.cs" Line="8" Column="14" />
       <File FileName="PrimitiveBatch.cs" Line="1" Column="1" />
       <File FileName="Program.cs" Line="22" Column="2" />
       <File FileName="Map.cs" Line="105" Column="41" />
-      <File FileName="Icon.cs" Line="38" Column="4" />
       <File FileName="Battler.cs" Line="78" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>

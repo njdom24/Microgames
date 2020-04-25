@@ -35,10 +35,8 @@ namespace RPG
 		private int centerY;
 
 		private Vector2 notePos;
-		private double noteTimer;
 
 		private int verticalRadius = 15;
-		private int verticalRadiusFinal = 180;//120
 		private int horizontalRadius = 80;
 		private int horizontalRadiusFinal = 250;//200
 		private bool increaseRadius = false;
@@ -80,7 +78,6 @@ namespace RPG
 					sprite = contentManager.Load<Texture2D>("Battle/Enemies/Borashki");
 					name = "Borashki";
 					break;
-					
 			}
 			
 			hitEffects = contentManager.Load<Texture2D>("Battle/Icons/HitEffects");
@@ -90,7 +87,6 @@ namespace RPG
 			visOrder = new int[] { 10, 2, 5, 13, 7, 14, 9, 1, 8, 3, 11, 6, 12, 4, 0 };//, 8 };
 			visibility = new bool[noteBodies.Length];
 			killed = false;
-			noteTimer = 0;
 			notePos = Vector2.Zero;
 			defaultPos = new Vector2((Game1.width - sprite.Width) / 2, (Game1.height - offsetBottom + offsetTop - sprite.Height) / 2);
 			noteHit = true;
@@ -121,9 +117,16 @@ namespace RPG
 			}
 		}
 
+		//Enemy name for files
 		public string GetName()
 		{
 			return name;
+		}
+
+		//Actual enemy name
+		public string GetStageName()
+		{
+			return name.Equals("Borowater") ? "Boro of the Deep Blue C" : "The " + name;
 		}
 
 		//Turns every colored pixel of the sprite white
@@ -183,8 +186,8 @@ namespace RPG
 
 				if (horizontalRadiusFinal > horizontalRadius)
 				{
-					horizontalRadius += (int)(500*gameTime.ElapsedGameTime.TotalSeconds);//+= (int)(1000 * gameTime.ElapsedGameTime.TotalSeconds);//USE A RADIUS TIMER
-					verticalRadius += (int)(400 * gameTime.ElapsedGameTime.TotalSeconds);//+= (int)(1000 * gameTime.ElapsedGameTime.TotalSeconds);
+					horizontalRadius += (int)(500 * gameTime.ElapsedGameTime.TotalSeconds);
+					verticalRadius += 	(int)(400 * gameTime.ElapsedGameTime.TotalSeconds);
 				}
 				else
 				{
@@ -227,12 +230,8 @@ namespace RPG
 			else
 				for(int i = 0; i < noteBodies.Length; i++)
 				{
-					//noteBodies[i].IgnoreGravity = false;
 					noteBodies[i].ResetDynamics();
-					//noteBodies[i].LinearDamping = 0;
-					//noteBodies[i].ApplyForce(new Vector2(9000*(noteBodies[i].Position.X - centerX), 50*(noteBodies[i].Position.Y - centerY)));
 					noteBodies[i].ApplyForce(ConvertUnits.ToSimUnits(noteCount*50*(ConvertUnits.ToDisplayUnits(noteBodies[i].Position.X) - centerX), noteCount*40*(ConvertUnits.ToDisplayUnits(noteBodies[i].Position.Y)-centerY)));
-					//give it an initial velocity or something
 				}
 			return true;
 		}
@@ -252,26 +251,6 @@ namespace RPG
 				else
 					return FinishCombo();
 			}
-
-			//Uncomment to allow rhythm-based gameplay (Out of scope at the moment)
-			/*
-			if ((Keyboard.GetState().IsKeyDown(Keys.Space) && prevStateKb.IsKeyUp(Keys.Space)) ||
-				(prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
-			{
-				if (combatTimer > secondsPerBeat - threshHold)//during time window
-				{
-					if (noteHit)
-						return FinishCombo();
-
-					AdditionalDamage();
-				}
-				else//exit when a beat is missed
-					return FinishCombo();
-			}
-			*/
-
-			//if (timer < 0)
-			//return true;
 
 			if (Math.Abs(lastForce) < 20)
 			{
@@ -301,20 +280,6 @@ namespace RPG
 
 		private void MakeVisible()
 		{
-			/*
-			int lowestIndex = 0;
-			double lowestHeight = 9;
-			for (int i = 0; i < notePositions.Length; i++)
-			{
-				if (notePositions[i].Y > lowestHeight)
-				{
-					lowestIndex = i;
-					lowestHeight = notePositions[i].Y;
-				}
-			}
-			visibility[lowestIndex] = true;
-			*/
-			//visibility[12] = true;
 			hitTimer = 0.05;
 			hitX = offsetter.Next(-10, 10);
 			hitY = offsetter.Next(-10, 10);

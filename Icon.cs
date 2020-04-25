@@ -36,15 +36,6 @@ namespace RPG
 		{
 			sb.Draw(largeBorder, new Rectangle(x, y, largeBorder.Width, largeBorder.Height), Color.White);
 			sb.Draw(image, new Rectangle(x + 2, y + 2, image.Width, image.Height), Color.White);
-			/*
-			else
-			{
-				sb.Draw(largeBorder, new Rectangle(x, y, largeBorder.Width, largeBorder.Height), Color.White);
-				sb.Draw(image, new Rectangle(x + 2, y + 2, image.Width, image.Height), Color.White);
-			}
-
-			sb.End();
-			*/
 		}
 
 		public void DrawDesaturated(SpriteBatch sb, int x, int y)

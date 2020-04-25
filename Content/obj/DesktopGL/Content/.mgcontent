@@ -84,8 +84,14 @@
     <File>/home/damino/Documents/Microgames/Content/Menus/Controls_Unix.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Borashki.png</File>
     <File>/home/damino/Documents/Microgames/Content/OkButton_Outline.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Explainer_Borashki.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Explainer_Borowater.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Explainer_Borowstree.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

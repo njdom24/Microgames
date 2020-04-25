@@ -10,35 +10,72 @@ using Microsoft.Xna.Framework.Input;
 
 namespace RPG
 {
+	class Icon
+	{
+		public int texOffset;
+		public string name;
+
+		public Icon(int pos, string name)
+		{
+			texOffset = pos * 42;
+			this.name = name;
+		}
+	}
+
 	class Icons
 	{
 		private Effect desaturate;
 		private Texture2D iconSet;
-		private Texture2D test;
 		private int width;
 		private int height;
 		private int count;
 		private int x;
 		private int y;
 
-		private int index; //testing, delete later
-
+		private int index;
 		private int mouseX, mouseY;
-
 		private Selector selector;
+		private Icon[] icons;
 
-		public Icons(ContentManager contentManager, int width = 42, int height = 42, int count = 3)
+		public Icons(ContentManager contentManager, bool shuffle, int width = 42, int height = 42, int count = 3)
 		{
 			desaturate = contentManager.Load<Effect>("Battle/Icons/IconChange");
 			iconSet = contentManager.Load<Texture2D>("Battle/Icons/BattleHudNew");
-			test = contentManager.Load<Texture2D>("Battle/Icons/Attack");
 			this.width = width;
 			this.height = height;
 			this.count = count;
 			x = (Game1.width - 48*3 ) / 2;
 			y = Game1.height - 48;
-			selector = new Selector(3, names: new string[] { "Attack", "Bag", "PSI" });
+
 			index = 0;
+
+			icons = new Icon[]
+			{
+				new Icon(0, "Earth"),
+				new Icon(1, "Fire"),
+				new Icon(2, "Water")
+			};
+
+			if (shuffle)
+			{
+				Random rnd = new Random();
+				Shuffle(rnd, icons);
+			}
+
+			selector = new Selector(3, names: new string[] { icons[0].name, icons[1].name, icons[2].name });
+		}
+
+		//Fisher-Yates Algorithm
+		public static void Shuffle<T>(Random rng, T[] array)
+		{
+			int n = array.Length;
+			while (n > 1)
+			{
+				int k = rng.Next(n--);
+				T temp = array[n];
+				array[n] = array[k];
+				array[k] = temp;
+			}
 		}
 
 		public void Update(KeyboardState prevStateKb, MouseState prevStateM)
@@ -53,6 +90,11 @@ namespace RPG
 
 			if(!state.Equals(prevStateM) && mouseY > y && mouseY < y+48)
 				selector.SetIndex(index);
+		}
+
+		public string GetMagic()
+		{
+			return icons[selector.GetIndex()].name;
 		}
 
 		public int GetIndex()
@@ -72,35 +114,23 @@ namespace RPG
 
 		public void Draw(SpriteBatch sb, int selected)//sb starts initialized with no effect
 		{
-			//48 is the icon dimensions w/ border -> 48
-			//42 is w/o border -> 42
-
-			//2 is the "padding" created by the border pixels -> 3
+			//48 is the icon dimensions w/ border
+			//42 is w/o border
+			//3 is the "padding" created by the border pixels
 
 			//Draw selected icon + border
 			sb.Draw(iconSet, new Rectangle(48 * selected + x, y, 48, 48), new Rectangle(14, 42+42, 48, 48), Color.White);//Border
-			sb.Draw(iconSet, new Rectangle(48 * selected + 3 + x, 3 + y, 42, 42), new Rectangle(42 * selected, 0, 42, 42), Color.White);//Icon
-
-			//Draw borders before selected
-			for (int i = 0; i < selected; i++)
-			{
-				sb.Draw(iconSet, new Rectangle(48 * i + 1 + x, 1 + y, 14, 14), new Rectangle(0, 42+42, 14, 14), Color.White);
-			}
-			//Draw borders after selected
-			for (int i = count - 1; i > selected; i--)
-			{
-				sb.Draw(iconSet, new Rectangle(48 * i + 1 + x, 1 + y, 14, 14), new Rectangle(0, 42+42, 14, 14), Color.White);
-			}
+			sb.Draw(iconSet, new Rectangle(48 * selected + 3 + x, 3 + y, 42, 42), new Rectangle(icons[selected].texOffset, 0, 42, 42), Color.White);//Icon
 
 			//Draw icons before selected
 			for(int i = 0; i < selected; i++)
 			{
-				sb.Draw(iconSet, new Rectangle(48 * i + 3 + x, 3 + y, 42, 42), new Rectangle(42 * i, 42, 42, 42), Color.White);
+				sb.Draw(iconSet, new Rectangle(48 * i + 3 + x, 3 + y, 42, 42), new Rectangle(icons[i].texOffset, 42, 42, 42), Color.White);
 			}
 			//Draw icons after selected
 			for(int i = count-1; i > selected; i--)
 			{
-				sb.Draw(iconSet, new Rectangle(48 * i + 3 + x, 3 + y, 42, 42), new Rectangle(42 * i, 42, 42, 42), Color.White);
+				sb.Draw(iconSet, new Rectangle(48 * i + 3 + x, 3 + y, 42, 42), new Rectangle(icons[i].texOffset, 42, 42, 42), Color.White);
 			}
 		}
 	}

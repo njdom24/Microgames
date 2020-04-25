@@ -51,7 +51,6 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Hud.cs" />
-    <Compile Include="Icon.cs" />
     <Compile Include="Icons.cs" />
     <Compile Include="MapEntity.cs" />
     <Compile Include="Map.cs" />

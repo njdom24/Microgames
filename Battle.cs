@@ -44,7 +44,6 @@ namespace RPG
 		private ContentManager content;
 		private int MultiSampleCount;
 		private Icons options;
-		//private Selector selector;
 
 		private World world;
 		private Combatant waiter;
@@ -74,9 +73,8 @@ namespace RPG
 		private int enemyType;
 
 		private bool deathMessageDisplayed;
-		private FileStream fs;
 
-		public Battle(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp)
+		public Battle(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp, int score)
 		{
 			//Generates 0, 1, 2
 			enemyType = new Random().Next(0, 3);
@@ -95,7 +93,7 @@ namespace RPG
 			secondsPerBeat = 0.5f;
 			world = new World(ConvertUnits.ToSimUnits(0,Game1.width));
 			waiter = null;
-			options = new Icons(contentManager);
+			options = new Icons(contentManager, score >= 20);//shuffle spells only after 20 wins
 			blackRect = new Texture2D(graphicsDevice, 1, 1);
 			blackRect.SetData(new Color[] { Color.Black });
 
@@ -111,18 +109,16 @@ namespace RPG
 			flash.Parameters["time"].SetValue((float)flashTimer);
 			firstEffect = new RenderTarget2D(graphicsDevice, Game1.width, Game1.height, false, SurfaceFormat.Color, DepthFormat.None, MultiSampleCount, RenderTargetUsage.DiscardContents);
 			content = contentManager;
-			//prevState = Keyboard.GetState();
-			//selector = new Selector(4, names: new string[] {"Attack", "Bag", "PSI", "Run"});
+
 			background = contentManager.Load<Texture2D>("Battle/005_GRN");
 			background2 = content.Load<Texture2D>("Battle/Yellow");
 			magic = contentManager.Load<Texture2D>("Battle/Effects/PkFireA");
 			magicAnim = new Animation(0, 24);
-			
 			bgTimer = 0;
-			//graphicsDevice.Textures[2] = palette;
+
 			this.final = final;//required for scaling
 			this.graphicsDevice = graphicsDevice;
-			text = new Hud(new string[] { "@The " + enemy.GetName() + " draws near!" }, content, 30, 2, posY: 3, canClose: true);
+			text = new Hud(new string[] { "@" + enemy.GetStageName() + " draws near!" }, content, 30, 2, posY: 3, canClose: true);
 			//text.finishText();
 			commandName = new Hud(new string[] { options.GetSelectedName() }, content, 6, 0, Game1.width / 3 - 50, 2, canClose: false, centered: true);
 			offsetHeightBottom = text.getHeight();
@@ -134,6 +130,11 @@ namespace RPG
 
 			darkenTimer = 1;
 			toReturn = 1;
+		}
+
+		public string GetEnemyName()
+		{
+			return enemy.GetName();
 		}
 
 		public override string ToString()
@@ -168,15 +169,6 @@ namespace RPG
 			sb.Draw(background, new Rectangle(0, 0, Game1.width, Game1.height), Color.White);//Draw to texture
 			sb.End();
 
-			//////////////////////////////////Second Background///////////////////////////////////
-			/*
-			graphicsDevice.SetRenderTarget(secondEffect);
-			sb.Begin(sortMode: SpriteSortMode.Immediate);
-			effect.CurrentTechnique.Passes[1].Apply();
-			graphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
-			sb.Draw(background2, new Rectangle(0, 0, 400, 240), Color.White);//Draw to texture
-			sb.End();
-			*/
 			graphicsDevice.SetRenderTarget(final);
 			sb.Begin(samplerState: SamplerState.PointClamp, sortMode: SpriteSortMode.Immediate, blendState: BlendState.Opaque);
 			//Console.WriteLine("Count: " + flash.Techniques.Count);
@@ -408,25 +400,8 @@ namespace RPG
 				//text.Update(gameTime, prevState);
 
 				if (victory && turnWaiter > 0.5)
-				{
 					return 255;
-					victoryTimer += gameTime.ElapsedGameTime.TotalSeconds;
-
-					if (victoryTimer < 0.2)
-						victoryColor = new Color(77, 48, 129);//purple
-					else if (victoryTimer < 0.3)
-						victoryColor = new Color(14, 134, 247);//blue
-					else if (victoryTimer < 0.6)
-						victoryColor = new Color(12, 251, 255);//light blue
-					else if (victoryTimer < 0.7)
-						victoryColor = new Color(14, 134, 247);//blue
-					else if (victoryTimer < 0.8)
-						victoryColor = new Color(12, 251, 255);//light blue
-					else if (victoryTimer < 1.9)
-						victoryColor = Color.White;
-					else
-						victoryColor = new Color(216, 254, 177);//yellow
-				}
+				
 			}
 			text.Update(gameTime, prevStateKb, prevStateM);
 
@@ -458,10 +433,10 @@ namespace RPG
 					if ((Keyboard.GetState().IsKeyDown(Keys.Space) && prevStateKb.IsKeyUp(Keys.Space)) ||
 					    (prevStateM.LeftButton == ButtonState.Pressed && Mouse.GetState().LeftButton == ButtonState.Released))
 					{
-						switch (options.GetIndex())
+						switch (options.GetMagic())
 						{
 							//Earth
-							case 0:
+							case "Earth":
 								//playerMove = 0;
 								playerMove = 1;
 								magic = content.Load<Texture2D>("Battle/Effects/PkFireA_GRN");
@@ -471,7 +446,7 @@ namespace RPG
 								curPhase = Phase.EnemyPhase;
 								break;
 							//Fire
-							case 1:
+							case "Fire":
 								playerMove = 1;
 								magic = content.Load<Texture2D>("Battle/Effects/PkFireA_GRN");
 								toReturn = 254;
@@ -480,7 +455,7 @@ namespace RPG
 								curPhase = Phase.EnemyPhase;
 								break;
 							//Water
-							case 2:
+							case "Water":
 								playerMove = 1;
 								magic = content.Load<Texture2D>("Battle/Effects/PkFireA_GRN");
 								toReturn = 254;

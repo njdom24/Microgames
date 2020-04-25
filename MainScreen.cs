@@ -24,7 +24,7 @@ namespace RPG
 		private bool controlsShown, controlHint, controlRevisit;
 
 		private Effect transition, paletteShader;
-		private double timer, countdownTimer, timerMult;
+		private double timer, countdownTimer, timerMult, betweenGamesOffset;
 		private Song song;
 		private KeyboardState prevStateKb;
 		private MouseState prevStateM;
@@ -78,6 +78,8 @@ namespace RPG
 			timer = 0.2;
 			countdownTimer = 0.0;
 			timerMult = 1.0;
+			betweenGamesOffset = 0.0;
+
 			controlsShown = false;
 			controlRevisit = false;
 			controlHint = false;
@@ -188,8 +190,11 @@ namespace RPG
 		{
 			if (GetLossRatio("Battle") > GetLossRatio("Apples"))
 			{
-				lio = contentManager.Load<Texture2D>("Menus/TransitionTest");
-				return new Battle(cm, bufferTarget, graphicsDevice, pp);
+				Battle b = new Battle(cm, bufferTarget, graphicsDevice, pp, score);
+				lio = score < 10 ? lio = contentManager.Load<Texture2D>("Battle/Enemies/Explainer_" + b.GetEnemyName())
+					: contentManager.Load<Texture2D>("Menus/TransitionTest");
+				
+				return b;
 			}
 			else
 			{
@@ -243,6 +248,7 @@ namespace RPG
 				return GetMostLost();
 			}
 
+			//Generates 0, 1
 			int num = random.Next(0,2);
 
 			switch (num)
@@ -259,8 +265,13 @@ namespace RPG
 						timesRepeated = 0;
 
 					lastGame = 0;
-					lio = contentManager.Load<Texture2D>("Menus/TransitionTest");
-					return new Battle(cm, bufferTarget, graphicsDevice, pp);
+
+					Battle b = new Battle(cm, bufferTarget, graphicsDevice, pp, score);
+					lio = score < 10 ? lio = contentManager.Load<Texture2D>("Battle/Enemies/Explainer_" + b.GetEnemyName())
+						: contentManager.Load<Texture2D>("Menus/TransitionTest");
+
+					return b;
+
 				}
 				case 1:
 				{
@@ -475,14 +486,14 @@ namespace RPG
 						{
 							if (score % 10 == 0)
 							{
-								microgame = new BetweenGames(cm, score, pauseButton, continues, false, true);
+								microgame = new BetweenGames(cm, score, betweenGamesOffset, pauseButton, continues, false, true);
 								continues++;
 							}
 							else
-								microgame = new BetweenGames(cm, score, pauseButton, continues, false, false);
+								microgame = new BetweenGames(cm, score, betweenGamesOffset, pauseButton, continues, false, false);
 						}
 						else
-							microgame = new BetweenGames(cm, score, pauseButton, continues, false);
+							microgame = new BetweenGames(cm, score, betweenGamesOffset, pauseButton, continues, false);
 
 						curPhase = Phase.Transition;
 						fromGame = true;
@@ -499,7 +510,7 @@ namespace RPG
 						cm.RootDirectory = contentManager.RootDirectory;
 
 						continues--;
-						microgame = new BetweenGames(cm, score, pauseButton, continues, true);
+						microgame = new BetweenGames(cm, score, betweenGamesOffset, pauseButton, continues, true);
 
 						curPhase = Phase.Transition;
 						fromGame = true;
@@ -516,13 +527,17 @@ namespace RPG
 						cm.RootDirectory = contentManager.RootDirectory;
 
 						if (continues > 0)
+						{
+							betweenGamesOffset = ((BetweenGames)microgame).GetAnimOffset();
 							microgame = ChooseGame();
+						}
 						else
 						{
 							//Out of continues
 							score = 0;
 							timerMult = 1.0;
 							timer = 0.2;
+							betweenGamesOffset = 0.0;
 							lio = contentManager.Load<Texture2D>("Menus/TransitionQuit");
 							continues = 3;
 
@@ -574,6 +589,7 @@ namespace RPG
 
 									lio = contentManager.Load<Texture2D>("Menus/TransitionQuit");
 									timer = 0.2;
+									betweenGamesOffset = 0.0;
 									microgame = new TitleScreen(cm, paletteShader, practiceUnlocked);
 									//microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
 
@@ -684,7 +700,7 @@ namespace RPG
 						sb.Begin();
 
 						//1.8 is the amount of seconds the preview is active
-						int blackBar = (int)(Math.Pow(2, (timer - 1.8) * 14));
+						int blackBar = (int)(Math.Pow(2, (timer - 2.5 / timerMult) * 14));
 
 						//Move from transition into the next game
 						if (blackBar > Game1.height / 2)
