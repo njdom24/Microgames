@@ -295,7 +295,14 @@ namespace RPG
 
 		void Screen.Update(GameTime dt)
 		{
+			if (!prevStateKb.GetPressedKeys().Equals(Keyboard.GetState().GetPressedKeys()))
+				game.IsMouseVisible = false;
+
 			MouseState state = Mouse.GetState();
+
+			if (prevStateM.X != state.X || prevStateM.Y != state.Y)
+				game.IsMouseVisible = true;
+
 			int mouseX = (int)(state.X * Game1.resMultiplier);
 			int mouseY = (int)(state.Y * Game1.resMultiplier);
 
