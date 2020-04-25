@@ -66,15 +66,21 @@ namespace RPG
 			hitY = 0;
 			hitTimer = 0;
 
-			if (enemyType == 0)
+			switch (enemyType)
 			{
-				sprite = contentManager.Load<Texture2D>("Battle/Enemies/Borowstree");
-				name = "Borowstree";
-			}
-			else
-			{
-				sprite = contentManager.Load<Texture2D>("Battle/Enemies/Borowater");
-				name = "Borowater";
+				case 0:
+					sprite = contentManager.Load<Texture2D>("Battle/Enemies/Borowstree");
+					name = "Borowstree";
+					break;
+				case 1:
+					sprite = contentManager.Load<Texture2D>("Battle/Enemies/Borowater");
+					name = "Borowater";
+					break;
+				default:
+					sprite = contentManager.Load<Texture2D>("Battle/Enemies/Borashki");
+					name = "Borashki";
+					break;
+					
 			}
 			
 			hitEffects = contentManager.Load<Texture2D>("Battle/Icons/HitEffects");

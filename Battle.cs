@@ -78,8 +78,8 @@ namespace RPG
 
 		public Battle(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp)
 		{
-			//Generates 0 or 1
-			enemyType = new Random().Next(0, 2);
+			//Generates 0, 1, 2
+			enemyType = new Random().Next(0, 3);
 
 			exitReady = false;
 			curPhase = Phase.IntroPhase;
@@ -498,7 +498,7 @@ namespace RPG
 				case Phase.AttackPhase:
 					if(enemy.health <= 0)
 					{
-						if (enemyType == 0 && magicColor.Equals(Color.White) || enemyType == 1 && magicColor.Equals(Color.Purple))
+						if (enemyType == 0 && magicColor.Equals(Color.White) || enemyType == 1 && magicColor.Equals(Color.Purple) || enemyType == 2 && magicColor.Equals(Color.LightGray))
 						{
 							deathMessageDisplayed = false;
 							curPhase = Phase.EnemyDeathPhase;
