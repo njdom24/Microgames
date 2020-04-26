@@ -87,8 +87,16 @@
     <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Explainer_Borashki.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Explainer_Borowater.png</File>
     <File>/home/damino/Documents/Microgames/Content/Battle/Enemies/Explainer_Borowstree.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Battle/Numbers/ScrollingNums_2.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionPlate_2.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/TransitionApples_2.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Menus/AreYouSure.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

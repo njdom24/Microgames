@@ -125,7 +125,7 @@ namespace RPG
 
 			random = new Random();
 			collectedCount = 0;
-			spawnedCount = 0;
+			spawnedCount = 1;
 			usingKeyboard = true;
 			facingLeft = false;
 			spawnBadApples = score >= 10;

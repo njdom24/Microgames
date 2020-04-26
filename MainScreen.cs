@@ -18,13 +18,14 @@ namespace RPG
 
 		private RenderTarget2D mainTarget, lastFrame, bufferTarget;
 		private GraphicsDevice graphicsDevice;
-		private Texture2D lio, stairClimber, pauseScreen, continueIcon, countdown, controls;
+		private Texture2D lio, stairClimber, pauseScreen, areYouSure, continueIcon, countdown, controls;
 		private Menu pauseMenu;
 		private Hud introText;
-		private bool controlsShown, controlHint, controlRevisit;
+		private bool controlsShown, controlHint, controlRevisit, exitConfirm;
 
 		private Effect transition, paletteShader;
 		private double timer, countdownTimer, timerMult, betweenGamesOffset;
+		private Color countdownColor;
 		private Song song;
 		private KeyboardState prevStateKb;
 		private MouseState prevStateM;
@@ -40,7 +41,7 @@ namespace RPG
 
 		private FileStream fs;
 		private Game game;
-		private Button exitButton, pauseButton, resumeButton;
+		private Button exitButton, pauseButton, resumeButton, noButton, yesButton, backButton;
 
 		public MainScreen(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp, FileStream fs, Game game)
 		{
@@ -72,6 +73,7 @@ namespace RPG
 			}
 			
 			fromGame = false;
+			exitConfirm = false;
 			//curPhase = Phase.BetweenGames;
 			currentFlashes = 7;
 			maxFlashes = 7;
@@ -79,6 +81,7 @@ namespace RPG
 			countdownTimer = 0.0;
 			timerMult = 1.0;
 			betweenGamesOffset = 0.0;
+			countdownColor = Color.White;
 
 			controlsShown = false;
 			controlRevisit = false;
@@ -94,10 +97,10 @@ namespace RPG
 			lio = contentManager.Load<Texture2D>("Menus/TransitionTest");
 			stairClimber = contentManager.Load<Texture2D>("Map/TransitionAnim");
 			pauseScreen = contentManager.Load<Texture2D>("Menus/PauseScreen");
+			areYouSure = contentManager.Load<Texture2D>("Menus/AreYouSure");
 			continueIcon = contentManager.Load<Texture2D>("Menus/TransitionButton");
 			countdown = contentManager.Load<Texture2D>("Menus/Countdown");
 
-			Console.WriteLine("Blemish: " + Environment.OSVersion.Platform.ToString());
 			if (Environment.OSVersion.Platform.ToString().Contains("Win"))
 				controls = contentManager.Load<Texture2D>("Menus/Controls");
 			else
@@ -125,6 +128,10 @@ namespace RPG
 			exitButton = new Button(contentManager, 4, 1, text: "OK");
 			pauseButton = new Button(contentManager, 4, 1, text: "Pause");
 			resumeButton = new Button(contentManager, 4, 1, text: "Resume");
+
+			noButton = new Button(contentManager, Game1.width/2 - 60, Game1.height/2 + 20, text: "No");
+			yesButton = new Button(contentManager, Game1.width/2 + 20, Game1.height/2 + 20, text: "Yes");
+			backButton = new Button(contentManager, 4, 1, text: "Back");
 
 			pauseMenu = new Menu(contentManager, new string[] { "Palette", "Return to Title", "P1", null, "P2", null, "P3", null, "P4", null, "P5", null }, 2, 69, offsetX: Game1.width / 4, offsetY: Game1.height / 2, defaultSpacingX: 75);
 		}
@@ -267,8 +274,9 @@ namespace RPG
 					lastGame = 0;
 
 					Battle b = new Battle(cm, bufferTarget, graphicsDevice, pp, score);
-					lio = score < 10 ? lio = contentManager.Load<Texture2D>("Battle/Enemies/Explainer_" + b.GetEnemyName())
+					lio = score < 20 ? lio = contentManager.Load<Texture2D>("Battle/Enemies/Explainer_" + b.GetEnemyName())
 						: contentManager.Load<Texture2D>("Menus/TransitionTest");
+					countdownColor = Color.White;
 
 					return b;
 
@@ -285,7 +293,10 @@ namespace RPG
 						timesRepeated = 0;
 
 					lastGame = 1;
-					lio = contentManager.Load<Texture2D>("Menus/TransitionApples");	
+					lio = score < 20 ? lio = contentManager.Load<Texture2D>("Menus/TransitionApples_2")
+						: contentManager.Load<Texture2D>("Menus/TransitionApples");
+					countdownColor = Color.Purple;
+
 					return new FallingApples(cm, score);
 				}
 				default:
@@ -506,7 +517,7 @@ namespace RPG
 						fromGame = true;
 					}
 					//Lost game
-					else if (countdownTimer >= 8 || result == 2)
+					else if (countdownTimer >=11 || result == 2)
 					{
 						UpdateSaveGame(microgame.ToString(), false);
 						countdownTimer = 0.0;
@@ -565,7 +576,7 @@ namespace RPG
 					break;
 				case Phase.Paused:
 					resumeButton.Update(mouseX, mouseY);
-					if (Keyboard.GetState().IsKeyUp(Keys.Escape) && prevStateKb.IsKeyDown(Keys.Escape) || resumeButton.IsPressed(prevStateM))
+					if (!exitConfirm && (Keyboard.GetState().IsKeyUp(Keys.Escape) && prevStateKb.IsKeyDown(Keys.Escape) || resumeButton.IsPressed(prevStateM)))
 					{
 						prevStateM = state;
 						curPhase = prevPhase;
@@ -574,9 +585,10 @@ namespace RPG
 					{ 
 						pauseMenu.Update(dt, prevStateKb, prevStateM, mouseX, mouseY);
 
-						switch (pauseMenu.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY))
-						{ 
-							case 0:
+						if (!exitConfirm)
+							switch (pauseMenu.GetSelectionY(prevStateKb, prevStateM, mouseX, mouseY))
+							{
+								case 0:
 									int indX = pauseMenu.GetSelectionX(prevStateKb, prevStateM, mouseX, mouseY);
 									if (indX > 0)
 									{
@@ -584,29 +596,48 @@ namespace RPG
 										SetColor(indX - 1);
 									}
 									break;
-							case 1:
-								if (Mouse.GetState().LeftButton == ButtonState.Released && prevStateM.LeftButton == ButtonState.Pressed ||
-								    Keyboard.GetState().IsKeyUp(Keys.Space) && prevStateKb.IsKeyDown(Keys.Space))
-								{
-									//BLAHBLAHBLAH
-									microgame.Unload();
-									cm.Dispose();
-									cm = new ContentManager(contentManager.ServiceProvider);
-									cm.RootDirectory = contentManager.RootDirectory;
+								case 1:
+									if (Mouse.GetState().LeftButton == ButtonState.Released && prevStateM.LeftButton == ButtonState.Pressed ||
+										Keyboard.GetState().IsKeyUp(Keys.Space) && prevStateKb.IsKeyDown(Keys.Space))
+									{
+										exitConfirm = true;
+									}
+									break;
 
-									lio = contentManager.Load<Texture2D>("Menus/TransitionQuit");
-									timer = 0.2;
-									betweenGamesOffset = 0.0;
-									microgame = new TitleScreen(cm, paletteShader, practiceUnlocked);
-									//microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
+								default:
+									break;
+							}
+						else
+						{
+							//Check for OK, No
+							yesButton.Update(mouseX, mouseY);
+							noButton.Update(mouseX, mouseY);
+							backButton.Update(mouseX, mouseY);
 
-									curPhase = Phase.Transition;
-									fromGame = true;
-								}
-								break;
+							if (yesButton.IsPressed(prevStateM) || (prevStateKb.IsKeyDown(Keys.Enter)) && Keyboard.GetState().IsKeyUp(Keys.Enter))
+							{
+								microgame.Unload();
+								cm.Dispose();
+								cm = new ContentManager(contentManager.ServiceProvider);
+								cm.RootDirectory = contentManager.RootDirectory;
 
-							default:
-								break;	
+								lio = contentManager.Load<Texture2D>("Menus/TransitionQuit");
+								if (score < 10)
+									timer = 1.8;
+								else
+									timer = 1.4;
+								betweenGamesOffset = 0.0;
+								microgame = new TitleScreen(cm, paletteShader, practiceUnlocked);
+								//microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
+
+								curPhase = Phase.Transition;
+								fromGame = true;
+							}
+							else if (noButton.IsPressed(prevStateM) || yesButton.IsPressed(prevStateM) ||
+							         ((prevStateKb.IsKeyDown(Keys.Escape)) && Keyboard.GetState().IsKeyUp(Keys.Escape)))
+							{
+								exitConfirm = false;
+							}
 						}
 						//pauseMenu.GetSelection(prevStateKb, prevStateM, mouseX, mouseY);
 					}
@@ -692,8 +723,8 @@ namespace RPG
 					graphicsDevice.SetRenderTarget(bufferTarget);
 					microgame.Draw(sb);
 					sb.Begin();
-					int offset = countdownTimer >= 8 ? 7*48 : ((int)countdownTimer) * 48;
-					sb.Draw(countdown, new Rectangle(0, 0, 48, countdown.Height), new Rectangle(offset, 0, 48, countdown.Height), Color.White);
+					int offset = countdownTimer >= 11 ? 7*48 : ((int)countdownTimer) * 48;
+					sb.Draw(countdown, new Rectangle(2, 2, 48, countdown.Height), new Rectangle(offset, 0, 48, countdown.Height), countdownColor);
 					sb.End();
 					//microgame.Draw(sb);
 					break;
@@ -707,7 +738,7 @@ namespace RPG
 						sb.Begin();
 
 						//1.8 is the amount of seconds the preview is active
-						int blackBar = (int)(Math.Pow(2, (timer - 2.5 / timerMult) * 14));
+						int blackBar = (int)(Math.Pow(2, (timer - 3.3 / timerMult) * 14));
 
 						//Move from transition into the next game
 						if (blackBar > Game1.height / 2)
@@ -855,15 +886,29 @@ namespace RPG
 
 				sb.Begin(SpriteSortMode.Immediate);
 				paletteShader.Techniques[1].Passes[0].Apply();
-				sb.Draw(pauseScreen, new Rectangle(0, 0, pauseScreen.Width, pauseScreen.Height), Color.White);
+				if (exitConfirm)
+				{ 
+					sb.Draw(areYouSure, new Rectangle(0, 0, pauseScreen.Width, pauseScreen.Height), Color.White);
+				}
+				else
+					sb.Draw(pauseScreen, new Rectangle(0, 0, pauseScreen.Width, pauseScreen.Height), Color.White);
 				sb.End();
 
 				graphicsDevice.SetRenderTarget(bufferTarget);
 				graphicsDevice.Clear(Color.Transparent);
 				sb.Begin(blendState:BlendState.AlphaBlend);
 				//The text is becoming white because the shader overrides it. Need to render the text to a buffer first
-				pauseMenu.Draw(sb);
-				resumeButton.Draw(sb);
+				if (exitConfirm)
+				{
+					backButton.Draw(sb);
+					yesButton.Draw(sb);
+					noButton.Draw(sb);
+				}
+				else
+				{
+					pauseMenu.Draw(sb);
+					resumeButton.Draw(sb);
+				}
 				sb.End();
 
 				graphicsDevice.SetRenderTarget(mainTarget);

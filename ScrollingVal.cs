@@ -22,7 +22,7 @@ namespace RPG
 		public ScrollingVal(ContentManager contentManager, int defaultVal = 0)
 		{
 			scrollingNums = contentManager.Load<Texture2D>("Battle/Numbers/ScrollingNums");//5x8
-			bg = contentManager.Load<Texture2D>("Menus/TransitionPlate");
+			bg = contentManager.Load<Texture2D>("Menus/TransitionPlate_2");
 
 			rollingHealth = defaultVal;
 			hund = (sbyte)(rollingHealth / 100);
@@ -113,45 +113,45 @@ namespace RPG
 
 			if (rollingHealth < health)
 			{
-				sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45, (int)pos.Y + 22, 5, 8), new Rectangle(0, one * 9 - 1 + countdown, 5, 8), Color.White);
+				sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49, (int)pos.Y + 25, 5, 8), new Rectangle(0, one * 9 - 1 + countdown, 5, 8), Color.White);
 			}
 			else if (rollingHealth > health)
 			{
-				sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45, (int)pos.Y + 22, 5, 8), new Rectangle(0, one * 9 - 1 - countdown, 5, 8), Color.White);
+				sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49, (int)pos.Y + 25, 5, 8), new Rectangle(0, one * 9 - 1 - countdown, 5, 8), Color.White);
 			}
 			else
 			{
-				sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45, (int)pos.Y + 22, 5, 8), new Rectangle(0, one * 9 - 1, 5, 8), Color.White);
+				sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49, (int)pos.Y + 25, 5, 8), new Rectangle(0, one * 9 - 1, 5, 8), Color.White);
 			}
 
 			if (rollingHealth < health)
 			{
 				if (movTen)
-					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45 - 8, (int)pos.Y + 22, 5, 8), new Rectangle(0, ten * 9 - 1 + countdown, 5, 8), Color.White);
+					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49 - 8, (int)pos.Y + 25, 5, 8), new Rectangle(0, ten * 9 - 1 + countdown, 5, 8), Color.White);
 				else
-					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45 - 8, (int)pos.Y + 22, 5, 8), new Rectangle(0, ten * 9 - 1, 5, 8), Color.White);
+					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49 - 8, (int)pos.Y + 25, 5, 8), new Rectangle(0, ten * 9 - 1, 5, 8), Color.White);
 
 				if (movHund)
-					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45 - 16, (int)pos.Y + 22, 5, 8), new Rectangle(0, hund * 9 - 1 + countdown, 5, 8), Color.White);
+					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49 - 16, (int)pos.Y + 25, 5, 8), new Rectangle(0, hund * 9 - 1 + countdown, 5, 8), Color.White);
 				else
-					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45 - 16, (int)pos.Y + 22, 5, 8), new Rectangle(0, hund * 9 - 1, 5, 8), Color.White);
+					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49 - 16, (int)pos.Y + 25, 5, 8), new Rectangle(0, hund * 9 - 1, 5, 8), Color.White);
 			}
 			else if (rollingHealth > health)
 			{
 				if (movTen)
-					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45 - 8, (int)pos.Y + 22, 5, 8), new Rectangle(0, ten * 9 - 1 - countdown, 5, 8), Color.White);
+					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49 - 8, (int)pos.Y + 25, 5, 8), new Rectangle(0, ten * 9 - 1 - countdown, 5, 8), Color.White);
 				else
-					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45 - 8, (int)pos.Y + 22, 5, 8), new Rectangle(0, ten * 9 - 1, 5, 8), Color.White);
+					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49 - 8, (int)pos.Y + 25, 5, 8), new Rectangle(0, ten * 9 - 1, 5, 8), Color.White);
 
 				if (movHund)
-					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45 - 16, (int)pos.Y + 22, 5, 8), new Rectangle(0, hund * 9 - 1 - countdown, 5, 8), Color.White);
+					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49 - 16, (int)pos.Y + 25, 5, 8), new Rectangle(0, hund * 9 - 1 - countdown, 5, 8), Color.White);
 				else
-					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45 - 16, (int)pos.Y + 22, 5, 8), new Rectangle(0, hund * 9 - 1, 5, 8), Color.White);
+					sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49 - 16, (int)pos.Y + 25, 5, 8), new Rectangle(0, hund * 9 - 1, 5, 8), Color.White);
 			}
 			else
 			{
-				sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45 - 8, (int)pos.Y + 22, 5, 8), new Rectangle(0, ten * 9 - 1, 5, 8), Color.White);
-				sb.Draw(scrollingNums, new Rectangle((int)pos.X + 45 - 16, (int)pos.Y + 22, 5, 8), new Rectangle(0, hund * 9 - 1, 5, 8), Color.White);
+				sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49 - 8, (int)pos.Y + 25, 5, 8), new Rectangle(0, ten * 9 - 1, 5, 8), Color.White);
+				sb.Draw(scrollingNums, new Rectangle((int)pos.X + 49 - 16, (int)pos.Y + 25, 5, 8), new Rectangle(0, hund * 9 - 1, 5, 8), Color.White);
 			}
 		}
 	}

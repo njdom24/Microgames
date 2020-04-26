@@ -120,10 +120,9 @@ namespace RPG
 
 			sb.Draw(wizZoom, new Rectangle((Game1.width - wizZoom.Width)/2, (Game1.height - wizZoom.Height) / 2 + (int)heightOffset, wizZoom.Width, wizZoom.Height), new Rectangle(0, 0, wizZoom.Width, wizZoom.Height), Color.White);
 
-			scoreDisplay.Draw(sb, new Vector2(2, Game1.height - 56), score);
+			scoreDisplay.Draw(sb, new Vector2(2, Game1.height - 62), score);
 
-			if (animTimer < 4 * 39.5)
-				DrawContinues(sb);
+			DrawContinues(sb);
 
 			pauseButton.Draw(sb);
 			
