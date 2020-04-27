@@ -641,7 +641,7 @@ namespace RPG
 								curPhase = Phase.Transition;
 								fromGame = true;
 							}
-							else if (noButton.IsPressed(prevStateM) || yesButton.IsPressed(prevStateM) ||
+							else if (noButton.IsPressed(prevStateM) || backButton.IsPressed(prevStateM) ||
 							         ((prevStateKb.IsKeyDown(Keys.Escape)) && Keyboard.GetState().IsKeyUp(Keys.Escape)))
 							{
 								exitConfirm = false;
