@@ -119,6 +119,8 @@ namespace RPG
 			this.final = final;//required for scaling
 			this.graphicsDevice = graphicsDevice;
 			text = new Hud(new string[] { "@" + enemy.GetStageName() + " draws near!" }, content, 22, 2, posY: 3, canClose: true);
+			text.finishMessage();
+			text.finishText();
 			//text.finishText();
 			commandName = new Hud(new string[] { options.GetSelectedName() }, content, 6, 0, Game1.width / 3 - 50, 2, canClose: false, centered: true);
 			offsetHeightBottom = text.getHeight();
