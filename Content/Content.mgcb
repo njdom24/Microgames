@@ -1057,25 +1057,25 @@
 
 #begin Music/arcane.wav
 /importer:WavImporter
-/processor:SoundEffectProcessor
+/processor:SongProcessor
 /processorParam:Quality=Best
 /build:Music/arcane.wav
 
 #begin Music/fight.wav
 /importer:WavImporter
-/processor:SoundEffectProcessor
+/processor:SongProcessor
 /processorParam:Quality=Best
 /build:Music/fight.wav
 
 #begin Music/transition.wav
 /importer:WavImporter
-/processor:SoundEffectProcessor
+/processor:SongProcessor
 /processorParam:Quality=Best
 /build:Music/transition.wav
 
 #begin Music/trouble_ahead.wav
 /importer:WavImporter
-/processor:SoundEffectProcessor
+/processor:SongProcessor
 /processorParam:Quality=Best
 /build:Music/trouble_ahead.wav
 

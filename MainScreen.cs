@@ -15,6 +15,7 @@ namespace RPG
 		private ContentManager contentManager, cm;
 		private PresentationParameters pp;
 		private MiniScreen microgame;
+		private Song battleSong, previewSong, transitionSong, curTrack;
 
 		private RenderTarget2D mainTarget, lastFrame, bufferTarget;
 		private GraphicsDevice graphicsDevice;
@@ -26,7 +27,6 @@ namespace RPG
 		private Effect transition, paletteShader;
 		private double timer, countdownTimer, timerMult, betweenGamesOffset;
 		private Color countdownColor;
-		private Song song;
 		private KeyboardState prevStateKb;
 		private MouseState prevStateM;
 
@@ -34,7 +34,7 @@ namespace RPG
 
 		private enum Phase { Introduction, PracticeUnlock, FinalMessage, MainMenu, InGame, Transition, BetweenGames, Paused };
 		private Phase curPhase, prevPhase;
-		private bool fromGame, practiceMode, practiceUnlocked, practiceIntro;
+		private bool fromGame, practiceMode, practiceUnlocked, practiceIntro, beginSong;
 		private int continues, score;
 		private Random random;
 		private int lastGame, timesRepeated;
@@ -45,6 +45,7 @@ namespace RPG
 
 		public MainScreen(ContentManager contentManager, RenderTarget2D final, GraphicsDevice graphicsDevice, PresentationParameters pp, FileStream fs, Game game)
 		{
+			beginSong = false;
 			this.game = game;
 			this.contentManager = contentManager;
 			this.fs = fs;
@@ -71,6 +72,10 @@ namespace RPG
 				practiceUnlocked = false;
 				curPhase = Phase.Introduction;
 			}
+
+			battleSong = contentManager.Load<Song>("Music/fight");
+			previewSong = contentManager.Load<Song>("Music/trouble_ahead");
+			transitionSong = contentManager.Load<Song>("Music/transition");
 			
 			fromGame = false;
 			exitConfirm = false;
@@ -109,10 +114,9 @@ namespace RPG
 			transition = contentManager.Load<Effect>("Map/transitions");
 			transition.Parameters["time"].SetValue((float)timer);
 
-			song = contentManager.Load<Song>("Map/pkmnbtl2");
 			continues = 3;
 			score = 0;
-			//MediaPlayer.Play(song);
+
 			prevStateKb = Keyboard.GetState();
 			prevStateM = Mouse.GetState();
 
@@ -250,6 +254,8 @@ namespace RPG
 
 		MiniScreen ChooseGame()
 		{
+			beginSong = true;
+
 			if (practiceMode)
 			{
 				return GetMostLost();
@@ -272,7 +278,6 @@ namespace RPG
 						timesRepeated = 0;
 
 					lastGame = 0;
-
 					Battle b = new Battle(cm, bufferTarget, graphicsDevice, pp, score);
 					lio = score < 20 ? lio = contentManager.Load<Texture2D>("Battle/Enemies/Explainer_" + b.GetEnemyName())
 						: contentManager.Load<Texture2D>("Menus/TransitionTest");
@@ -324,6 +329,7 @@ namespace RPG
 			{
 				prevStateM = state;
 				prevPhase = curPhase;
+				MediaPlayer.Pause();
 				curPhase = Phase.Paused;
 				pauseMenu.SetSelectionY(0);
 				//timer = 0.2;
@@ -340,9 +346,11 @@ namespace RPG
 						{
 							controlHint = false;
 							introText.finishMessage();
-								introText.finishText();
+							introText.finishText();
 							if (controlRevisit)
+							{
 								curPhase = Phase.MainMenu;
+							}
 							else
 							{
 								curPhase = Phase.FinalMessage;
@@ -466,6 +474,15 @@ namespace RPG
 					}
 					break;
 				case Phase.Transition:
+					if (beginSong)
+					{
+						if (microgame is BetweenGames)
+							MediaPlayer.Play(transitionSong);
+						else
+							MediaPlayer.Play(previewSong);
+							beginSong = false;
+					}
+
 					if ((currentFlashes & 1) == 0)
 						timer += dt.ElapsedGameTime.TotalSeconds;
 					else
@@ -479,6 +496,18 @@ namespace RPG
 					
 					break;
 				case Phase.InGame:
+					if(beginSong)
+					{
+
+						//if (microgame is Battle)
+						MediaPlayer.Stop();
+						MediaPlayer.Play(battleSong);
+						//else
+							//MediaPlayer.Play(previewSong);
+
+						beginSong = false;	
+					}
+
 					byte result = microgame.Update(dt, prevStateKb, prevStateM);
 
 					if (result != 254)
@@ -514,6 +543,7 @@ namespace RPG
 							microgame = new BetweenGames(cm, score, betweenGamesOffset, pauseButton, continues, false);
 
 						curPhase = Phase.Transition;
+						beginSong = true;
 						fromGame = true;
 					}
 					//Lost game
@@ -531,12 +561,20 @@ namespace RPG
 						microgame = new BetweenGames(cm, score, betweenGamesOffset, pauseButton, continues, true);
 
 						curPhase = Phase.Transition;
+						beginSong = true;
 						fromGame = true;
 						//BetweenGames phase will handle switching to TitleScreen on 0 continues
 					}
 
 					break;
 				case Phase.BetweenGames:
+					if (beginSong)
+					{
+						beginSong = false;
+						MediaPlayer.Stop();
+						MediaPlayer.Play(previewSong);
+						//MediaPlayer.IsRepeating = true;
+					}
 					if (microgame.Update(dt, prevStateKb, prevStateM) == 255)
 					{
 						microgame.Unload();
@@ -554,6 +592,7 @@ namespace RPG
 							else
 							{
 								betweenGamesOffset = 0.0;
+								//beginSong = true;
 								goto case Phase.InGame;
 							}
 						}
@@ -565,6 +604,7 @@ namespace RPG
 							timer = 0.2;
 							betweenGamesOffset = 0.0;
 							lio = contentManager.Load<Texture2D>("Menus/TransitionQuit");
+							MediaPlayer.Stop();
 							continues = 3;
 
 							//First time getting a game over
@@ -579,6 +619,7 @@ namespace RPG
 		
 						curPhase = Phase.Transition;
 						fromGame = false;
+						beginSong = false;
 					}
 
 					break;
@@ -588,6 +629,7 @@ namespace RPG
 					{
 						prevStateM = state;
 						curPhase = prevPhase;
+						MediaPlayer.Resume();
 					}
 					else
 					{ 
@@ -635,10 +677,12 @@ namespace RPG
 								else
 									timer = 1.4;
 								betweenGamesOffset = 0.0;
+								MediaPlayer.Stop();
 								microgame = new TitleScreen(cm, paletteShader, practiceUnlocked);
 								//microgame = new Battle(cm, mainTarget, graphicsDevice, pp);
 
 								curPhase = Phase.Transition;
+								beginSong = false;
 								fromGame = true;
 							}
 							else if (noButton.IsPressed(prevStateM) || backButton.IsPressed(prevStateM) ||
@@ -750,7 +794,9 @@ namespace RPG
 
 						//Move from transition into the next game
 						if (blackBar > Game1.height / 2)
-						{ 
+						{
+							//MediaPlayer.Stop();
+
 							//Reset timer variables for next time
 							currentFlashes = 7;
 							maxFlashes = 7;
@@ -765,11 +811,15 @@ namespace RPG
 							}
 							else if (fromGame)
 							{
+								beginSong = true;
 								fromGame = false;
 								curPhase = Phase.BetweenGames;
 							}
 							else
+							{
+								beginSong = true;
 								curPhase = Phase.InGame;
+							}
 							sb.End();
 							//microgame.Draw(sb);
 							sb.Begin();
