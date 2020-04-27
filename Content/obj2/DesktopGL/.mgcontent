@@ -4,6 +4,10 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>/home/damino/Documents/Microgames/Content/Music/arcane.wav</File>
+    <File>/home/damino/Documents/Microgames/Content/Music/fight.wav</File>
+    <File>/home/damino/Documents/Microgames/Content/Music/transition.wav</File>
+    <File>/home/damino/Documents/Microgames/Content/Music/trouble_ahead.wav</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/AreYouSure.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/Countdown.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionApples_2.png</File>

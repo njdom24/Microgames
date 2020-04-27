@@ -546,8 +546,16 @@ namespace RPG
 
 						if (continues > 0)
 						{
-							betweenGamesOffset = ((BetweenGames)microgame).GetAnimOffset();
-							microgame = ChooseGame();
+							if (microgame is BetweenGames)
+							{
+								betweenGamesOffset = ((BetweenGames)microgame).GetAnimOffset();
+								microgame = ChooseGame();
+							}
+							else
+							{
+								betweenGamesOffset = 0.0;
+								goto case Phase.InGame;
+							}
 						}
 						else
 						{

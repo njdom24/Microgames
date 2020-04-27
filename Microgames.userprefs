@@ -9,13 +9,13 @@
       <File FileName="BetweenGames.cs" Line="114" Column="4" />
       <File FileName="ScrollingVal.cs" Line="37" Column="58" />
       <File FileName="Battle.cs" Line="90" Column="67" />
-      <File FileName="Icons.cs" Line="13" Column="13" />
+      <File FileName="Icons.cs" Line="13" Column="12" />
       <File FileName="Enemy.cs" Line="55" Column="23" />
       <File FileName="Button.cs" Line="31" Column="15" />
       <File FileName="Text.cs" Line="11" Column="2" />
       <File FileName="Galaga.cs" Line="150" Column="31" />
       <File FileName="Hud.cs" Line="326" Column="7" />
-      <File FileName="MainScreen.cs" Line="357" Column="137" />
+      <File FileName="MainScreen.cs" Line="357" Column="28" />
       <File FileName="TitleScreen.cs" Line="133" Column="46" />
       <File FileName="FallingApples.cs" Line="177" Column="43" />
       <File FileName="Selector.cs" Line="8" Column="14" />

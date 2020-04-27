@@ -91,8 +91,16 @@
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionPlate_2.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/TransitionApples_2.png</File>
     <File>/home/damino/Documents/Microgames/Content/Menus/AreYouSure.png</File>
+    <File>/home/damino/Documents/Microgames/Content/Music/arcane.wav</File>
+    <File>/home/damino/Documents/Microgames/Content/Music/fight.wav</File>
+    <File>/home/damino/Documents/Microgames/Content/Music/transition.wav</File>
+    <File>/home/damino/Documents/Microgames/Content/Music/trouble_ahead.wav</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
